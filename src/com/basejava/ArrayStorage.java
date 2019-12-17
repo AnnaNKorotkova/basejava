@@ -3,6 +3,7 @@ package com.basejava;
 import java.util.Arrays;
 
 public class ArrayStorage {
+
     private Resume[] arrResume;
     private int size;
     private int lastUuid;
