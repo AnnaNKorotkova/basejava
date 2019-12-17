@@ -3,50 +3,65 @@ package com.basejava;
 import java.util.Arrays;
 
 public class ArrayStorage {
-    private Resume[] arrResume = new Resume[10000];
-    private int uuid;
+    private Resume[] arrResume;
+    private int size;
+    private int lastUuid;
 
-    public int size(Resume[] arrResume) {
-        int count = 0;
-        for (int i = 0; i < 10000; i++) {
-            while (null != arrResume[i]) {
-                count++;
-            }
-        }
-        return count;
+    public ArrayStorage(Resume[] arrResume) {
+        this.arrResume = arrResume;
     }
 
-    public String get(Resume resume) {
-        if (resume != null) {
-            resume.getName();
-            resume.getBirthday();
-            resume.getEducation();
-            resume.getJobs();
-            resume.getAbility();
-            resume.getContactPhone();
-            resume.getContactEmail();
+    public void get(Resume resume) {
+        if (resume == null) {
+            System.out.println("Запршенного резюме не существует.");
+        } else System.out.println(resume.toString());
+    }
+
+    public void getAll(Resume[] arrResume) {
+        for (int i = 0; i < size; i++) {
+            get(arrResume[i]);
         }
-        return resume.toString();
+    }
+
+    public void save(Resume[] arrResume) {
+        Resume resume = new Resume();
+        resume.enterResume();
+        lastUuid += 1;
+        resume.setUuid(lastUuid);
+        arrResume[size] = resume;
+        size += 1;
+        System.out.println("Резюме  id=" + lastUuid + ", создано.");
     }
 
     public void delete(int index) {
-        for (int k = index; k < size(arrResume); k++) {
-            arrResume[k] = arrResume[k + 1];
+        if (size > index) {
+            int id = arrResume[index].getUuid();
+            for (int k = index; k < size - 1; k++) {
+                arrResume[k] = arrResume[k + 1];
+            }
+            arrResume[size - 1] = null;
+            size -= 1;
+            System.out.println("Резюме id=" + id + ", с индексом: " + index + ", удалено.");
+        } else {
+            System.out.println("Невозможно удалить резюме с индексом: " + index + ", такого резюме не существует.");
         }
     }
 
     public void clear(Resume[] arrResume) {
         Arrays.fill(arrResume, null);
+        size = 0;
     }
 
-    public void getAll(Resume[] arrResume) {
-        for (int i = 0; i < size(arrResume); i++) {
-            get(arrResume[i]);
-            System.out.println(arrResume[i]);
+    public int getSize() {
+        return size;
+    }
+
+    public String findIndexByUuid(int uuid) {
+        for (int i = 0; i < size; i++) {
+            if (arrResume[i].getUuid() == uuid) {
+                return String.valueOf(i);
+            }
         }
-    }
-
-    public void save(Resume[] arrResume, Resume resume) {
-        resume = arrResume[size(arrResume)];
+        return "Резюме с таким id:" + uuid + "не найдено";
     }
 }

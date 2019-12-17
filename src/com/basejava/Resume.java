@@ -1,6 +1,5 @@
 package com.basejava;
 
-import java.util.Random;
 import java.util.Scanner;
 
 public class Resume {
@@ -12,8 +11,7 @@ public class Resume {
     private String ability;
     private String contactPhone;
     private String contactEmail;
-    private long uuid;
-    Scanner scan = new Scanner(System.in);
+    private int uuid;
 
     public String getName() {
         return name;
@@ -71,14 +69,15 @@ public class Resume {
         this.contactEmail = contactEmail;
     }
 
-    public long getUuid() {
+    public int getUuid() {
         return uuid;
     }
 
-    public void setUuid() {
-        final Random random = new Random(System.currentTimeMillis());
-        this.uuid = random.nextLong();
+    public void setUuid(int uuid) {
+        this.uuid = uuid;
     }
+
+    Scanner scan = new Scanner(System.in);
 
     public void enterResume() {
         System.out.println("Заполнение резюме");
@@ -96,13 +95,13 @@ public class Resume {
         setContactPhone(scan.next());
         System.out.print("E-mail: ");
         setContactEmail(scan.next());
-        setUuid();
     }
 
     @Override
     public String toString() {
         return "Resume{" +
-                "Имя = '" + name + '\'' +
+                "id = '" + uuid + '\'' +
+                ", Имя = '" + name + '\'' +
                 ", Дата рождения = " + birthday +
                 ", Образование = '" + education + '\'' +
                 ", Опыт работы = '" + jobs + '\'' +
