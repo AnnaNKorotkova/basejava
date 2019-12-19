@@ -9,6 +9,7 @@ public class ArrayStorage {
     void clear() {
         for (int i = 0; i < size; i++) {
             storage[i] = null;
+            size = 0;
         }
     }
 
@@ -29,18 +30,16 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        int index = 0;
         for (int i = 0; i < size; i++) {
             if (uuid.equals(storage[i].uuid)) {
-                index = i;
-                for (int k = index; k < size - 1; k++) {
-                    storage[k] = storage[k + 1];
+                for (int j = i; j < size - 1; j++) {
+                    storage[j] = storage[j + 1];
                 }
                 storage[size - 1] = null;
                 size--;
                 System.out.println("Резюме с id = " + uuid + " удалено.");
                 break;
-            } else {
+            } else if (i == size - 1) {
                 System.out.println("Невозможно удалить резюме с id = " + uuid + ", такого резюме не существует.");
             }
         }
