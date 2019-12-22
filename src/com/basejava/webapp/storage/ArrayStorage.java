@@ -38,7 +38,6 @@ public class ArrayStorage {
         } else {
             System.out.println("Не хватает места для записи нового резюме");
         }
-
     }
 
     public Resume get(String uuid) {

@@ -1,8 +1,7 @@
 package com.basejava.webapp.model;
 
 public class Resume {
-
-     private String uuid;
+    private String uuid;
 
     public String getUuid() {
         return uuid;
