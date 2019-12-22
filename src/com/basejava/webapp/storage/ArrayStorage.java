@@ -18,11 +18,12 @@ public class ArrayStorage {
     }
 
     public void update(Resume r) {
-        if (findIndexByUuid(r.getUuid()) != null) {
-            storage[parseInt(findIndexByUuid(r.getUuid()))] = r;
-            System.out.println("Резюме с id = " + r.getUuid() + " изменено.");
+        String strIndex = findIndexByUuid(r.getUuid());
+        if (strIndex != null) {
+            storage[parseInt(strIndex)] = r;
+            System.out.println("Резюме с id = \"" + r.getUuid() + "\" изменено.");
         } else {
-            System.out.println("Резюме с таким id: " + r.getUuid() + " не найдено");
+            System.out.println("Резюме с таким id: \"" + r.getUuid() + "\" не найдено");
         }
     }
 
@@ -31,9 +32,9 @@ public class ArrayStorage {
             if (findIndexByUuid(r.getUuid()) == null) {
                 storage[size] = r;
                 size++;
-                System.out.println("Резюме с id = " + r.getUuid() + " создано.");
+                System.out.println("Резюме с id = \"" + r.getUuid() + "\" создано.");
             } else {
-                System.out.println("Резюме с таким id: " + r.getUuid() + " не найдено");
+                System.out.println("Резюме с таким id: \"" + r.getUuid() + "\" не найдено");
             }
         } else {
             System.out.println("Не хватает места для записи нового резюме");
@@ -41,25 +42,27 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        if (findIndexByUuid(uuid) != null) {
-            return storage[parseInt(findIndexByUuid(uuid))];
+        String strIndex = findIndexByUuid(uuid);
+        if (strIndex != null) {
+            return storage[parseInt(strIndex)];
         } else {
-            System.out.println("Резюме с таким id: " + uuid + " не найдено");
+            System.out.println("Резюме с таким id: \"" + uuid + "\" не найдено");
             return null;
         }
     }
 
     public void delete(String uuid) {
-        if (findIndexByUuid(uuid) != null) {
-            int index = parseInt(findIndexByUuid(uuid));
+        String strIndex = findIndexByUuid(uuid);
+        if (strIndex != null) {
+            int index = parseInt(strIndex);
             for (int j = index; j < size - 1; j++) {
                 storage[j] = storage[j + 1];
             }
             storage[size - 1] = null;
             size--;
-            System.out.println("Резюме с id = " + uuid + " удалено.");
+            System.out.println("Резюме с id = \"" + uuid + "\" удалено.");
         } else {
-            System.out.println("Резюме с таким id: " + uuid + " не найдено");
+            System.out.println("Резюме с таким id: \"" + uuid + "\" не найдено");
         }
     }
 
