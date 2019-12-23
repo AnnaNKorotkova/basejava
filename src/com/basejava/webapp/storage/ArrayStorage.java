@@ -9,10 +9,9 @@ public class ArrayStorage {
     private int size;
 
     public void clear() {
-        for (int i = 0; i < size; i++) {
-            storage[i] = null;
-            size = 0;
-        }
+        Arrays.fill(storage, 0, size - 1, null);
+        size = 0;
+
     }
 
     public void update(Resume r) {
