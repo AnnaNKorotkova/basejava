@@ -4,8 +4,6 @@ import com.basejava.webapp.model.Resume;
 
 import java.util.Arrays;
 
-import static java.lang.Integer.parseInt;
-
 public class ArrayStorage {
     private Resume[] storage = new Resume[10000];
     private int size;
@@ -18,23 +16,23 @@ public class ArrayStorage {
     }
 
     public void update(Resume r) {
-        String strIndex = findIndexByUuid(r.getUuid());
-        if (strIndex != null) {
-            storage[parseInt(strIndex)] = r;
-            System.out.println("Резюме с id = \"" + r.getUuid() + "\" изменено.");
+        int index = findIndex(r.getUuid());
+        if (index != -1) {
+            storage[index] = r;
+            System.out.println("Резюме с id = \"" + r.getUuid() + "\" обновлено");
         } else {
-            System.out.println("Резюме с таким id: \"" + r.getUuid() + "\" не найдено");
+            System.out.println("Резюме с id = \"" + r.getUuid() + "\" не найдено");
         }
     }
 
     public void save(Resume r) {
         if (size < storage.length) {
-            if (findIndexByUuid(r.getUuid()) == null) {
+            if (findIndex(r.getUuid()) == -1) {
                 storage[size] = r;
                 size++;
                 System.out.println("Резюме с id = \"" + r.getUuid() + "\" создано.");
             } else {
-                System.out.println("Резюме с таким id: \"" + r.getUuid() + "\" не найдено");
+                System.out.println("Резюме с id = \"" + r.getUuid() + "\" не найдено");
             }
         } else {
             System.out.println("Не хватает места для записи нового резюме");
@@ -42,27 +40,24 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        String strIndex = findIndexByUuid(uuid);
-        if (strIndex != null) {
-            return storage[parseInt(strIndex)];
+        int index = findIndex(uuid);
+        if (index != -1) {
+            return storage[index];
         } else {
-            System.out.println("Резюме с таким id: \"" + uuid + "\" не найдено");
+            System.out.println("Резюме с id = \"" + uuid + "\" не найдено");
             return null;
         }
     }
 
     public void delete(String uuid) {
-        String strIndex = findIndexByUuid(uuid);
-        if (strIndex != null) {
-            int index = parseInt(strIndex);
-            for (int j = index; j < size - 1; j++) {
-                storage[j] = storage[j + 1];
-            }
+        int index = findIndex(uuid);
+        if (index != -1) {
+            System.arraycopy(storage, index + 1, storage, index, size - 1 - index);
             storage[size - 1] = null;
             size--;
             System.out.println("Резюме с id = \"" + uuid + "\" удалено.");
         } else {
-            System.out.println("Резюме с таким id: \"" + uuid + "\" не найдено");
+            System.out.println("Резюме с id = \"" + uuid + "\" не найдено");
         }
     }
 
@@ -77,12 +72,13 @@ public class ArrayStorage {
         return size;
     }
 
-    public String findIndexByUuid(String uuid) {
+    public int findIndex(String uuid) {
+        int index = -1;
         for (int i = 0; i < size; i++) {
             if (uuid.equals(storage[i].getUuid())) {
-                return String.valueOf(i);
+                index = i;
             }
         }
-        return null;
+        return index;
     }
 }
