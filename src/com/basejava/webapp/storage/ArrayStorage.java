@@ -9,7 +9,7 @@ public class ArrayStorage {
     private int size;
 
     public void clear() {
-        Arrays.fill(storage, 0, size , null);
+        Arrays.fill(storage, 0, size, null);
         size = 0;
 
     }
@@ -71,7 +71,7 @@ public class ArrayStorage {
         return size;
     }
 
-    public int findIndex(String uuid) {
+    private int findIndex(String uuid) {
         int index = -1;
         for (int i = 0; i < size; i++) {
             if (uuid.equals(storage[i].getUuid())) {
