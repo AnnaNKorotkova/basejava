@@ -9,7 +9,7 @@ public class ArrayStorage {
     private int size;
 
     public void clear() {
-        Arrays.fill(storage, 0, size - 1, null);
+        Arrays.fill(storage, 0, size , null);
         size = 0;
 
     }
@@ -24,14 +24,14 @@ public class ArrayStorage {
         }
     }
 
-    public void save(Resume r) {
+    public void save(Resume resume) {
         if (size < storage.length) {
-            if (findIndex(r.getUuid()) == -1) {
-                storage[size] = r;
+            if (findIndex(resume.getUuid()) == -1) {
+                storage[size] = resume;
                 size++;
-                System.out.println("Резюме с id = \"" + r.getUuid() + "\" создано.");
+                System.out.println("Резюме с id = \"" + resume.getUuid() + "\" создано.");
             } else {
-                System.out.println("Резюме с id = \"" + r.getUuid() + "\" не найдено");
+                System.out.println("Резюме с id = \"" + resume.getUuid() + "\" не найдено");
             }
         } else {
             System.out.println("Не хватает места для записи нового резюме");
