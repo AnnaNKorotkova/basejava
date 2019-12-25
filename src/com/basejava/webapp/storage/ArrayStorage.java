@@ -4,8 +4,9 @@ import com.basejava.webapp.model.Resume;
 
 import java.util.Arrays;
 
-public class ArrayStorage {
-    private Resume[] storage = new Resume[10000];
+public class ArrayStorage implements Storage{
+    private static final int STORAGE_LIMIT = 10000;
+    private  Resume[] storage = new Resume[STORAGE_LIMIT];
     private int size;
 
     public void clear() {
@@ -14,18 +15,18 @@ public class ArrayStorage {
 
     }
 
-    public void update(Resume r) {
-        int index = findIndex(r.getUuid());
+    public void update(Resume resume) {
+        int index = findIndex(resume.getUuid());
         if (index != -1) {
-            storage[index] = r;
-            System.out.println("Резюме с id = \"" + r.getUuid() + "\" обновлено");
+            storage[index] = resume;
+            System.out.println("Резюме с id = \"" + resume.getUuid() + "\" обновлено");
         } else {
-            System.out.println("Резюме с id = \"" + r.getUuid() + "\" не найдено");
+            System.out.println("Резюме с id = \"" + resume.getUuid() + "\" не найдено");
         }
     }
 
     public void save(Resume resume) {
-        if (size < storage.length) {
+        if (size < STORAGE_LIMIT) {
             if (findIndex(resume.getUuid()) == -1) {
                 storage[size] = resume;
                 size++;
