@@ -6,12 +6,11 @@ public class ArrayStorage extends AbstractArrayStorage {
 
     public void saveResume(Resume resume, int index) {
         storage[size] = resume;
-        size++;
     }
 
     public void deleteResume(String uuid, int index) {
-            storage[index] = storage[size - 1];
-     }
+        storage[index] = storage[size - 1];
+    }
 
     /**
      * @return array, contains only Resumes in storage (without null)

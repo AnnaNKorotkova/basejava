@@ -10,7 +10,6 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         int newIndex = -(index + 1);
         System.arraycopy(storage, newIndex, storage, newIndex + 1, size - newIndex);
         storage[newIndex] = resume;
-        size++;
     }
 
     public void deleteResume(String uuid, int index) {
