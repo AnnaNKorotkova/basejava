@@ -4,30 +4,14 @@ import com.basejava.webapp.model.Resume;
 
 public class ArrayStorage extends AbstractArrayStorage {
 
-    public void save(Resume resume) {
-        if (size < STORAGE_LIMIT) {
-            if (findIndex(resume.getUuid()) == -1) {
-                storage[size] = resume;
-                size++;
-                System.out.println("Resume id = \"" + resume.getUuid() + "\" is created");
-            } else {
-                System.out.println("Resume id = \"" + resume.getUuid() + "\" is already exist, try to update");
-            }
-        } else {
-            System.out.println("There is not enough space to create a new resume");
-        }
+    public void saveResume(Resume resume, int index) {
+        storage[size] = resume;
+        size++;
     }
 
-    public void delete(String uuid) {
-        int index = findIndex(uuid);
-        if (index != -1) {
+    public void deleteResume(String uuid, int index) {
             storage[index] = storage[size - 1];
             storage[size - 1] = null;
-            size--;
-            System.out.println("Resume id = \"" + uuid + "\" is deleted.");
-        } else {
-            System.out.println("Resume id = \"" + uuid + "\" is not found");
-        }
     }
 
     /**
