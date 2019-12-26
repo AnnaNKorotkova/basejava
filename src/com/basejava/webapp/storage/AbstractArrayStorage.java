@@ -54,6 +54,7 @@ public abstract class AbstractArrayStorage implements Storage {
         int index = findIndex(uuid);
         if (index >= 0) {
             deleteResume(uuid, index);
+            storage[size - 1] = null;
             size--;
             System.out.println("Resume id = \"" + uuid + "\" is deleted");
         } else {

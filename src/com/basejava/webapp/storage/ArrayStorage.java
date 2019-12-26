@@ -11,8 +11,7 @@ public class ArrayStorage extends AbstractArrayStorage {
 
     public void deleteResume(String uuid, int index) {
             storage[index] = storage[size - 1];
-            storage[size - 1] = null;
-    }
+     }
 
     /**
      * @return array, contains only Resumes in storage (without null)
