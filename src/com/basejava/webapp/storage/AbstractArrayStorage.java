@@ -39,14 +39,14 @@ public abstract class AbstractArrayStorage implements Storage {
         }
     }
 
-    public abstract void saveResume(Resume resume, int index);
+    protected abstract void saveResume(Resume resume, int index);
 
     public Resume get(String uuid) {
         int index = findIndex(uuid);
         if (index >= 0) {
             return storage[index];
         } else {
-            System.out.println("Резюме с id = \"" + uuid + "\" не найдено");
+            System.out.println("Resume id = \"" + uuid + "\" is not found");
             return null;
         }
     }
