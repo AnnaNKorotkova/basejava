@@ -9,8 +9,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class SortedArrayStorageTest extends AbstractArrayStorageTest {
     private AbstractArrayStorage storage = new SortedArrayStorage();
 
-    public SortedArrayStorageTest(Storage storage) {
-        super(storage);
+    public SortedArrayStorageTest() {
+        super();
     }
 
     @BeforeEach

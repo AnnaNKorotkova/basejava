@@ -7,12 +7,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ArrayStorageTest extends AbstractArrayStorageTest{
-    public Storage storage = new ArrayStorage();
+    public AbstractArrayStorage storage;
 
-    public ArrayStorageTest(Storage storage) {
-        super(storage);
+    public ArrayStorageTest() {
+        super();
     }
-
 
     @BeforeEach
     public void setUp() {

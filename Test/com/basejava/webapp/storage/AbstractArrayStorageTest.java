@@ -10,11 +10,12 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AbstractArrayStorageTest {
-    private Storage storage;
 
-    public AbstractArrayStorageTest(Storage storage) {
-        this.storage = storage;
+    public AbstractArrayStorageTest() {
+        this.storage = new ArrayStorage();
     }
+
+    AbstractArrayStorage storage;
 
     @BeforeEach
     public void setUp() {
