@@ -1,24 +1,14 @@
 package com.basejava.webapp.storage;
 
 import com.basejava.webapp.model.Resume;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class SortedArrayStorageTest extends AbstractArrayStorageTest {
-    private AbstractArrayStorage storage = new SortedArrayStorage();
 
     public SortedArrayStorageTest() {
-        super();
-    }
-
-    @BeforeEach
-    public void setUp() {
-        storage.clear();
-        storage.save(new Resume("uuid1"));
-        storage.save(new Resume("uuid2"));
-        storage.save(new Resume("uuid3"));
+        super(new SortedArrayStorage());
     }
 
     @Test

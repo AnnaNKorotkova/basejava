@@ -10,9 +10,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AbstractArrayStorageTest {
-
-    public AbstractArrayStorageTest() {
-        this.storage = new ArrayStorage();
+    public AbstractArrayStorageTest(ArrayStorage storage) {
+        this.storage = storage;
+    }
+    public AbstractArrayStorageTest(SortedArrayStorage storage) {
+        this.storage = storage;
     }
 
     AbstractArrayStorage storage;
