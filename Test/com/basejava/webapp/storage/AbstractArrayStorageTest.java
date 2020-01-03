@@ -18,7 +18,6 @@ abstract class AbstractArrayStorageTest {
 
     protected AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
-
     }
 
     @BeforeEach
@@ -45,7 +44,7 @@ abstract class AbstractArrayStorageTest {
 
     @Test
     void getTest() {
-        assertEquals("uuid1", storage.get("uuid1").getUuid());
+        assertEquals(r1, storage.get("uuid1"));
     }
 
     @Test
@@ -57,9 +56,9 @@ abstract class AbstractArrayStorageTest {
 
     @Test
     void getAllTest() {
-        Resume[] resume = {r1, r2, r3};
-        assertEquals(resume.length, storage.size());
-        assertArrayEquals(resume, storage.getAll());
+        Resume[] resumes = {r1, r2, r3};
+        assertEquals(resumes.length, storage.size());
+        assertArrayEquals(resumes, storage.getAll());
     }
 
     @Test
@@ -76,7 +75,18 @@ abstract class AbstractArrayStorageTest {
     @Test
     void saveAlreadyExistTest() {
         assertThrows(ExistStorageException.class, () -> {
-            storage.save(new Resume("uuid1"));
+            storage.save(r1);
+        });
+    }
+
+    @Test
+    void saveOverflowTest() {
+        storage.clear();
+        for (int i = 0; i < 10000; i++) {
+            storage.save(new Resume());
+        }
+        assertThrows(StorageException.class, () -> {
+            storage.save(new Resume());
         });
     }
 
@@ -84,6 +94,9 @@ abstract class AbstractArrayStorageTest {
     void deleteTest() {
         storage.delete("uuid1");
         assertEquals(2, storage.size());
+        assertThrows(NotExistStorageException.class, () -> {
+            storage.get("uuid1");
+        });
     }
 
     @Test
@@ -97,16 +110,5 @@ abstract class AbstractArrayStorageTest {
     void clearTest() {
         storage.clear();
         assertEquals(0, storage.size());
-    }
-
-    @Test
-    void saveOverflowTest() {
-        storage.clear();
-        for (int i = 0; i < 10000; i++) {
-            storage.save(new Resume());
-        }
-        assertThrows(StorageException.class, () -> {
-            storage.save(new Resume());
-        });
     }
 }
