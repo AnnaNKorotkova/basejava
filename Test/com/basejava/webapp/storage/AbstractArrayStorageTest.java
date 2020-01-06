@@ -70,6 +70,7 @@ abstract class AbstractArrayStorageTest {
     void saveTest() {
         storage.save(r4);
         assertEquals(r4, storage.get("uuid4"));
+        assertEquals(4, storage.size());
     }
 
     @Test
