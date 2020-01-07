@@ -11,27 +11,27 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public void clear() {
-        storage.removeAll(storage);
+        storage.clear();
     }
 
     @Override
-    public void updateArray(int index, Resume resume) {
+    public void updateStorageElement(int index, Resume resume) {
         storage.set(index, resume);
     }
 
     @Override
-    public void saveRes(Resume resume, int index) {
+    public void saveStorageElement(Resume resume, int index) {
         storage.add(resume);
         System.out.println("Resume id = \"" + resume.getUuid() + "\" is created");
     }
 
     @Override
-    public Resume getResume(int index) {
+    public Resume getStorageElement(int index) {
         return storage.get(index);
     }
 
     @Override
-    public void removeResume(int index) {
+    public void removeStorageElement(int index) {
         storage.remove(index);
     }
 
@@ -46,10 +46,9 @@ public class ListStorage extends AbstractStorage {
     }
 
     protected int findIndex(String uuid) {
-        Resume resume = new Resume(uuid);
         int index = -1;
         for (int i = 0; i < storage.size(); i++) {
-            if (resume.hashCode() == storage.get(i).hashCode()) {
+            if (uuid.equals(storage.get(i).getUuid())) {
                 index = i;
             }
         }

@@ -5,7 +5,7 @@ import com.basejava.webapp.model.Resume;
 
 import java.util.Arrays;
 
-public abstract class AbstractArrayStorage extends AbstractStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size;
@@ -17,30 +17,30 @@ public abstract class AbstractArrayStorage extends AbstractStorage implements St
     }
 
     @Override
-    public void updateArray(int index, Resume resume) {
+    public void updateStorageElement(int index, Resume resume) {
         storage[index] = resume;
     }
 
     @Override
-    public void saveRes(Resume resume, int index) {
+    public void saveStorageElement(Resume resume, int index) {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("There is not enough space to create a new resume", resume.getUuid());
         } else {
-            saveResumeArray(resume, index);
+            saveResume(resume, index);
             size++;
             System.out.println("Resume id = \"" + resume.getUuid() + "\" is created");
         }
     }
 
-    protected abstract void saveResumeArray(Resume resume, int index);
+    protected abstract void saveResume(Resume resume, int index);
 
     @Override
-    public Resume getResume(int index) {
+    public Resume getStorageElement(int index) {
         return storage[index];
     }
 
     @Override
-    public void removeResume(int index) {
+    public void removeStorageElement(int index) {
         deleteResume(index);
         storage[size - 1] = null;
         size--;

@@ -5,7 +5,7 @@ import com.basejava.webapp.model.Resume;
 public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
-    public void saveResumeArray(Resume resume, int index) {
+    public void saveResume(Resume resume, int index) {
         storage[size] = resume;
     }
 
