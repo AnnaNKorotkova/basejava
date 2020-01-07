@@ -1,5 +1,7 @@
 package com.basejava.webapp.storage;
 
+import com.basejava.webapp.exception.ExistStorageException;
+import com.basejava.webapp.exception.NotExistStorageException;
 import com.basejava.webapp.model.Resume;
 
 import java.util.HashMap;
@@ -10,37 +12,44 @@ public class MapStorage extends AbstractStorage {
     Map<String, Resume> storage = new HashMap<>();
 
     @Override
-    public void updateStorageElement(int index, Resume resume, String uuid) {
-        storage.replace(uuid, resume);
+    public void clear() {
+        storage.clear();
     }
 
     @Override
-    public void saveStorageElement(Resume resume, int index) {
-        storage.put(resume.getUuid(), resume);
-    }
-
-    @Override
-    public Resume getStorageElement(int index, String uuid) {
-        return storage.get(uuid);
-    }
-
-    @Override
-    public void removeStorageElement(int index, String uuid) {
-        storage.remove(uuid);
-    }
-
-    @Override
-    protected int findIndex(String uuid) {
-        if (storage.get(uuid) == null) {
-            return -1;
+    public void update(Resume resume) {
+        if (storage.containsKey(resume.getUuid())) {
+            storage.replace(resume.getUuid(), resume);
         } else {
-            return 1;
+            throw new NotExistStorageException(resume.getUuid());
         }
     }
 
     @Override
-    public void clear() {
-        storage.clear();
+    public void save(Resume resume) {
+        if (!storage.containsKey(resume.getUuid())) {
+            storage.put(resume.getUuid(), resume);
+        } else {
+            throw new ExistStorageException(resume.getUuid());
+        }
+    }
+
+    @Override
+    public Resume get(String uuid) {
+        if (storage.containsKey(uuid)) {
+            return storage.get(uuid);
+        } else {
+            throw new NotExistStorageException(uuid);
+        }
+    }
+
+    @Override
+    public void delete(String uuid) {
+        if (storage.containsKey(uuid)) {
+            storage.remove(uuid);
+        } else {
+            throw new NotExistStorageException(uuid);
+        }
     }
 
     @Override
