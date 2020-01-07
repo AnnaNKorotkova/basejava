@@ -17,7 +17,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public void updateStorageElement(int index, Resume resume) {
+    public void updateStorageElement(int index, Resume resume, String uuid) {
         storage[index] = resume;
     }
 
@@ -35,12 +35,12 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected abstract void saveResume(Resume resume, int index);
 
     @Override
-    public Resume getStorageElement(int index) {
+    public Resume getStorageElement(int index, String uuid) {
         return storage[index];
     }
 
     @Override
-    public void removeStorageElement(int index) {
+    public void removeStorageElement(int index, String uuid) {
         deleteResume(index);
         storage[size - 1] = null;
         size--;

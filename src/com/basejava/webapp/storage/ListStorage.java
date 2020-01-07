@@ -15,7 +15,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public void updateStorageElement(int index, Resume resume) {
+    public void updateStorageElement(int index, Resume resume, String uuid) {
         storage.set(index, resume);
     }
 
@@ -26,12 +26,12 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume getStorageElement(int index) {
+    public Resume getStorageElement(int index, String uuid) {
         return storage.get(index);
     }
 
     @Override
-    public void removeStorageElement(int index) {
+    public void removeStorageElement(int index, String uuid) {
         storage.remove(index);
     }
 
