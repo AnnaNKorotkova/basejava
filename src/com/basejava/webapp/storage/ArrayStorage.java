@@ -18,6 +18,7 @@ public class ArrayStorage extends AbstractArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
 
+    @Override
     protected int findIndex(String uuid) {
         int index = -1;
         for (int i = 0; i < size; i++) {
@@ -29,7 +30,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected Resume getResumeInStorage(String uuid) {
+    protected Resume getFromStorage(String uuid) {
         return storage[findIndex(uuid)];
     }
 }

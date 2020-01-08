@@ -24,7 +24,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected Resume getResumeInStorage(String uuid) {
+    protected Resume getFromStorage(String uuid) {
         return storage[findIndex(uuid)];
     }
 }

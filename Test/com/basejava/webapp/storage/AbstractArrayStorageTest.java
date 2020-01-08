@@ -22,11 +22,4 @@ abstract class AbstractArrayStorageTest extends AbstractStorageTest {
             storage.save(new Resume());
         });
     }
-
-    @Test
-    void getAllTest() {
-        Resume[] resumes = {r1, r2, r3};
-        assertEquals(resumes.length, storage.size());
-        assertArrayEquals(resumes, storage.getAll());
-    }
 }

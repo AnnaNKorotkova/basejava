@@ -7,12 +7,9 @@ import com.basejava.webapp.model.Resume;
 public abstract class AbstractStorage implements Storage {
 
     public void update(Resume resume) {
-        if (isContains(resume.getUuid())) {
-            updateInStorage(resume);
-            System.out.println("Resume id = \"" + resume.getUuid() + "\" is updated");
-        } else {
-            throw new NotExistStorageException(resume.getUuid());
-        }
+        checkNotExistException(resume.getUuid());
+        updateInStorage(resume);
+        System.out.println("Resume id = \"" + resume.getUuid() + "\" is updated");
     }
 
     protected abstract boolean isContains(String uuid);
@@ -20,35 +17,42 @@ public abstract class AbstractStorage implements Storage {
     protected abstract void updateInStorage(Resume resume);
 
     public void save(Resume resume) {
-        if (!isContains(resume.getUuid())) {
-            saveInStorage(resume);
-            System.out.println("Resume id = \"" + resume.getUuid() + "\" is created");
-        } else {
-            throw new ExistStorageException(resume.getUuid());
-        }
+        checkExistException(resume.getUuid());
+        saveToStorage(resume);
+        System.out.println("Resume id = \"" + resume.getUuid() + "\" is created");
     }
 
-    protected abstract void saveInStorage(Resume resume);
+    protected abstract void saveToStorage(Resume resume);
 
     public Resume get(String uuid) {
-        if (isContains(uuid)) {
-            return getResumeInStorage(uuid);
-        } else {
-            throw new NotExistStorageException(uuid);
-        }
+        checkNotExistException(uuid);
+        return getFromStorage(uuid);
     }
 
-    protected abstract Resume getResumeInStorage(String uuid);
+    protected abstract Resume getFromStorage(String uuid);
 
     @Override
     public void delete(String uuid) {
+        checkNotExistException(uuid);
+        deleteInStorage(uuid);
+        System.out.println("Resume id = \"" + uuid + "\" is deleted");
+    }
+
+    protected abstract void deleteInStorage(String uuid);
+
+    protected int findIndex(String uuid) {
+        return 0;
+    }
+
+    private void checkExistException(String uuid) {
         if (isContains(uuid)) {
-            deleteResumeByUuid(uuid);
-            System.out.println("Resume id = \"" + uuid + "\" is deleted");
-        } else {
-            throw new NotExistStorageException(uuid);
+            throw new ExistStorageException(uuid);
         }
     }
 
-    protected abstract void deleteResumeByUuid(String uuid);
+    private void checkNotExistException(String uuid) {
+        if (!isContains(uuid)) {
+            throw new NotExistStorageException(uuid);
+        }
+    }
 }
