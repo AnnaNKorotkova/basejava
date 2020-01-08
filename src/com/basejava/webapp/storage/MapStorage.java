@@ -1,7 +1,5 @@
 package com.basejava.webapp.storage;
 
-import com.basejava.webapp.exception.ExistStorageException;
-import com.basejava.webapp.exception.NotExistStorageException;
 import com.basejava.webapp.model.Resume;
 
 import java.util.HashMap;
@@ -17,39 +15,18 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public void update(Resume resume) {
-        if (storage.containsKey(resume.getUuid())) {
-            storage.replace(resume.getUuid(), resume);
-        } else {
-            throw new NotExistStorageException(resume.getUuid());
-        }
+    protected void saveInStorage(Resume resume) {
+        storage.put(resume.getUuid(), resume);
     }
 
     @Override
-    public void save(Resume resume) {
-        if (!storage.containsKey(resume.getUuid())) {
-            storage.put(resume.getUuid(), resume);
-        } else {
-            throw new ExistStorageException(resume.getUuid());
-        }
+    protected Resume getResumeInStorage(String uuid) {
+        return storage.get(uuid);
     }
 
     @Override
-    public Resume get(String uuid) {
-        if (storage.containsKey(uuid)) {
-            return storage.get(uuid);
-        } else {
-            throw new NotExistStorageException(uuid);
-        }
-    }
-
-    @Override
-    public void delete(String uuid) {
-        if (storage.containsKey(uuid)) {
-            storage.remove(uuid);
-        } else {
-            throw new NotExistStorageException(uuid);
-        }
+    protected void deleteResumeByUuid(String uuid) {
+        storage.remove(uuid);
     }
 
     @Override
@@ -60,5 +37,15 @@ public class MapStorage extends AbstractStorage {
     @Override
     public int size() {
         return storage.size();
+    }
+
+    @Override
+    protected boolean isContains(String uuid) {
+        return storage.containsKey(uuid);
+    }
+
+    @Override
+    protected void updateInStorage(Resume resume) {
+        storage.replace(resume.getUuid(), resume);
     }
 }
