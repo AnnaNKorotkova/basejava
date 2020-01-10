@@ -40,9 +40,7 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract void deleteInStorage(String uuid);
 
-    protected int findIndex(String uuid) {
-        return 0;
-    }
+    protected abstract Object findElement(String uuid);
 
     private void checkExistException(String uuid) {
         if (isContains(uuid)) {

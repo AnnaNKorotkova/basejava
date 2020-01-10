@@ -21,12 +21,12 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected Resume getFromStorage(String uuid) {
-        return storage.get(findIndex(uuid));
+        return storage.get(findElement(uuid));
     }
 
     @Override
     protected void deleteInStorage(String uuid) {
-        storage.remove(findIndex(uuid));
+        storage.remove(findElement(uuid).intValue());
     }
 
     @Override
@@ -40,9 +40,9 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected int findIndex(String uuid) {
-        int index = -1;
-        for (int i = 0; i < storage.size(); i++) {
+    protected Integer findElement(String uuid) {
+        Integer index = -1;
+          for (Integer i = 0; i < storage.size(); i++) {
             if (uuid.equals(storage.get(i).getUuid())) {
                 index = i;
             }
@@ -52,7 +52,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected boolean isContains(String uuid) {
-        return findIndex(uuid) >= 0;
+        return findElement(uuid) >= 0;
     }
 
     @Override

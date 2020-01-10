@@ -19,7 +19,7 @@ public class ArrayStorage extends AbstractArrayStorage {
      */
 
     @Override
-    protected int findIndex(String uuid) {
+    protected Integer findElement(String uuid) {
         int index = -1;
         for (int i = 0; i < size; i++) {
             if (uuid.equals(storage[i].getUuid())) {
@@ -31,6 +31,6 @@ public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected Resume getFromStorage(String uuid) {
-        return storage[findIndex(uuid)];
+        return storage[findElement(uuid)];
     }
 }

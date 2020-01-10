@@ -18,13 +18,14 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         System.arraycopy(storage, index + 1, storage, index, size - 1 - index);
     }
 
-    protected int findIndex(String uuid) {
+    @Override
+    protected Integer findElement(String uuid) {
         Resume searchKey = new Resume(uuid);
         return Arrays.binarySearch(storage, 0, size, searchKey);
     }
 
     @Override
     protected Resume getFromStorage(String uuid) {
-        return storage[findIndex(uuid)];
+        return storage[findElement(uuid)];
     }
 }

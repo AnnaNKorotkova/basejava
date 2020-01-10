@@ -18,13 +18,13 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     protected void updateInStorage(Resume resume) {
-        int index = findIndex(resume.getUuid());
+        int index = findElement(resume.getUuid());
         storage[index] = resume;
     }
 
     @Override
     public void saveToStorage(Resume resume) {
-        int index = findIndex(resume.getUuid());
+        int index = findElement(resume.getUuid());
         if (size == STORAGE_LIMIT) {
             throw new StorageException("There is not enough space to create a new resume", resume.getUuid());
         } else {
@@ -37,7 +37,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     protected void deleteInStorage(String uuid) {
-        int index = findIndex(uuid);
+        int index = findElement(uuid);
         deleteResume(index);
         storage[size - 1] = null;
         size--;
@@ -55,14 +55,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return size;
     }
 
-  //  protected abstract int findIndex(String uuid);
     @Override
-    protected int findIndex(String uuid){
-       return 0;
-    }
+    protected abstract Integer findElement(String uuid);
 
     @Override
     protected boolean isContains(String uuid) {
-        return findIndex(uuid) >= 0;
+        return findElement(uuid) >= 0;
     }
 }

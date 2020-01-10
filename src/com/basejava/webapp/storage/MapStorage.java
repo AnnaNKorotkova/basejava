@@ -30,6 +30,11 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
+    protected Object findElement(String uuid) {
+        return null;
+    }
+
+    @Override
     public Resume[] getAll() {
         return storage.values().toArray(Resume[]::new);
     }
