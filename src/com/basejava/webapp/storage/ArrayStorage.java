@@ -5,7 +5,7 @@ import com.basejava.webapp.model.Resume;
 public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
-    public void saveResume(Resume resume, int index) {
+    public void saveResume(Resume resume, Integer index) {
         storage[size] = resume;
     }
 
@@ -19,18 +19,12 @@ public class ArrayStorage extends AbstractArrayStorage {
      */
 
     @Override
-    protected Integer findElement(String uuid) {
-        int index = -1;
-        for (int i = 0; i < size; i++) {
+    protected Integer findKeyByElement(String uuid) {
+            for (int i = 0; i < size; i++) {
             if (uuid.equals(storage[i].getUuid())) {
-                index = i;
+                return i;
             }
         }
-        return index;
-    }
-
-    @Override
-    protected Resume getFromStorage(String uuid) {
-        return storage[findElement(uuid)];
+        return -1;
     }
 }

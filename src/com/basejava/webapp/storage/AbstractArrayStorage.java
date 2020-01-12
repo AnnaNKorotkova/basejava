@@ -17,27 +17,26 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void updateInStorage(Resume resume) {
-        int index = findElement(resume.getUuid());
+    protected void updateInStorage(Resume resume, Object o) {
+        int index = findKeyByElement(resume.getUuid());
         storage[index] = resume;
     }
 
     @Override
-    public void saveToStorage(Resume resume) {
-        int index = findElement(resume.getUuid());
+    public void saveToStorage(Resume resume, Object o) {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("There is not enough space to create a new resume", resume.getUuid());
         } else {
-            saveResume(resume, index);
+            saveResume(resume, findKeyByElement(resume.getUuid()));
             size++;
         }
     }
 
-    protected abstract void saveResume(Resume resume, int index);
+    protected abstract void saveResume(Resume resume, Integer index);
 
     @Override
-    protected void deleteInStorage(String uuid) {
-        int index = findElement(uuid);
+    protected void deleteInStorage(String uuid, Object o) {
+        int index = findKeyByElement(uuid);
         deleteResume(index);
         storage[size - 1] = null;
         size--;
@@ -56,10 +55,13 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected abstract Integer findElement(String uuid);
+    protected abstract Integer findKeyByElement(String uuid);
 
     @Override
-    protected boolean isContains(String uuid) {
-        return findElement(uuid) >= 0;
+    protected Resume getFromStorage(String uuid, Object o) {
+        return storage[findKeyByElement(uuid)];
+    }
+    protected boolean isContains(Object uuid){
+        return findKeyByElement((String)uuid)>=0;
     }
 }

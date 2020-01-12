@@ -7,50 +7,50 @@ import com.basejava.webapp.model.Resume;
 public abstract class AbstractStorage implements Storage {
 
     public void update(Resume resume) {
-        checkNotExistException(resume.getUuid());
-        updateInStorage(resume);
+        updateInStorage(resume, checkNotExistException(resume.getUuid()));
         System.out.println("Resume id = \"" + resume.getUuid() + "\" is updated");
     }
 
-    protected abstract boolean isContains(String uuid);
 
-    protected abstract void updateInStorage(Resume resume);
+
+    protected abstract void updateInStorage(Resume resume, Object o);
 
     public void save(Resume resume) {
-        checkExistException(resume.getUuid());
-        saveToStorage(resume);
+        saveToStorage(resume, checkExistException(resume.getUuid()));
         System.out.println("Resume id = \"" + resume.getUuid() + "\" is created");
     }
 
-    protected abstract void saveToStorage(Resume resume);
+    protected abstract void saveToStorage(Resume resume, Object o);
 
     public Resume get(String uuid) {
-        checkNotExistException(uuid);
-        return getFromStorage(uuid);
+        return getFromStorage(uuid, checkNotExistException(uuid));
     }
 
-    protected abstract Resume getFromStorage(String uuid);
+    protected abstract Resume getFromStorage(String uuid, Object o);
 
     @Override
     public void delete(String uuid) {
-        checkNotExistException(uuid);
-        deleteInStorage(uuid);
+        deleteInStorage(uuid, checkNotExistException(uuid));
         System.out.println("Resume id = \"" + uuid + "\" is deleted");
     }
 
-    protected abstract void deleteInStorage(String uuid);
+    protected abstract void deleteInStorage(String uuid, Object o);
 
-    protected abstract Object findElement(String uuid);
+    protected abstract Object findKeyByElement(String uuid);
 
-    private void checkExistException(String uuid) {
+    protected abstract boolean isContains(Object o);
+
+    private Object checkExistException(String uuid) {
+        Object key = findKeyByElement(uuid);
         if (isContains(uuid)) {
             throw new ExistStorageException(uuid);
-        }
+        } return key;
     }
 
-    private void checkNotExistException(String uuid) {
+    private Object checkNotExistException(String uuid) {
+        Object key = findKeyByElement(uuid);
         if (!isContains(uuid)) {
             throw new NotExistStorageException(uuid);
-        }
+        } return key;
     }
 }

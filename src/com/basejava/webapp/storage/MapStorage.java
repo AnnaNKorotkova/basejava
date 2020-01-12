@@ -15,23 +15,28 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected void saveToStorage(Resume resume) {
+    protected void saveToStorage(Resume resume, Object o) {
         storage.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected Resume getFromStorage(String uuid) {
+    protected Resume getFromStorage(String uuid, Object o) {
         return storage.get(uuid);
     }
 
     @Override
-    protected void deleteInStorage(String uuid) {
+    protected void deleteInStorage(String uuid, Object o) {
         storage.remove(uuid);
     }
 
     @Override
-    protected Object findElement(String uuid) {
-        return null;
+    protected String findKeyByElement(String uuid) {
+            return uuid;
+    }
+
+    @Override
+    protected boolean isContains(Object o) {
+        return storage.containsKey(o);
     }
 
     @Override
@@ -45,12 +50,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isContains(String uuid) {
-        return storage.containsKey(uuid);
-    }
-
-    @Override
-    protected void updateInStorage(Resume resume) {
+    protected void updateInStorage(Resume resume, Object o) {
         storage.replace(resume.getUuid(), resume);
     }
 }
