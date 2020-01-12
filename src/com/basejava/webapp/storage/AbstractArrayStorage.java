@@ -61,7 +61,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected Resume getFromStorage(String uuid, Object o) {
         return storage[findKeyByElement(uuid)];
     }
-    protected boolean isContains(Object uuid){
-        return findKeyByElement((String)uuid)>=0;
+
+    protected boolean isContains(Object uuid) {
+        return findKeyByElement((String) uuid) >= 0;
     }
 }

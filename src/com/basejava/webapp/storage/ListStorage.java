@@ -40,7 +40,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     protected Integer findKeyByElement(String uuid) {
-          for (int i = 0; i < storage.size(); i++) {
+        for (int i = 0; i < storage.size(); i++) {
             if (uuid.equals(storage.get(i).getUuid())) {
                 return i;
             }
@@ -50,7 +50,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected boolean isContains(Object o) {
-        return findKeyByElement((String) o)>=0;
+        return findKeyByElement((String) o) >= 0;
     }
 
     @Override

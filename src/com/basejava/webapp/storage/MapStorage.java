@@ -31,7 +31,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected String findKeyByElement(String uuid) {
-            return uuid;
+        return uuid;
     }
 
     @Override

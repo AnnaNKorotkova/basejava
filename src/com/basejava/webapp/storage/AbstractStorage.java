@@ -11,8 +11,6 @@ public abstract class AbstractStorage implements Storage {
         System.out.println("Resume id = \"" + resume.getUuid() + "\" is updated");
     }
 
-
-
     protected abstract void updateInStorage(Resume resume, Object o);
 
     public void save(Resume resume) {
@@ -44,13 +42,15 @@ public abstract class AbstractStorage implements Storage {
         Object key = findKeyByElement(uuid);
         if (isContains(uuid)) {
             throw new ExistStorageException(uuid);
-        } return key;
+        }
+        return key;
     }
 
     private Object checkNotExistException(String uuid) {
         Object key = findKeyByElement(uuid);
         if (!isContains(uuid)) {
             throw new NotExistStorageException(uuid);
-        } return key;
+        }
+        return key;
     }
 }
