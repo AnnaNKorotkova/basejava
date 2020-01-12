@@ -20,8 +20,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getFromStorage(String uuid, Object o) {
-        return storage.get(findKeyByElement(uuid));
+    protected Resume getFromStorage(Object index) {
+        return storage.get((int) index);
     }
 
     @Override
@@ -49,8 +49,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isContains(Object o) {
-        return findKeyByElement((String) o) >= 0;
+    protected boolean isContains(Object key) {
+        return (int) key >= 0;
     }
 
     @Override

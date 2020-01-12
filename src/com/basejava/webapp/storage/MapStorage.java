@@ -20,8 +20,8 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getFromStorage(String uuid, Object o) {
-        return storage.get(uuid);
+    protected Resume getFromStorage(Object key) {
+        return storage.get(key);
     }
 
     @Override
@@ -35,8 +35,8 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isContains(Object o) {
-        return storage.containsKey(o);
+    protected boolean isContains(Object key) {
+        return storage.containsKey(key);
     }
 
     @Override

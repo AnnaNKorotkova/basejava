@@ -21,10 +21,10 @@ public abstract class AbstractStorage implements Storage {
     protected abstract void saveToStorage(Resume resume, Object o);
 
     public Resume get(String uuid) {
-        return getFromStorage(uuid, checkNotExistException(uuid));
+        return getFromStorage(checkNotExistException(uuid));
     }
 
-    protected abstract Resume getFromStorage(String uuid, Object o);
+    protected abstract Resume getFromStorage(Object key);
 
     @Override
     public void delete(String uuid) {
@@ -36,11 +36,11 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract Object findKeyByElement(String uuid);
 
-    protected abstract boolean isContains(Object o);
+    protected abstract boolean isContains(Object key);
 
     private Object checkExistException(String uuid) {
         Object key = findKeyByElement(uuid);
-        if (isContains(uuid)) {
+        if (isContains(key)) {
             throw new ExistStorageException(uuid);
         }
         return key;
@@ -48,7 +48,7 @@ public abstract class AbstractStorage implements Storage {
 
     private Object checkNotExistException(String uuid) {
         Object key = findKeyByElement(uuid);
-        if (!isContains(uuid)) {
+        if (!isContains(key)) {
             throw new NotExistStorageException(uuid);
         }
         return key;
