@@ -2,12 +2,12 @@ package com.basejava.webapp.storage;
 
 import com.basejava.webapp.model.Resume;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class MapStorage extends AbstractStorage {
 
-    Map<String, Resume> storage = new HashMap<>();
+    private Map<String, Resume> storage = new TreeMap<>();
 
     @Override
     public void clear() {
@@ -15,7 +15,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected void saveToStorage(Resume resume, Object o) {
+    protected void saveToStorage(Resume resume, Object key) {
         storage.put(resume.getUuid(), resume);
     }
 
@@ -25,8 +25,8 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected void deleteInStorage(String uuid, Object o) {
-        storage.remove(uuid);
+    protected void deleteInStorage(Object key) {
+        storage.remove(key);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     public Resume[] getAll() {
-        return storage.values().toArray(Resume[]::new);
+        return storage.values().toArray(new Resume[storage.size()]);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected void updateInStorage(Resume resume, Object o) {
+    protected void updateInStorage(Resume resume, Object key) {
         storage.replace(resume.getUuid(), resume);
     }
 }

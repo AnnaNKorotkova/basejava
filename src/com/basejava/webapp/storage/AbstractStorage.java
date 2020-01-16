@@ -11,14 +11,14 @@ public abstract class AbstractStorage implements Storage {
         System.out.println("Resume id = \"" + resume.getUuid() + "\" is updated");
     }
 
-    protected abstract void updateInStorage(Resume resume, Object o);
+    protected abstract void updateInStorage(Resume resume, Object key);
 
     public void save(Resume resume) {
         saveToStorage(resume, checkExistException(resume.getUuid()));
         System.out.println("Resume id = \"" + resume.getUuid() + "\" is created");
     }
 
-    protected abstract void saveToStorage(Resume resume, Object o);
+    protected abstract void saveToStorage(Resume resume, Object key);
 
     public Resume get(String uuid) {
         return getFromStorage(checkNotExistException(uuid));
@@ -28,11 +28,11 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void delete(String uuid) {
-        deleteInStorage(uuid, checkNotExistException(uuid));
+        deleteInStorage(checkNotExistException(uuid));
         System.out.println("Resume id = \"" + uuid + "\" is deleted");
     }
 
-    protected abstract void deleteInStorage(String uuid, Object o);
+    protected abstract void deleteInStorage(Object key);
 
     protected abstract Object findKeyByElement(String uuid);
 

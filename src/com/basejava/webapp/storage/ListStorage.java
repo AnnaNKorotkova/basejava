@@ -15,7 +15,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void saveToStorage(Resume resume, Object o) {
+    protected void saveToStorage(Resume resume, Object index) {
         storage.add(resume);
     }
 
@@ -25,8 +25,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void deleteInStorage(String uuid, Object o) {
-        storage.remove(findKeyByElement(uuid).intValue());
+    protected void deleteInStorage(Object index) {
+        storage.remove((int) index);
     }
 
     @Override
@@ -49,12 +49,12 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isContains(Object key) {
-        return (int) key >= 0;
+    protected boolean isContains(Object index) {
+        return (int) index >= 0;
     }
 
     @Override
-    protected void updateInStorage(Resume resume, Object o) {
-        storage.set(storage.indexOf(resume), resume);
+    protected void updateInStorage(Resume resume, Object index) {
+        storage.set((int) index, resume);
     }
 }
