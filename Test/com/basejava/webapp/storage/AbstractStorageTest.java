@@ -5,15 +5,20 @@ import com.basejava.webapp.exception.NotExistStorageException;
 import com.basejava.webapp.model.Resume;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 abstract class AbstractStorageTest {
     protected Storage storage;
-    protected Resume r1 = new Resume("uuid1");
-    protected Resume r2 = new Resume("uuid2");
-    protected Resume r3 = new Resume("uuid3");
-    protected Resume r4 = new Resume("uuid4");
+    protected Resume r1 = new Resume("uuid1", "Иванов");
+    protected Resume r2 = new Resume("uuid2", "Иванов");
+    protected Resume r3 = new Resume("uuid3", "Иванов");
+    protected Resume r4 = new Resume("uuid4", "Иванов");
+    protected Resume r5 = new Resume("uuid4", "Иванов");
+    protected Resume r6 = new Resume("uuid6", "Иванов");
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -29,7 +34,7 @@ abstract class AbstractStorageTest {
 
     @Test
     void updateTest() {
-        Resume resume = new Resume("uuid1");
+        Resume resume = new Resume("uuid1", "Kozlov");
         storage.update(resume);
         assertEquals(resume, storage.get("uuid1"));
     }
@@ -37,7 +42,7 @@ abstract class AbstractStorageTest {
     @Test
     void updateNotExistTest() {
         assertThrows(NotExistStorageException.class, () -> {
-            storage.update(new Resume("uuid6"));
+            storage.update(new Resume("uuid6", "Pukin"));
         });
     }
 
@@ -55,9 +60,13 @@ abstract class AbstractStorageTest {
 
     @Test
     void getAllTest() {
-        Resume[] resumes = {r1, r2, r3};
-        assertEquals(resumes.length, storage.size());
-        assertArrayEquals(resumes,storage.getAll());
+        ArrayList<Resume> resumes = new ArrayList<>();
+        resumes.add(r1);
+        resumes.add(r2);
+        resumes.add(r3);
+        resumes.sort(Resume::compareTo);
+        assertEquals(resumes.size(), storage.size());
+        assertArrayEquals(resumes.toArray(), storage.getAllSorted().toArray());
     }
 
     @Test
@@ -68,7 +77,7 @@ abstract class AbstractStorageTest {
     @Test
     void saveTest() {
         storage.save(r4);
-        assertEquals(r4, storage.get("uuid4"));
+         assertEquals(r4, storage.get("uuid4"));
         assertEquals(4, storage.size());
     }
 

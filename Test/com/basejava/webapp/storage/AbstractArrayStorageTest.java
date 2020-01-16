@@ -16,10 +16,10 @@ abstract class AbstractArrayStorageTest extends AbstractStorageTest {
     void saveOverflowTest() {
         storage.clear();
         for (int i = 0; i < 10000; i++) {
-            storage.save(new Resume());
+            storage.save(new Resume("Ивановы"));
         }
         assertThrows(StorageException.class, () -> {
-            storage.save(new Resume());
+            storage.save(new Resume("+1"));
         });
     }
 }
