@@ -5,20 +5,18 @@ import com.basejava.webapp.exception.NotExistStorageException;
 import com.basejava.webapp.model.Resume;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 abstract class AbstractStorageTest {
+
     protected Storage storage;
     protected Resume r1 = new Resume("uuid1", "Иванов");
-    protected Resume r2 = new Resume("uuid2", "Иванов");
-    protected Resume r3 = new Resume("uuid3", "Иванов");
-    protected Resume r4 = new Resume("uuid4", "Иванов");
-    protected Resume r5 = new Resume("uuid4", "Иванов");
-    protected Resume r6 = new Resume("uuid6", "Иванов");
+    protected Resume r2 = new Resume("uuid2", "Сидоров");
+    protected Resume r3 = new Resume("uuid3", "Петров");
+    protected Resume r4 = new Resume("uuid4", "Сидоров");
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -34,7 +32,7 @@ abstract class AbstractStorageTest {
 
     @Test
     void updateTest() {
-        Resume resume = new Resume("uuid1", "Kozlov");
+        Resume resume = new Resume("uuid1", "Ivanov");
         storage.update(resume);
         assertEquals(resume, storage.get("uuid1"));
     }

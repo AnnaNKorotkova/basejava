@@ -4,18 +4,18 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class Resume implements Comparable<Resume> {
+
     private final String uuid;
-
-
     private String fullName;
 
     public Resume(String uuid, String fullName) {
-        this.uuid = uuid;
-        this.fullName = fullName;
+        this.uuid = Objects.requireNonNull(uuid, "uuid can't be null");
+        this.fullName = Objects.requireNonNull(fullName, "Name can't be null");
     }
 
     public Resume(String fullName) {
-        this(UUID.randomUUID().toString(), fullName);
+        this.uuid = UUID.randomUUID().toString();
+        this.fullName = Objects.requireNonNull(fullName, "Name can't be null");
     }
 
     public String getUuid() {
@@ -46,10 +46,7 @@ public class Resume implements Comparable<Resume> {
 
     @Override
     public int compareTo(Resume resume) {
-        int result = resume.fullName.compareTo(fullName);
-        if (result == 0 || fullName == null || resume.fullName == null ) {
-            return uuid.compareTo(resume.uuid);
-        }
-        return fullName.compareTo(resume.fullName);
+        int result = fullName.compareTo(resume.fullName);
+        return result == 0 ? uuid.compareTo(resume.uuid) : result;
     }
 }

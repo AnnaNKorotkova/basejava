@@ -30,7 +30,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted(){
+    public List<Resume> getAllSorted() {
         List<Resume> resumes = storage;
         resumes.sort(Resume::compareTo);
         return resumes;

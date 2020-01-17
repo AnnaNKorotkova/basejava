@@ -3,8 +3,11 @@ package com.basejava.webapp.storage;
 import com.basejava.webapp.model.Resume;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
+
+    private final static Comparator<Resume> UUID_COMPARE = Comparator.comparing(Resume::getUuid);
 
     @Override
     public void saveResume(Resume resume, Integer index) {
@@ -20,7 +23,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected Integer findKeyByElement(String uuid) {
-        Resume searchKey = new Resume(uuid, "Иванов");
-        return Arrays.binarySearch(storage, 0, size, searchKey);
+        Resume searchKey = new Resume(uuid, "");
+        return Arrays.binarySearch(storage, 0, size, searchKey, UUID_COMPARE);
     }
 }
