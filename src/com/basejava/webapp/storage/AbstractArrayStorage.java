@@ -45,9 +45,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     public abstract void deleteResume(int index);
 
     @Override
-    public List<Resume> getAllSorted() {
+    public List<Resume> getList() {
         List<Resume> resumes = Arrays.asList(Arrays.copyOf(storage, size));
-        resumes.sort(Resume::compareTo);
         return resumes;
     }
 

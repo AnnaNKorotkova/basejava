@@ -6,7 +6,7 @@ import java.util.*;
 
 public class HashMapStorage extends AbstractStorage {
 
-    private Map<String, Resume> storage = new HashMap<>();
+    private Map<String,Resume> storage = new HashMap<>();
 
     @Override
     public void clear() {
@@ -15,7 +15,7 @@ public class HashMapStorage extends AbstractStorage {
 
     @Override
     protected void saveToStorage(Resume resume, Object key) {
-        storage.put(resume.getUuid(), resume);
+        storage.put((String) key, resume);
     }
 
     @Override
@@ -39,9 +39,8 @@ public class HashMapStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
+    public List<Resume> getList() {
         List<Resume> resumes = new ArrayList<>(storage.values());
-        resumes.sort(Resume::compareTo);
         return resumes;
     }
 
@@ -52,6 +51,6 @@ public class HashMapStorage extends AbstractStorage {
 
     @Override
     protected void updateInStorage(Resume resume, Object key) {
-        storage.replace(resume.getUuid(), resume);
+        storage.replace((String) key, resume);
     }
 }

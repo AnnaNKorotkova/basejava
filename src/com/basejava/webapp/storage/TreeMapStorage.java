@@ -42,9 +42,8 @@ public class TreeMapStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
+    protected List<Resume> getList() {
         List<Resume> resumes = new ArrayList<>(storage.values());
-        resumes.sort(Resume::compareTo);
         return resumes;
     }
 
