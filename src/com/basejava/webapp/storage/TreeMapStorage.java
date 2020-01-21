@@ -18,7 +18,7 @@ public class TreeMapStorage extends AbstractStorage {
 
     @Override
     protected void saveToStorage(Resume resume, Object key) {
-        storage.put(resume.getUuid(), resume);
+        storage.put((String) key, resume);
     }
 
     @Override
@@ -54,6 +54,6 @@ public class TreeMapStorage extends AbstractStorage {
 
     @Override
     protected void updateInStorage(Resume resume, Object key) {
-        storage.replace(resume.getUuid(), resume);
+        storage.replace((String) key, resume);
     }
 }

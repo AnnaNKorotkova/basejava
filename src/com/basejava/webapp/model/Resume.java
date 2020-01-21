@@ -30,14 +30,6 @@ public class Resume implements Comparable<Resume> {
     }
 
     @Override
-    public int hashCode() {
-        int result = 17;
-        result = 31*result + (uuid == null ? 0 : uuid.hashCode());
-        result = 31*result + (fullName == null ? 0 : fullName.hashCode());
-        return result;
-    }
-
-    @Override
     public String toString() {
         return uuid;
     }

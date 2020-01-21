@@ -6,7 +6,6 @@ import com.basejava.webapp.model.Resume;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -87,10 +86,10 @@ abstract class AbstractStorageTest {
 
     @Test
     void deleteTest() {
-        storage.delete("uuid1");
+        storage.delete("uuid2");
         assertEquals(2, storage.size());
         assertThrows(NotExistStorageException.class, () -> {
-            storage.get("uuid1");
+            storage.get("uuid2");
         });
     }
 
