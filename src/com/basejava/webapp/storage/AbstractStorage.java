@@ -5,31 +5,34 @@ import com.basejava.webapp.exception.NotExistStorageException;
 import com.basejava.webapp.model.Resume;
 
 import java.util.List;
+import java.util.logging.Logger;
 
-public abstract class AbstractStorage implements Storage {
+public abstract class AbstractStorage<K> implements Storage {
 
-    protected abstract void updateInStorage(Resume resume, Object key);
+    private static final Logger LOG =  Logger.getLogger(AbstractStorage.class.getName());
 
-    protected abstract void saveToStorage(Resume resume, Object key);
+    protected abstract void updateInStorage(Resume resume, K key);
 
-    protected abstract Resume getFromStorage(Object key);
+    protected abstract void saveToStorage(Resume resume, K key);
 
-    protected abstract void deleteInStorage(Object key);
+    protected abstract Resume getFromStorage(K key);
 
-    protected abstract Object findKeyByElement(String uuid);
+    protected abstract void deleteInStorage(K key);
 
-    protected abstract boolean isContains(Object key);
+    protected abstract K findKeyByElement(String uuid);
+
+    protected abstract boolean isContains(K key);
 
     protected abstract List<Resume> getList();
 
     public void update(Resume resume) {
         updateInStorage(resume, checkNotExistException(resume.getUuid()));
-        System.out.println("Resume id = \"" + resume.getUuid() + "\" is updated");
+        LOG.info("Resume id = \"" + resume.getUuid() + "\" is updated");
     }
 
     public void save(Resume resume) {
         saveToStorage(resume, checkExistException(resume.getUuid()));
-        System.out.println("Resume id = \"" + resume.getUuid() + "\" is created");
+        LOG.info("Resume id = \"" + resume.getUuid() + "\" is created");
     }
 
     public Resume get(String uuid) {
@@ -45,20 +48,22 @@ public abstract class AbstractStorage implements Storage {
     @Override
     public void delete(String uuid) {
         deleteInStorage(checkNotExistException(uuid));
-        System.out.println("Resume id = \"" + uuid + "\" is deleted");
+        LOG.info("Resume id = \"" + uuid + "\" is deleted");
     }
 
-    private Object checkExistException(String uuid) {
-        Object key = findKeyByElement(uuid);
+    private K checkExistException(String uuid) {
+        K key = findKeyByElement(uuid);
         if (isContains(key)) {
+            LOG.warning("Resume id = \"" + uuid + "\" already exist");
             throw new ExistStorageException(uuid);
         }
         return key;
     }
 
-    private Object checkNotExistException(String uuid) {
-        Object key = findKeyByElement(uuid);
+    private K checkNotExistException(String uuid) {
+        K key = findKeyByElement(uuid);
         if (!isContains(key)) {
+            LOG.warning("Resume id = \"" + uuid + "\" does not exist");
             throw new NotExistStorageException(uuid);
         }
         return key;

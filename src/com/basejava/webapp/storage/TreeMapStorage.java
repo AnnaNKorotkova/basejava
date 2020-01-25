@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class TreeMapStorage extends AbstractStorage {
+public class TreeMapStorage extends AbstractStorage<String> {
 
     private Map<String, Resume> storage = new TreeMap<>();
 
@@ -17,17 +17,17 @@ public class TreeMapStorage extends AbstractStorage {
     }
 
     @Override
-    protected void saveToStorage(Resume resume, Object key) {
-        storage.put((String) key, resume);
+    protected void saveToStorage(Resume resume, String key) {
+        storage.put(key, resume);
     }
 
     @Override
-    protected Resume getFromStorage(Object key) {
+    protected Resume getFromStorage(String key) {
         return storage.get(key);
     }
 
     @Override
-    protected void deleteInStorage(Object key) {
+    protected void deleteInStorage(String key) {
         storage.remove(key);
     }
 
@@ -37,14 +37,13 @@ public class TreeMapStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isContains(Object key) {
+    protected boolean isContains(String key) {
         return storage.containsKey(key);
     }
 
     @Override
     protected List<Resume> getList() {
-        List<Resume> resumes = new ArrayList<>(storage.values());
-        return resumes;
+        return new ArrayList<>(storage.values());
     }
 
     @Override
@@ -53,7 +52,7 @@ public class TreeMapStorage extends AbstractStorage {
     }
 
     @Override
-    protected void updateInStorage(Resume resume, Object key) {
-        storage.replace((String) key, resume);
+    protected void updateInStorage(Resume resume, String key) {
+        storage.replace(key, resume);
     }
 }
