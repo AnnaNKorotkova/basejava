@@ -2,7 +2,7 @@ package com.basejava.webapp.model;
 
 import java.util.Objects;
 
-public class TextSection extends AbstractResumeSection {
+public class TextSection extends AbstractSection {
 
     private final String textContainer;
 
@@ -24,7 +24,7 @@ public class TextSection extends AbstractResumeSection {
 
     @Override
     public int hashCode() {
-        int hash = 11;
+        int hash = 17;
         hash = hash * 37 + (textContainer == null ? 0 : textContainer.hashCode());
         return hash;
     }

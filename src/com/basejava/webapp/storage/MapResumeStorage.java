@@ -4,7 +4,7 @@ import com.basejava.webapp.model.Resume;
 
 import java.util.*;
 
-public class HashMapStorage extends AbstractStorage <Resume>{
+public class MapResumeStorage extends AbstractStorage <Resume>{
 
     private Map<String, Resume> storage = new HashMap<>();
 

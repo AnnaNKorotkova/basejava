@@ -9,7 +9,7 @@ public class Resume implements Comparable<Resume> {
     private final String uuid;
     private String fullName;
     private Map<Contact, String> contactSection;
-    private Map<TypeSection, AbstractResumeSection> resumeSection;
+    private Map<TypeSection, AbstractSection> resumeSection;
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), Objects.requireNonNull(fullName, "Name can't be null"));
@@ -20,7 +20,7 @@ public class Resume implements Comparable<Resume> {
         this.fullName = Objects.requireNonNull(fullName, "Name can't be null");
     }
 
-    public Resume(String fullName, Map<Contact, String> contactSection, Map<TypeSection, AbstractResumeSection> resumeSection) {
+    public Resume(String fullName, Map<Contact, String> contactSection, Map<TypeSection, AbstractSection> resumeSection) {
         this.uuid = UUID.randomUUID().toString();
         this.fullName = Objects.requireNonNull(fullName, "Name can't be null");
         this.contactSection = contactSection;

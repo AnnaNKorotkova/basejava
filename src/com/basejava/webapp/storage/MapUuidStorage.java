@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class TreeMapStorage extends AbstractStorage<String> {
+public class MapUuidStorage extends AbstractStorage<String> {
 
     private Map<String, Resume> storage = new TreeMap<>();
 
