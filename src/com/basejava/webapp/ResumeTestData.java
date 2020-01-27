@@ -2,6 +2,9 @@ package com.basejava.webapp;
 
 import com.basejava.webapp.model.*;
 
+import javax.swing.text.DateFormatter;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class ResumeTestData {
@@ -10,7 +13,7 @@ public class ResumeTestData {
 
         String fullName = "Григорий Кислин";
 
-        Map<Contact, String> contactSection = new HashMap<>();
+        Map<Contact, String> contactSection = new EnumMap<>(Contact.class);
 
         for (Contact c : Contact.values()) {
             switch (c) {
@@ -29,7 +32,7 @@ public class ResumeTestData {
             }
         }
 
-        Map<TypeSection, AbstractSection> resumeSection = new HashMap<>();
+        Map<TypeSection, AbstractSection> resumeSection = new EnumMap<>(TypeSection.class);
 
         for (TypeSection tp : TypeSection.values()) {
 
@@ -75,19 +78,21 @@ public class ResumeTestData {
                     break;
                 case EXPERIENCE:
                     List<TimeLine> listExp = new ArrayList<>();
-                    listExp.add(new TimeLine("Alcatel", "09/1997", "01/2005", "Инженер по аппаратному и программному тестированию", "Тестирование, отладка, внедрение ПО цифровой телефонной станции Alcatel 1000 S12 (CHILL, ASM)."));
-                    listExp.add(new TimeLine("Siemens AG", "01/2005", "02/2007", "Разработчик ПО", "Разработка информационной модели, проектирование интерфейсов, реализация и отладка ПО на мобильной IN платформе Siemens @vantage (Java, Unix)."));
-                    listExp.add(new TimeLine("Enkata", "03/2007", "06/2008", "Разработчик ПО", "Реализация клиентской (Eclipse RCP) и серверной (JBoss 4.2, Hibernate 3.0, Tomcat, JMS) частей кластерного J2EE приложения (OLAP, Data mining)."));
+                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/YYYY");
+                    listExp.add(new TimeLine("Alcatel", "",LocalDate.parse("9/1997",dtf) ,"01/2005", "Инженер по аппаратному и программному тестированию", "Тестирование, отладка, внедрение ПО цифровой телефонной станции Alcatel 1000 S12 (CHILL, ASM)."));
+                    listExp.add(new TimeLine("Siemens AG", "","01/2005", "02/2007", "Разработчик ПО", "Разработка информационной модели, проектирование интерфейсов, реализация и отладка ПО на мобильной IN платформе Siemens @vantage (Java, Unix)."));
+                    listExp.add(new TimeLine("Enkata","", "03/2007", "06/2008", "Разработчик ПО", "Реализация клиентской (Eclipse RCP) и серверной (JBoss 4.2, Hibernate 3.0, Tomcat, JMS) частей кластерного J2EE приложения (OLAP, Data mining)."));
                     resumeSection.put(tp, new TimeLineSection(listExp));
                     break;
                 case EDUCATION:
                     List<TimeLine> listEdu = new ArrayList<>();
-                    listEdu.add(new TimeLine("Заочная физико-техническая школа при МФТИ", "09/1984", "06/1987", "Закончил с отличием", null));
-                    listEdu.add(new TimeLine("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "09/1987", "07/1993", "Инженер (программист Fortran, C)", null));
-                    listEdu.add(new TimeLine("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "09/1993", "07/1996", "Аспирантура (программист С, С++)", null));
-                    listEdu.add(new TimeLine("Alcatel", "09/1997", "03/1998", "6 месяцев обучения цифровым телефонным сетям (Москва)", null));
+                    listEdu.add(new TimeLine("Заочная физико-техническая школа при МФТИ", "","09/1984", "06/1987", "Закончил с отличием", null));
+                    listEdu.add(new TimeLine("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "","09/1987", "07/1993", "Инженер (программист Fortran, C)", null));
+                    listEdu.add(new TimeLine("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "","09/1993", "07/1996", "Аспирантура (программист С, С++)", null));
+                    listEdu.add(new TimeLine("Alcatel", "","09/1997", "03/1998", "6 месяцев обучения цифровым телефонным сетям (Москва)", null));
                     resumeSection.put(tp, new TimeLineSection(listEdu));
                     break;
+
             }
         }
 

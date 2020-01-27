@@ -12,7 +12,7 @@ public class Resume implements Comparable<Resume> {
     private Map<TypeSection, AbstractSection> resumeSection;
 
     public Resume(String fullName) {
-        this(UUID.randomUUID().toString(), Objects.requireNonNull(fullName, "Name can't be null"));
+        this(UUID.randomUUID().toString(), fullName);
     }
 
     public Resume(String uuid, String fullName) {
