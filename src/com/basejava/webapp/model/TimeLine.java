@@ -1,42 +1,56 @@
 package com.basejava.webapp.model;
 
 import java.time.LocalDate;
-import java.util.Objects;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TimeLine extends AbstractSection {
 
     private final Link homePage;
-    private final LocalDate startDate;
-    private final LocalDate lastDate;
-    private final String activity;
-    private final String description;
+    private List<Item> listItem;
 
-    public TimeLine(String name,String url, LocalDate startDate, LocalDate lastDate, String activity, String description) {
+    public TimeLine(String name, String url, ArrayList<Item> listItem) {
         this.homePage = new Link(name, url);
-        this.startDate = Objects.requireNonNull(startDate, "The start date can't be null");
-        this.lastDate =  Objects.requireNonNull(lastDate, "The start date can't be null");;
-        this.activity = Objects.requireNonNull(activity, "The start date can't be null");
-        this.description = description;
+        this.listItem = listItem;
+    }
+
+    public static class Item {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/YYYY");
+        private final LocalDate startDate;
+        private final LocalDate lastDate;
+        private final String activity;
+        private final String description;
+
+        public Item(LocalDate startDate, LocalDate lastDate, String activity, String description) {
+            this.startDate = startDate;
+            this.lastDate = lastDate;
+            this.activity = activity;
+            this.description = description;
+        }
+
+        @Override
+        public String toString() {
+            return "Item{" +
+                    "startDate=" + startDate.format(dtf) + '\n' +
+                    ", lastDate=" + lastDate.format(dtf) + '\n' +
+                    ", activity='" + activity + '\'' + '\n' +
+                    ", description='" + description + '\'' + '\n' +
+                    '}';
+        }
     }
 
     public Link getHomePage() {
         return homePage;
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
+
+    public List<Item> getListItem() {
+        return listItem;
     }
 
-    public LocalDate getLastDate() {
-        return lastDate;
-    }
-
-    public String getActivity() {
-        return activity;
-    }
-
-    public String getDescription() {
-        return description;
+    public void setListItem(List<Item> listItem) {
+        this.listItem = listItem;
     }
 
     @Override
@@ -46,40 +60,22 @@ public class TimeLine extends AbstractSection {
 
         TimeLine timeLine = (TimeLine) o;
 
-        if (!homePage.equals(timeLine.homePage)) return false;
-        if (!startDate.equals(timeLine.startDate)) return false;
-        if (!lastDate.equals(timeLine.lastDate)) return false;
-        if (!activity.equals(timeLine.activity)) return false;
-        return description != null ? description.equals(timeLine.description) : timeLine.description == null;
+        if (homePage != null ? !homePage.equals(timeLine.homePage) : timeLine.homePage != null) return false;
+        return listItem != null ? listItem.equals(timeLine.listItem) : timeLine.listItem == null;
     }
 
     @Override
     public int hashCode() {
-        int result = homePage.hashCode();
-        result = 31 * result + startDate.hashCode();
-        result = 31 * result + lastDate.hashCode();
-        result = 31 * result + activity.hashCode();
-        result = 31 * result + (description != null ? description.hashCode() : 0);
+        int result = homePage != null ? homePage.hashCode() : 0;
+        result = 31 * result + (listItem != null ? listItem.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        if (description == null) {
-            return  '\n' + "TimeLineSection{" + '\n' +
-                    "organisation='" + homePage.getName() + '\'' + '\n' +
-                    ", startDate='" + startDate + '\'' + '\n' +
-                    ", lastDate='" + lastDate + '\'' + '\n' +
-                    ", activity='" + activity + '\'' + '\n' +
-                    '}';
-        } else {
-            return  '\n' + "TimeLineSection{" +  '\n' +
-                    "organisation='" + homePage.getName() + '\'' + '\n' +
-                    ", startDate='" + startDate + '\'' + '\n' +
-                    ", lastDate='" + lastDate + '\'' + '\n' +
-                    ", activity='" + activity + '\'' + '\n' +
-                    ", description='" + description + '\'' + '\n' +
-                    '}';
-        }
+        return "TimeLine{" +
+                "homePage=" + homePage + '\n' +
+                ", listItem=" + listItem + '\n' +
+                '}';
     }
 }
