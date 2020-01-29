@@ -32,7 +32,7 @@ public class TextSection extends AbstractSection {
     @Override
     public String toString() {
         return "TextSection{" +
-                "textContainer='" + textContainer + '\'' +
+                "textContainer='" + textContainer + '\'' + '\n' +
                 '}';
     }
 }

@@ -1,11 +1,12 @@
 package com.basejava.webapp.storage;
 
+import com.basejava.webapp.ResumeTestData;
 import com.basejava.webapp.exception.ExistStorageException;
 import com.basejava.webapp.exception.NotExistStorageException;
 import com.basejava.webapp.model.Resume;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,10 +16,10 @@ import static org.junit.jupiter.api.Assertions.*;
 abstract class AbstractStorageTest {
 
     protected Storage storage;
-    protected Resume r1 = new Resume("uuid1", "Иванов");
-    protected Resume r2 = new Resume("uuid2", "Сидоров");
-    protected Resume r3 = new Resume("uuid3", "Петров");
-    protected Resume r4 = new Resume("uuid4", "Сидоров");
+    protected Resume r1 = new ResumeTestData().createResume("uuid1", "Иванов");
+    protected Resume r2 = new ResumeTestData().createResume("uuid2", "Сидоров");
+    protected Resume r3 = new ResumeTestData().createResume("uuid3", "Петров");
+    protected Resume r4 = new ResumeTestData().createResume("uuid4", "Сидоров");
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -34,7 +35,7 @@ abstract class AbstractStorageTest {
 
     @Test
     void updateTest() {
-        Resume resume = new Resume("uuid1", "Ivanov");
+        Resume resume = new ResumeTestData().createResume("uuid1", "Ivanov");
         storage.update(resume);
         assertEquals(resume, storage.get("uuid1"));
     }
@@ -42,7 +43,7 @@ abstract class AbstractStorageTest {
     @Test
     void updateNotExistTest() {
         assertThrows(NotExistStorageException.class, () -> {
-            storage.update(new Resume("uuid6", "Pukin"));
+            storage.update(new ResumeTestData().createResume("uuid6", "Pukin"));
         });
     }
 

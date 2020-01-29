@@ -5,13 +5,13 @@ import java.util.Objects;
 
 public class ListSection extends AbstractSection {
 
-    private final List<String> textList;
+    private final List<TextSection> textList;
 
-    public ListSection(List<String> textList) {
+    public ListSection(List<TextSection> textList) {
         this.textList = textList;
     }
 
-    public List<String> getTextList() {
+    public List<TextSection> getTextList() {
         return textList;
     }
 
@@ -28,5 +28,12 @@ public class ListSection extends AbstractSection {
         int hash = 17;
         hash = hash * 31 + (textList == null ? 0 : textList.hashCode());
         return hash;
+    }
+
+    @Override
+    public String toString() {
+        return "ListSection{" +
+                "textList=" + textList + '\n' +
+                '}';
     }
 }

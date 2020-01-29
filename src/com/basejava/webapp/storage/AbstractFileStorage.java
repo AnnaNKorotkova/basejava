@@ -5,11 +5,18 @@ import com.basejava.webapp.model.Resume;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
+
     private File directory;
+    private List<File> files = new ArrayList<>();
+
+    protected abstract void fileWrite(Resume resume, File file) throws IOException;
+
+    protected abstract Resume readResume(File f) throws IOException;
 
     protected AbstractFileStorage(File directory) {
         Objects.requireNonNull(directory, "Directory can't be null");
@@ -22,10 +29,13 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         this.directory = directory;
     }
 
-
     @Override
     protected void updateInStorage(Resume resume, File file) {
-
+        try {
+            fileWrite(resume, file);
+        } catch (IOException e) {
+            throw new StorageException("IO error", file.getName(), e);
+        }
     }
 
     @Override
@@ -36,19 +46,20 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }
-
     }
-
-    protected abstract void fileWrite(Resume resume, File file) throws IOException;
 
     @Override
     protected Resume getFromStorage(File file) {
-        return null;
+        try {
+            return readResume(file);
+        } catch (IOException e) {
+            throw new StorageException("IO error", file.getPath(), e);
+        }
     }
 
     @Override
     protected void deleteInStorage(File file) {
-
+        file.delete();
     }
 
     @Override
@@ -63,16 +74,42 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected List<Resume> getList() {
-        return null;
+        List<File> files = recursiveSearch(directory);
+        List<Resume> resumes = new ArrayList<>();
+        for (File f : files) {
+            try {
+                resumes.add(readResume(f));
+            } catch (IOException e) {
+                throw new StorageException("IO error", f.getPath(), e);
+            }
+        }
+        return resumes;
     }
 
     @Override
     public void clear() {
-
+        List<File> files = recursiveSearch(directory);
+        for (File f : files) {
+            f.delete();
+        }
     }
 
     @Override
     public int size() {
-        return 0;
+        return recursiveSearch(directory).size();
+    }
+
+    private List<File> recursiveSearch(File file) {
+        if (file.isDirectory()) {
+            File[] listAll = Objects.requireNonNull(file.listFiles());
+            for (File f : listAll) {
+                if (f.isDirectory()) {
+                    recursiveSearch(f);
+                } else {
+                    files.add(f);
+                }
+            }
+        }
+        return files;
     }
 }
