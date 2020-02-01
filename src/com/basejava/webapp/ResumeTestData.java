@@ -3,14 +3,13 @@ package com.basejava.webapp;
 import com.basejava.webapp.model.*;
 import com.basejava.webapp.util.DateUtil;
 
+import javax.print.DocFlavor;
 import java.time.Month;
 import java.util.*;
 
 public class ResumeTestData {
 
-    public static void main(String[] args) {
-
-        String fullName = "Григорий Кислин";
+    public static Resume createResume(String uuid, String fullName) {
 
         Map<Contact, String> contactSection = new EnumMap<>(Contact.class);
 
@@ -94,12 +93,13 @@ public class ResumeTestData {
                     break;
             }
         }
-        Resume resume = new Resume(fullName, contactSection, resumeSection);
-        System.out.println(resume.toString());
+        Resume resume = new Resume(uuid, fullName, contactSection, resumeSection);
+        return resume;
     }
 
-    public Resume createResume(String uuid, String fullName) {
-        Resume r = new Resume(uuid, fullName);
-        return r;
+    public static void main(String[] args) {
+
+        Resume resume = createResume("uuid9", "Кислин Григорий");
+        System.out.println(resume.toString());
     }
 }

@@ -15,7 +15,7 @@ public class MainFile {
         if (file.isDirectory()) {
             File[] listAll = Objects.requireNonNull(file.listFiles());
             for (File f : listAll) {
-                System.out.println(f.getPath());
+                System.out.println(f.getName());
                 findFiles(f);
             }
         }
