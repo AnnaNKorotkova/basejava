@@ -3,6 +3,8 @@ package com.basejava.webapp.model;
 import java.util.Objects;
 
 public class Link extends AbstractSection{
+
+    private final static long serialVersionUID = 1L;
     private final String name;
     private final String url;
 

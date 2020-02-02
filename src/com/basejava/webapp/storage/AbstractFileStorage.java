@@ -3,8 +3,7 @@ package com.basejava.webapp.storage;
 import com.basejava.webapp.exception.StorageException;
 import com.basejava.webapp.model.Resume;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -14,9 +13,9 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     private File directory;
     private List<File> files = new ArrayList<>();
 
-    protected abstract void fileWrite(Resume resume, File file) throws IOException;
+    protected abstract void fileWrite(Resume resume, OutputStream file) throws IOException;
 
-    protected abstract Resume readResume(File f) throws IOException;
+    protected abstract Resume readResume(InputStream f) throws IOException;
 
     protected AbstractFileStorage(File directory) {
         Objects.requireNonNull(directory, "Directory can't be null");
@@ -32,7 +31,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected void updateInStorage(Resume resume, File file) {
         try {
-            fileWrite(resume, file);
+            fileWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }
@@ -42,7 +41,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected void saveToStorage(Resume resume, File file) {
         try {
             file.createNewFile();
-            fileWrite(resume, file);
+            fileWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }
@@ -51,7 +50,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected Resume getFromStorage(File file) {
         try {
-            return readResume(file);
+            return readResume(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO error", file.getPath(), e);
         }
@@ -78,11 +77,12 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         List<Resume> resumes = new ArrayList<>();
         for (File f : files) {
             try {
-                resumes.add(readResume(f));
+                resumes.add(readResume(new BufferedInputStream(new FileInputStream(f))));
             } catch (IOException e) {
                 throw new StorageException("IO error", f.getPath(), e);
             }
         }
+        files.clear();
         return resumes;
     }
 
@@ -92,11 +92,14 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         for (File f : files) {
             f.delete();
         }
+        files.clear();
     }
 
     @Override
     public int size() {
-        return recursiveSearch(directory).size();
+        int size = recursiveSearch(directory).size();
+        files.clear();
+        return size;
     }
 
     private List<File> recursiveSearch(File file) {
@@ -106,6 +109,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
                 if (f.isDirectory()) {
                     recursiveSearch(f);
                 } else {
+                    System.out.println(f.getPath());
                     files.add(f);
                 }
             }

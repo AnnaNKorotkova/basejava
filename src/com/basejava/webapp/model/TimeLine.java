@@ -1,5 +1,6 @@
 package com.basejava.webapp.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.List;
 
 public class TimeLine extends AbstractSection {
 
+    private final static long serialVersionUID = 1L;
     private final Link homePage;
     private List<Item> listItem;
 
@@ -15,12 +17,16 @@ public class TimeLine extends AbstractSection {
         this.listItem = listItem;
     }
 
-    public static class Item {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/YYYY");
+    public static class Item implements Serializable{
+
+        private final static long serialVersionUID = 1L;
+       // DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/YYYY");
         private final LocalDate startDate;
         private final LocalDate lastDate;
         private final String activity;
         private final String description;
+
+
 
         public Item(LocalDate startDate, LocalDate lastDate, String activity, String description) {
             this.startDate = startDate;
@@ -32,8 +38,8 @@ public class TimeLine extends AbstractSection {
         @Override
         public String toString() {
             return "Item{" +
-                    "startDate=" + startDate.format(dtf) + '\n' +
-                    ", lastDate=" + lastDate.format(dtf) + '\n' +
+                    "startDate=" + startDate + '\n' +
+                    ", lastDate=" + lastDate + '\n' +
                     ", activity='" + activity + '\'' + '\n' +
                     ", description='" + description + '\'' + '\n' +
                     '}';

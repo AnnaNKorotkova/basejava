@@ -7,6 +7,7 @@ import com.basejava.webapp.model.Resume;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import static com.basejava.webapp.ResumeTestData.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 abstract class AbstractStorageTest {
-
+    protected final static File STORAGE_DIR = new File("/home/mc/basejava/storage");
     protected Storage storage;
     protected Resume r1 = createResume("uuid1", "Иванов");
     protected Resume r2 = createResume("uuid2", "Сидоров");
