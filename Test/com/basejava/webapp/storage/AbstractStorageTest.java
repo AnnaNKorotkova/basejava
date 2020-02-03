@@ -15,7 +15,8 @@ import static com.basejava.webapp.ResumeTestData.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 abstract class AbstractStorageTest {
-    protected final static File STORAGE_DIR = new File("/home/mc/basejava/storage");
+    protected final static String DIR = "/home/mc/basejava/storage";
+    protected final static File STORAGE_DIR = new File(DIR);
     protected Storage storage;
     protected Resume r1 = createResume("uuid1", "Иванов");
     protected Resume r2 = createResume("uuid2", "Сидоров");

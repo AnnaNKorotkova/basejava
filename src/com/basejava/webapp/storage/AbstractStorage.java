@@ -4,6 +4,9 @@ import com.basejava.webapp.exception.ExistStorageException;
 import com.basejava.webapp.exception.NotExistStorageException;
 import com.basejava.webapp.model.Resume;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -24,6 +27,20 @@ public abstract class AbstractStorage<K> implements Storage {
     protected abstract boolean isContains(K key);
 
     protected abstract List<Resume> getList();
+
+    protected SerializableStream serializableStream;
+
+    public void setSerializableStream(SerializableStream serializableStream) {
+        this.serializableStream = serializableStream;
+    }
+
+    public void fileWrite(Resume resume, OutputStream os) throws IOException{
+        serializableStream.fileWrite(resume,os);
+    }
+
+    public Resume readResume(InputStream is) throws IOException{
+        return serializableStream.readResume(is);
+    }
 
     public void update(Resume resume) {
         updateInStorage(resume, checkNotExistException(resume.getUuid()));

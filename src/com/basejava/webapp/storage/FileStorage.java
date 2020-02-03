@@ -8,16 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractFileStorage extends AbstractStorage<File> {
+public class FileStorage extends AbstractStorage<File> {
 
     private File directory;
     private List<File> files = new ArrayList<>();
 
-    protected abstract void fileWrite(Resume resume, OutputStream file) throws IOException;
-
-    protected abstract Resume readResume(InputStream f) throws IOException;
-
-    protected AbstractFileStorage(File directory) {
+    protected FileStorage(File directory) {
+        this.serializableStream = new ObjectStreamStrategy();
         Objects.requireNonNull(directory, "Directory can't be null");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " doesn't directory");
@@ -109,7 +106,6 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
                 if (f.isDirectory()) {
                     recursiveSearch(f);
                 } else {
-                    System.out.println(f.getPath());
                     files.add(f);
                 }
             }

@@ -10,16 +10,15 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public abstract class AbstractPathStorage extends AbstractStorage<Path> {
+public class PathStorage extends AbstractStorage<Path> {
 
     private Path directory;
 
-    protected abstract void fileWrite(Resume resume, OutputStream path) throws IOException;
-
-    protected abstract Resume readResume(InputStream f) throws IOException;
-
-    protected AbstractPathStorage(String dir) {
+    protected PathStorage(String dir) {
+        this.serializableStream = new ObjectStreamStrategy();
         directory = Paths.get(dir);
         Objects.requireNonNull(directory, "Directory can't be null");
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
@@ -62,7 +61,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
 
     @Override
     protected Path findKeyByElement(String uuid) {
-        return Paths.get(uuid);
+        return directory.resolve(uuid);
     }
 
     @Override
@@ -74,9 +73,10 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     protected List<Resume> getList() {
         List<Resume> resumes = new ArrayList<>();
         try {
-            List<String> files = Files.readAllLines(directory);
-            for (String f : files) {
-                resumes.add(readResume(Files.newInputStream(Paths.get(f))));
+            Stream<Path> files = Files.list(directory);
+            List<Path> p = files.collect(Collectors.toList());
+            for (Path f : p) {
+                resumes.add(readResume(Files.newInputStream(f)));
             }
         } catch (IOException e) {
             throw new StorageException("The directory can't found", directory.getFileName().toString(), e);
@@ -96,9 +96,9 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     public int size() {
         try {
-            return (int)Files.size(directory);
+            return (int) Files.list(directory).count();
         } catch (IOException e) {
-            throw new StorageException("The directory doesn't exist", directory.toString(), e);
+            throw new StorageException("I/O error", null, e);
         }
     }
 }
