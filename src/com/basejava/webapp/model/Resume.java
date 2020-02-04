@@ -23,8 +23,7 @@ public class Resume implements Comparable<Resume>, Serializable {
     }
 
     public Resume(String fullName, Map<Contact, String> contactSection, Map<TypeSection, AbstractSection> resumeSection) {
-        this.uuid = UUID.randomUUID().toString();
-        this.fullName = Objects.requireNonNull(fullName, "Name can't be null");
+        this(UUID.randomUUID().toString(), fullName);
         this.contactSection = contactSection;
         this.resumeSection = resumeSection;
     }
@@ -51,8 +50,8 @@ public class Resume implements Comparable<Resume>, Serializable {
     @Override
     public int hashCode() {
         int hash = 17;
-        hash = hash*37 + uuid.hashCode();
-        hash = hash*37 + fullName.hashCode();
+        hash = hash * 37 + uuid.hashCode();
+        hash = hash * 37 + fullName.hashCode();
         return hash;
     }
 

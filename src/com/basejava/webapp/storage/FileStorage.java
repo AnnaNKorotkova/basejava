@@ -11,10 +11,11 @@ import java.util.Objects;
 public class FileStorage extends AbstractStorage<File> {
 
     private File directory;
-    private List<File> files = new ArrayList<>();
+    protected SerializableStream serializableStream;
 
-    protected FileStorage(File directory) {
-        this.serializableStream = new ObjectStreamStrategy();
+
+    protected FileStorage(File directory, SerializableStream serializableStream) {
+        this.serializableStream = serializableStream;
         Objects.requireNonNull(directory, "Directory can't be null");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " doesn't directory");
@@ -27,18 +28,14 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     protected void updateInStorage(Resume resume, File file) {
-        try {
-            fileWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
-        } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(), e);
-        }
+        saveToStorage(resume, file);
     }
 
     @Override
     protected void saveToStorage(Resume resume, File file) {
         try {
             file.createNewFile();
-            fileWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
+            serializableStream.fileWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }
@@ -46,8 +43,9 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     protected Resume getFromStorage(File file) {
+        isNullFiles();
         try {
-            return readResume(new BufferedInputStream(new FileInputStream(file)));
+            return serializableStream.readResume(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO error", file.getPath(), e);
         }
@@ -55,6 +53,7 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     protected void deleteInStorage(File file) {
+        isNullFiles();
         file.delete();
     }
 
@@ -70,46 +69,37 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     protected List<Resume> getList() {
-        List<File> files = recursiveSearch(directory);
-        List<Resume> resumes = new ArrayList<>();
-        for (File f : files) {
-            try {
-                resumes.add(readResume(new BufferedInputStream(new FileInputStream(f))));
-            } catch (IOException e) {
-                throw new StorageException("IO error", f.getPath(), e);
-            }
+        isNullFiles();
+        List<Resume> listResume = new ArrayList<>();
+        File[] listFiles = directory.listFiles();
+        for (File f : listFiles) {
+            listResume.add(getFromStorage(f));
         }
-        files.clear();
-        return resumes;
+        return listResume;
     }
 
     @Override
     public void clear() {
-        List<File> files = recursiveSearch(directory);
-        for (File f : files) {
-            f.delete();
+        isNullFiles();
+        File[] listFiles = directory.listFiles();
+        for (File f : listFiles) {
+            deleteInStorage(f);
         }
-        files.clear();
     }
 
     @Override
     public int size() {
-        int size = recursiveSearch(directory).size();
-        files.clear();
+        int size = 0;
+        File[] listFiles = directory.listFiles();
+        for (File f : listFiles) {
+            size++;
+        }
         return size;
     }
 
-    private List<File> recursiveSearch(File file) {
-        if (file.isDirectory()) {
-            File[] listAll = Objects.requireNonNull(file.listFiles());
-            for (File f : listAll) {
-                if (f.isDirectory()) {
-                    recursiveSearch(f);
-                } else {
-                    files.add(f);
-                }
-            }
+    private void isNullFiles() {
+        if (directory.listFiles() == null) {
+            throw new StorageException("This directory is null", null);
         }
-        return files;
     }
 }
