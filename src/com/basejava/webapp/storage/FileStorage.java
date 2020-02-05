@@ -2,6 +2,7 @@ package com.basejava.webapp.storage;
 
 import com.basejava.webapp.exception.StorageException;
 import com.basejava.webapp.model.Resume;
+import com.basejava.webapp.storage.strategy.SerializableStream;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -28,13 +29,7 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     protected void updateInStorage(Resume resume, File file) {
-        saveToStorage(resume, file);
-    }
-
-    @Override
-    protected void saveToStorage(Resume resume, File file) {
         try {
-            file.createNewFile();
             serializableStream.fileWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
@@ -42,8 +37,17 @@ public class FileStorage extends AbstractStorage<File> {
     }
 
     @Override
+    protected void saveToStorage(Resume resume, File file) {
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            throw new StorageException("IO error", file.getName(), e);
+        }
+        updateInStorage(resume, file);
+    }
+
+    @Override
     protected Resume getFromStorage(File file) {
-        isNullFiles();
         try {
             return serializableStream.readResume(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
@@ -53,8 +57,9 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     protected void deleteInStorage(File file) {
-        isNullFiles();
-        file.delete();
+        if (!file.delete()) {
+            throw new StorageException("The file haven't been deleted", file.getName());
+        }
     }
 
     @Override
@@ -69,9 +74,8 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     protected List<Resume> getList() {
-        isNullFiles();
         List<Resume> listResume = new ArrayList<>();
-        File[] listFiles = directory.listFiles();
+        File[] listFiles = isNullFiles();
         for (File f : listFiles) {
             listResume.add(getFromStorage(f));
         }
@@ -80,8 +84,7 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        isNullFiles();
-        File[] listFiles = directory.listFiles();
+        File[] listFiles = isNullFiles();
         for (File f : listFiles) {
             deleteInStorage(f);
         }
@@ -89,17 +92,14 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     public int size() {
-        int size = 0;
-        File[] listFiles = directory.listFiles();
-        for (File f : listFiles) {
-            size++;
-        }
-        return size;
+        return isNullFiles().length;
     }
 
-    private void isNullFiles() {
-        if (directory.listFiles() == null) {
+    private File[] isNullFiles() {
+        File[] listFiles = directory.listFiles();
+        if (listFiles == null) {
             throw new StorageException("This directory is null", null);
         }
+        return listFiles;
     }
 }

@@ -1,4 +1,4 @@
-package com.basejava.webapp.storage;
+package com.basejava.webapp.storage.strategy;
 
 import com.basejava.webapp.model.Resume;
 

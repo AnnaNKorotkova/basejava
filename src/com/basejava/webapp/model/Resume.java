@@ -1,6 +1,7 @@
 package com.basejava.webapp.model;
 
 import java.io.Serializable;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -10,16 +11,12 @@ public class Resume implements Comparable<Resume>, Serializable {
     private final static long serialVersionUID = 1L;
     private final String uuid;
     private String fullName;
-    private Map<Contact, String> contactSection;
-    private Map<TypeSection, AbstractSection> resumeSection;
+    private Map<Contact, String> contactSection = new EnumMap<>(Contact.class);
+    private Map<TypeSection, AbstractSection> resumeSection = new EnumMap<>(TypeSection.class);;
+
 
     public Resume(String fullName) {
-        this(UUID.randomUUID().toString(), fullName);
-    }
-
-    public Resume(String uuid, String fullName) {
-        this.uuid = Objects.requireNonNull(uuid, "uuid can't be null");
-        this.fullName = Objects.requireNonNull(fullName, "Name can't be null");
+        this(UUID.randomUUID().toString(), Objects.requireNonNull(fullName, "Name can't be null"));
     }
 
     public Resume(String fullName, Map<Contact, String> contactSection, Map<TypeSection, AbstractSection> resumeSection) {
@@ -28,9 +25,13 @@ public class Resume implements Comparable<Resume>, Serializable {
         this.resumeSection = resumeSection;
     }
 
-    public Resume(String uuid, String fullName, Map<Contact, String> contactSection, Map<TypeSection, AbstractSection> resumeSection) {
+    public Resume(String uuid, String fullName) {
         this.uuid = Objects.requireNonNull(uuid, "uuid can't be null");
         this.fullName = Objects.requireNonNull(fullName, "Name can't be null");
+    }
+
+    public Resume(String uuid, String fullName, Map<Contact, String> contactSection, Map<TypeSection, AbstractSection> resumeSection) {
+        this(uuid, fullName);
         this.contactSection = contactSection;
         this.resumeSection = resumeSection;
     }

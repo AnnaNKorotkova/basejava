@@ -2,14 +2,15 @@ package com.basejava.webapp.storage;
 
 import com.basejava.webapp.exception.StorageException;
 import com.basejava.webapp.model.Resume;
+import com.basejava.webapp.storage.strategy.SerializableStream;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class PathStorage extends AbstractStorage<Path> {
@@ -29,7 +30,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected void updateInStorage(Resume resume, Path path) {
         try {
-            serializableStream.fileWrite(resume, Files.newOutputStream(path));
+            serializableStream.fileWrite(resume, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
             throw new StorageException("IO error", path.toString(), e);
         }
@@ -48,7 +49,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume getFromStorage(Path path) {
         try {
-            return serializableStream.readResume(Files.newInputStream(path));
+            return serializableStream.readResume(new BufferedInputStream(Files.newInputStream(path)));
         } catch (IOException e) {
             throw new StorageException("IO error", path.getFileName().toString(), e);
         }
@@ -75,10 +76,8 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected List<Resume> getList() {
-        List<Resume> resumes = new ArrayList<>();
         Stream<Path> files = getStream();
-        files.map(this::getFromStorage).forEach(resumes::add);
-        return resumes;
+        return files.map(this::getFromStorage).collect(Collectors.toList());
     }
 
     @Override
@@ -92,9 +91,6 @@ public class PathStorage extends AbstractStorage<Path> {
     }
 
     private Stream<Path> getStream() {
-        if (!Files.exists(directory)) {
-            throw new StorageException("This directory doesn't exists", null);
-        }
         try {
             return Files.list(directory);
         } catch (IOException e) {
