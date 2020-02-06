@@ -16,12 +16,13 @@ import java.util.stream.Stream;
 public class PathStorage extends AbstractStorage<Path> {
 
     private Path directory;
-    protected SerializableStream serializableStream;
+    private SerializableStream serializableStream;
 
     protected PathStorage(String dir, SerializableStream serializableStream) {
-        this.serializableStream = serializableStream;
+        Objects.requireNonNull(dir, "Directory can't be null");
+
         directory = Paths.get(dir);
-        Objects.requireNonNull(directory, "Directory can't be null");
+        this.serializableStream = serializableStream;
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(dir + "does't directory or does't writealbe");
         }
@@ -76,8 +77,7 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected List<Resume> getList() {
-        Stream<Path> files = getStream();
-        return files.map(this::getFromStorage).collect(Collectors.toList());
+        return getStream().map(this::getFromStorage).collect(Collectors.toList());
     }
 
     @Override

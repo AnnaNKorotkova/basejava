@@ -1,32 +1,45 @@
 package com.basejava.webapp.model;
 
+import com.basejava.webapp.util.LocalDateAdapter;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class TimeLine extends AbstractSection {
 
     private final static long serialVersionUID = 1L;
-    private final Link homePage;
+    private Link homePage;
     private List<Item> listItem;
+
+    public TimeLine() {
+    }
 
     public TimeLine(String name, String url, ArrayList<Item> listItem) {
         this.homePage = new Link(name, url);
         this.listItem = listItem;
     }
 
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class Item implements Serializable{
 
         private final static long serialVersionUID = 1L;
        // DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/YYYY");
-        private final LocalDate startDate;
-        private final LocalDate lastDate;
-        private final String activity;
-        private final String description;
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
+        private LocalDate startDate;
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
+        private LocalDate lastDate;
+        private String activity;
+        private String description;
 
-
+        public Item() {
+        }
 
         public Item(LocalDate startDate, LocalDate lastDate, String activity, String description) {
             this.startDate = startDate;

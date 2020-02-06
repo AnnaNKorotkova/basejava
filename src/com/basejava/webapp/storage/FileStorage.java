@@ -12,12 +12,13 @@ import java.util.Objects;
 public class FileStorage extends AbstractStorage<File> {
 
     private File directory;
-    protected SerializableStream serializableStream;
+    private SerializableStream serializableStream;
 
 
     protected FileStorage(File directory, SerializableStream serializableStream) {
-        this.serializableStream = serializableStream;
         Objects.requireNonNull(directory, "Directory can't be null");
+
+        this.serializableStream = serializableStream;
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " doesn't directory");
         }
