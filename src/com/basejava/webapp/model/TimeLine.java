@@ -41,6 +41,22 @@ public class TimeLine extends AbstractSection {
         public Item() {
         }
 
+        public LocalDate getStartDate() {
+            return startDate;
+        }
+
+        public LocalDate getLastDate() {
+            return lastDate;
+        }
+
+        public String getActivity() {
+            return activity;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
         public Item(LocalDate startDate, LocalDate lastDate, String activity, String description) {
             this.startDate = startDate;
             this.lastDate = lastDate;

@@ -73,19 +73,19 @@ public class ResumeTestData {
                 case EXPERIENCE:
                     List<TimeLine> listExp = new ArrayList<>();
 
-                    listExp.add(new TimeLine("Alcatel", "", new ArrayList<>(Collections.singletonList(new TimeLine.Item(DateUtil.of(2005, Month.JANUARY), DateUtil.of(2007, Month.FEBRUARY),
+                    listExp.add(new TimeLine("Alcatel", "111", new ArrayList<>(Collections.singletonList(new TimeLine.Item(DateUtil.of(2005, Month.JANUARY), DateUtil.of(2007, Month.FEBRUARY),
                             "Разработчик ПО", "Разработка информационной модели, проектирование интерфейсов, реализация и отладка ПО на мобильной IN платформе Siemens @vantage (Java, Unix).")))));
-                    listExp.add(new TimeLine("Siemens AG", "", new ArrayList<>(Collections.singletonList(new TimeLine.Item(DateUtil.of(2005, Month.JANUARY), DateUtil.of(2007, Month.FEBRUARY),
+                    listExp.add(new TimeLine("Siemens AG", "222", new ArrayList<>(Collections.singletonList(new TimeLine.Item(DateUtil.of(2005, Month.JANUARY), DateUtil.of(2007, Month.FEBRUARY),
                             "Разработчик ПО", "Разработка информационной модели, проектирование интерфейсов, реализация и отладка ПО на мобильной IN платформе Siemens @vantage (Java, Unix).")))));
-                    listExp.add(new TimeLine("Enkata", "", new ArrayList<>(Collections.singletonList(new TimeLine.Item(DateUtil.of(2007, Month.MARCH), DateUtil.of(2008, Month.JULY),
+                    listExp.add(new TimeLine("Enkata", "333", new ArrayList<>(Collections.singletonList(new TimeLine.Item(DateUtil.of(2007, Month.MARCH), DateUtil.of(2008, Month.JULY),
                             "Разработчик ПО", "Реализация клиентской (Eclipse RCP) и серверной (JBoss 4.2, Hibernate 3.0, Tomcat, JMS) частей кластерного J2EE приложения (OLAP, Data mining).")))));
                     resumeSection.put(tp, new TimeLineSection(listExp));
                     break;
                 case EDUCATION:
                     List<TimeLine> listEdu = new ArrayList<>();
 
-                    listEdu.add(new TimeLine("Заочная физико-техническая школа при МФТИ", "", new ArrayList<>(Collections.singletonList(new TimeLine.Item(DateUtil.of(1984, Month.SEPTEMBER), DateUtil.of(1987, Month.JUNE), "Закончил с отличием", null)))));
-                    listEdu.add(new TimeLine("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "",
+                    listEdu.add(new TimeLine("Заочная физико-техническая школа при МФТИ", "444", new ArrayList<>(Collections.singletonList(new TimeLine.Item(DateUtil.of(1984, Month.SEPTEMBER), DateUtil.of(1987, Month.JUNE), "Закончил с отличием", null)))));
+                    listEdu.add(new TimeLine("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "555",
                             new ArrayList<>(Arrays.asList(new TimeLine.Item(DateUtil.of(1987, Month.SEPTEMBER), DateUtil.of(1993, Month.JULY), "Инженер (программист Fortran, C)", null),
                                     new TimeLine.Item(DateUtil.of(1993, Month.SEPTEMBER), DateUtil.of(1996, Month.JULY), "Аспирантура (программист С, С++)", null)))));
                     resumeSection.put(tp, new TimeLineSection(listEdu));

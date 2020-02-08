@@ -16,8 +16,11 @@ public class Resume implements Comparable<Resume>, Serializable {
     private final static long serialVersionUID = 1L;
     private String uuid;
     private String fullName;
+
     private Map<Contact, String> contactSection = new EnumMap<>(Contact.class);
-    private Map<TypeSection, AbstractSection> resumeSection = new EnumMap<>(TypeSection.class);;
+
+
+    private Map<TypeSection, AbstractSection> resumeSection = new EnumMap<>(TypeSection.class);
 
     public Resume() {
     }
@@ -46,6 +49,22 @@ public class Resume implements Comparable<Resume>, Serializable {
     public String getUuid() {
         return uuid;
     }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public Map<Contact, String> getContactSection() {
+        return contactSection;
+    }
+
+    public Map<TypeSection, AbstractSection> getResumeSection() {
+        return resumeSection;
+    }
+
+//    public void addContact(Contact contact, String sectionText){
+//        contactSection.put(contact, sectionText);
+//    }
 
     @Override
     public boolean equals(Object o) {

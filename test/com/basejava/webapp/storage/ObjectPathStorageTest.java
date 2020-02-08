@@ -2,9 +2,9 @@ package com.basejava.webapp.storage;
 
 import com.basejava.webapp.storage.strategy.ObjectStreamStrategy;
 
-class PathStorageTest extends AbstractStorageTest {
+class ObjectPathStorageTest extends AbstractStorageTest {
 
-    protected PathStorageTest() {
+    protected ObjectPathStorageTest() {
         super(new PathStorage(DIR, new ObjectStreamStrategy()));
     }
 }
