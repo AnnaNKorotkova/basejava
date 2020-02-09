@@ -16,6 +16,7 @@ public class DataStreamStrategy implements SerializableStream {
         try (DataOutputStream dos = new DataOutputStream(os)) {
             dos.writeUTF(resume.getUuid());
             dos.writeUTF(resume.getFullName());
+
             Map<Contact, String> contacts = resume.getContactSection();
             dos.writeInt(contacts.size());
             for (Map.Entry<Contact, String> entry : contacts.entrySet()) {
