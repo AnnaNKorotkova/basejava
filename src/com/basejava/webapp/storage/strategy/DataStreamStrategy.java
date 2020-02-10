@@ -3,6 +3,7 @@ package com.basejava.webapp.storage.strategy;
 import com.basejava.webapp.model.*;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.time.Month;
 
 import com.basejava.webapp.util.DateUtil;
@@ -27,47 +28,40 @@ public class DataStreamStrategy implements SerializableStream {
             Map<TypeSection, AbstractSection> resumeSection = resume.getResumeSection();
             dos.writeInt(resumeSection.size());
             for (Map.Entry<TypeSection, AbstractSection> entry : resumeSection.entrySet()) {
+                dos.writeUTF(entry.getValue().getClass().getSimpleName());
+                dos.writeUTF(entry.getKey().name());
+                switch (entry.getKey().name()) {
+                    case "PERSONAL":
+                    case "OBJECTIVE":
+                        dos.writeUTF(String.valueOf(entry.getValue()));
+                        break;
+                    case "ACHIEVEMENT":
+                    case "QUALIFICATIONS":
+                        ListSection sections = (ListSection) entry.getValue();
+                        dos.writeInt(sections.getTextList().size());
 
-                if (entry.getValue() instanceof TextSection) {
-                    dos.writeUTF(entry.getValue().getClass().getSimpleName());
-                    dos.writeUTF(entry.getKey().name());
-                    dos.writeUTF(String.valueOf(entry.getValue()));
-
-                } else if (entry.getValue() instanceof ListSection) {
-                    dos.writeUTF(entry.getValue().getClass().getSimpleName());
-                    ListSection sections = (ListSection) entry.getValue();
-                    dos.writeUTF(entry.getKey().name());
-                    dos.writeInt(sections.getTextList().size());
-
-                    for (TextSection ts : sections.getTextList()) {
-                        dos.writeUTF(ts.getTextContainer());
-                    }
-
-                } else if (entry.getValue() instanceof TimeLineSection) {
-
-                    dos.writeUTF(entry.getValue().getClass().getSimpleName());
-                    TimeLineSection tls = (TimeLineSection) entry.getValue();
-                    dos.writeUTF(entry.getKey().name());
-
-                    dos.writeInt(tls.getListTimeLine().size());
-                    for (TimeLine tl : tls.getListTimeLine()) {
-                        dos.writeInt(tl.getListItem().size());
-                        dos.writeUTF(tl.getHomePage().getName());
-                        dos.writeUTF(tl.getHomePage().getUrl());
-                        for (TimeLine.Item tli : tl.getListItem()) {
-                            dos.writeInt(tli.getStartDate().getYear());
-                            dos.writeInt(tli.getStartDate().getMonthValue());
-                            dos.writeInt(tli.getLastDate().getYear());
-                            dos.writeInt(tli.getLastDate().getMonthValue());
-                            dos.writeUTF(tli.getActivity());
-                            if (tli.getDescription() != null) {
-                                dos.writeBoolean(true);
-                                dos.writeUTF(tli.getDescription());
-                            } else {
-                                dos.writeBoolean(false);
+                        for (TextSection ts : sections.getTextList()) {
+                            dos.writeUTF(ts.getTextContainer());
+                        }
+                        break;
+                    case "EXPERIENCE":
+                    case "EDUCATION":
+                        TimeLineSection tls = (TimeLineSection) entry.getValue();
+                        dos.writeInt(tls.getListTimeLine().size());
+                        for (TimeLine tl : tls.getListTimeLine()) {
+                            dos.writeInt(tl.getListItem().size());
+                            setLink(tl, dos);
+                            for (TimeLine.Item tli : tl.getListItem()) {
+                                setDate(tli.getStartDate(), dos);
+                                setDate(tli.getLastDate(), dos);
+                                dos.writeUTF(tli.getActivity());
+                                if (tli.getDescription() != null) {
+                                    dos.writeUTF(tli.getDescription());
+                                } else {
+                                    dos.writeUTF("");
+                                }
                             }
                         }
-                    }
                 }
             }
         }
@@ -114,16 +108,36 @@ public class DataStreamStrategy implements SerializableStream {
                                         DateUtil.of(dis.readInt(), Month.of(dis.readInt()))
                                         , DateUtil.of(dis.readInt(), Month.of(dis.readInt()))
                                         , dis.readUTF()
-                                        , dis.readBoolean() ? dis.readUTF() : null)
+                                        , dis.readUTF())
                                 );
                             }
-                            tl.add(new TimeLine(name, url, new ArrayList(Collections.singletonList(tli))));
+                            tl.add(new TimeLine(name, url, tli));
                         }
                         resumeSection.put(TypeSection.valueOf(typeSection), new TimeLineSection(tl));
                         break;
                 }
             }
             return new Resume(uuid, fullName, resumeContactSection, resumeSection);
+        }
+    }
+
+
+    private void setDate(LocalDate ld, DataOutputStream dos) {
+        try {
+            dos.writeInt(ld.getYear());
+            dos.writeInt(ld.getMonthValue());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setLink(TimeLine tl, DataOutputStream dos) {
+        try {
+            dos.writeUTF(tl.getHomePage().getName());
+            dos.writeUTF(tl.getHomePage().getUrl());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

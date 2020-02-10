@@ -21,7 +21,7 @@ public class TimeLine extends AbstractSection {
     public TimeLine() {
     }
 
-    public TimeLine(String name, String url, ArrayList<Item> listItem) {
+    public TimeLine(String name, String url, List<Item> listItem) {
         this.homePage = new Link(name, url);
         this.listItem = listItem;
     }
