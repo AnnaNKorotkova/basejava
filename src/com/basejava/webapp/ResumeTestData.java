@@ -97,7 +97,6 @@ public class ResumeTestData {
     }
 
     public static void main(String[] args) {
-
         Resume resume = createResume("uuid9", "Кислин Григорий");
         System.out.println(resume.toString());
     }

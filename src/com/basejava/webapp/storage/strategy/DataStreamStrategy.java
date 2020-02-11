@@ -5,10 +5,9 @@ import com.basejava.webapp.model.*;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.*;
 
 import com.basejava.webapp.util.DateUtil;
-
-import java.util.*;
 
 public class DataStreamStrategy implements SerializableStream {
 
