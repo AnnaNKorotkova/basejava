@@ -28,20 +28,19 @@ public class DataStreamStrategy implements SerializableStream {
             Map<TypeSection, AbstractSection> resumeSection = resume.getResumeSection();
             dos.writeInt(resumeSection.size());
             for (Map.Entry<TypeSection, AbstractSection> entry : resumeSection.entrySet()) {
-                dos.writeUTF(entry.getValue().getClass().getSimpleName());
                 dos.writeUTF(entry.getKey().name());
                 switch (entry.getKey().name()) {
                     case "PERSONAL":
                     case "OBJECTIVE":
-                        dos.writeUTF(String.valueOf(entry.getValue()));
+                        TextSection textSection = (TextSection) entry.getValue();
+                        dos.writeUTF(textSection.getTextContainer());
                         break;
                     case "ACHIEVEMENT":
                     case "QUALIFICATIONS":
                         ListSection sections = (ListSection) entry.getValue();
                         dos.writeInt(sections.getTextList().size());
-
-                        for (TextSection ts : sections.getTextList()) {
-                            dos.writeUTF(ts.getTextContainer());
+                        for (String ts : sections.getTextList()) {
+                            dos.writeUTF(ts);
                         }
                         break;
                     case "EXPERIENCE":
@@ -81,21 +80,23 @@ public class DataStreamStrategy implements SerializableStream {
             Map<TypeSection, AbstractSection> resumeSection = new EnumMap<>(TypeSection.class);
             size = dis.readInt();
             for (int i = 0; i < size; i++) {
-                String sectionClassName = dis.readUTF();
                 String typeSection = dis.readUTF();
-                switch (sectionClassName) {
-                    case "TextSection":
+                switch (typeSection) {
+                    case "PERSONAL":
+                    case "OBJECTIVE":
                         resumeSection.put(TypeSection.valueOf(typeSection), new TextSection(dis.readUTF()));
                         break;
-                    case "ListSection":
+                    case "ACHIEVEMENT":
+                    case "QUALIFICATIONS":
                         int listSize = dis.readInt();
-                        List<TextSection> ls = new ArrayList<>();
+                        List<String> ls = new ArrayList<>();
                         for (int j = 0; j < listSize; j++) {
-                            ls.add(new TextSection(dis.readUTF()));
+                            ls.add(dis.readUTF());
                         }
                         resumeSection.put(TypeSection.valueOf(typeSection), new ListSection(ls));
                         break;
-                    case "TimeLineSection":
+                    case "EXPERIENCE":
+                    case "EDUCATION":
                         int listSize1 = dis.readInt();
                         List<TimeLine> tl = new ArrayList<>();
                         for (int k = 0; k < listSize1; k++) {
@@ -121,23 +122,17 @@ public class DataStreamStrategy implements SerializableStream {
         }
     }
 
-
-    private void setDate(LocalDate ld, DataOutputStream dos) {
-        try {
-            dos.writeInt(ld.getYear());
-            dos.writeInt(ld.getMonthValue());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void setDate(LocalDate ld, DataOutputStream dos) throws IOException {
+        dos.writeInt(ld.getYear());
+        dos.writeInt(ld.getMonthValue());
     }
 
-    private void setLink(TimeLine tl, DataOutputStream dos) {
-        try {
-            dos.writeUTF(tl.getHomePage().getName());
+    private void setLink(TimeLine tl, DataOutputStream dos) throws IOException {
+        dos.writeUTF(tl.getHomePage().getName());
+        if (tl.getHomePage().getUrl() != null) {
             dos.writeUTF(tl.getHomePage().getUrl());
-        } catch (IOException e) {
-            e.printStackTrace();
+        } else {
+            dos.writeUTF("");
         }
     }
 }

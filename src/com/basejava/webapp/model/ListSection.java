@@ -9,16 +9,16 @@ import java.util.Objects;
 public class ListSection extends AbstractSection {
 
     private final static long serialVersionUID = 1L;
-    private List<TextSection> textList;
+    private List<String> textList;
 
     public ListSection() {
     }
 
-    public ListSection(List<TextSection> textList) {
+    public ListSection(List<String> textList) {
         this.textList = textList;
     }
 
-    public List<TextSection> getTextList() {
+    public List<String> getTextList() {
         return textList;
     }
 
