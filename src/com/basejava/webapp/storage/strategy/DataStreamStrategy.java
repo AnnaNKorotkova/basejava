@@ -5,9 +5,10 @@ import com.basejava.webapp.model.*;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.*;
 
 import com.basejava.webapp.util.DateUtil;
+
+import java.util.*;
 
 public class DataStreamStrategy implements SerializableStream {
 
@@ -28,25 +29,22 @@ public class DataStreamStrategy implements SerializableStream {
             dos.writeInt(resumeSection.size());
             for (Map.Entry<TypeSection, AbstractSection> entry : resumeSection.entrySet()) {
                 dos.writeUTF(entry.getKey().name());
-                switch (entry.getKey().name()) {
-                    case "PERSONAL":
-                    case "OBJECTIVE":
-                        TextSection textSection = (TextSection) entry.getValue();
-                        dos.writeUTF(textSection.getTextContainer());
+                switch (entry.getKey()) {
+                    case PERSONAL:
+                    case OBJECTIVE:
+                        dos.writeUTF(((TextSection) entry.getValue()).getTextContainer());
                         break;
-                    case "ACHIEVEMENT":
-                    case "QUALIFICATIONS":
-                        ListSection sections = (ListSection) entry.getValue();
-                        dos.writeInt(sections.getTextList().size());
-                        for (String ts : sections.getTextList()) {
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        dos.writeInt(((ListSection) entry.getValue()).getTextList().size());
+                        for (String ts : ((ListSection) entry.getValue()).getTextList()) {
                             dos.writeUTF(ts);
                         }
                         break;
-                    case "EXPERIENCE":
-                    case "EDUCATION":
-                        TimeLineSection tls = (TimeLineSection) entry.getValue();
-                        dos.writeInt(tls.getListTimeLine().size());
-                        for (TimeLine tl : tls.getListTimeLine()) {
+                    case EXPERIENCE:
+                    case EDUCATION:
+                        dos.writeInt(((TimeLineSection) entry.getValue()).getListTimeLine().size());
+                        for (TimeLine tl : ((TimeLineSection) entry.getValue()).getListTimeLine()) {
                             dos.writeInt(tl.getListItem().size());
                             setLink(tl, dos);
                             for (TimeLine.Item tli : tl.getListItem()) {
@@ -80,10 +78,11 @@ public class DataStreamStrategy implements SerializableStream {
             size = dis.readInt();
             for (int i = 0; i < size; i++) {
                 String typeSection = dis.readUTF();
+                TypeSection typeSectionValue = TypeSection.valueOf(typeSection);
                 switch (typeSection) {
                     case "PERSONAL":
                     case "OBJECTIVE":
-                        resumeSection.put(TypeSection.valueOf(typeSection), new TextSection(dis.readUTF()));
+                        resumeSection.put(typeSectionValue, new TextSection(dis.readUTF()));
                         break;
                     case "ACHIEVEMENT":
                     case "QUALIFICATIONS":
@@ -92,7 +91,7 @@ public class DataStreamStrategy implements SerializableStream {
                         for (int j = 0; j < listSize; j++) {
                             ls.add(dis.readUTF());
                         }
-                        resumeSection.put(TypeSection.valueOf(typeSection), new ListSection(ls));
+                        resumeSection.put(typeSectionValue, new ListSection(ls));
                         break;
                     case "EXPERIENCE":
                     case "EDUCATION":
@@ -113,7 +112,7 @@ public class DataStreamStrategy implements SerializableStream {
                             }
                             tl.add(new TimeLine(name, url, tli));
                         }
-                        resumeSection.put(TypeSection.valueOf(typeSection), new TimeLineSection(tl));
+                        resumeSection.put(typeSectionValue, new TimeLineSection(tl));
                         break;
                 }
             }
