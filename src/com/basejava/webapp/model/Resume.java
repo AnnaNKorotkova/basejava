@@ -66,20 +66,25 @@ public class Resume implements Comparable<Resume>, Serializable {
 //        contactSection.put(contact, sectionText);
 //    }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Resume resume = (Resume) o;
-        return uuid.equals(resume.uuid);
+        return Objects.equals(uuid, resume.uuid) &&
+                Objects.equals(fullName, resume.fullName) &&
+                Objects.equals(contactSection, resume.contactSection) &&
+                Objects.equals(resumeSection, resume.resumeSection);
     }
 
     @Override
     public int hashCode() {
-        int hash = 17;
-        hash = hash * 37 + uuid.hashCode();
-        hash = hash * 37 + fullName.hashCode();
-        return hash;
+        int result = uuid.hashCode();
+        result = 31 * result + fullName.hashCode();
+        result = 31 * result + (contactSection != null ? contactSection.hashCode() : 0);
+        result = 31 * result + (resumeSection != null ? resumeSection.hashCode() : 0);
+        return result;
     }
 
     @Override

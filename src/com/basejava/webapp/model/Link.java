@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.Objects;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Link extends AbstractSection{
+public class Link extends AbstractSection {
 
     private final static long serialVersionUID = 1L;
     private String name;
@@ -31,11 +31,12 @@ public class Link extends AbstractSection{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Link link = (Link) o;
-
-        if (!name.equals(link.name)) return false;
-        return url != null ? url.equals(link.url) : link.url == null;
+        if (link.url == null) {
+            return Objects.equals(name, link.name);
+        } else {
+            return Objects.equals(name, link.name) && Objects.equals(url, link.url);
+        }
     }
 
     @Override

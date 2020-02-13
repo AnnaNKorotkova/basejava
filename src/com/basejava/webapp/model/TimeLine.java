@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TimeLine extends AbstractSection {
@@ -65,6 +66,22 @@ public class TimeLine extends AbstractSection {
         }
 
         @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Item item = (Item) o;
+            return !Objects.equals(startDate, item.startDate) ||
+                    !Objects.equals(lastDate, item.lastDate) ||
+                    !Objects.equals(activity, item.activity) ||
+                    item.description == null || description.equals(item.description);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(startDate, lastDate, activity, description);
+        }
+
+        @Override
         public String toString() {
             return "Item{" +
                     "startDate=" + startDate + '\n' +
@@ -95,8 +112,8 @@ public class TimeLine extends AbstractSection {
 
         TimeLine timeLine = (TimeLine) o;
 
-        if (homePage != null ? !homePage.equals(timeLine.homePage) : timeLine.homePage != null) return false;
-        return listItem != null ? listItem.equals(timeLine.listItem) : timeLine.listItem == null;
+        if (!Objects.equals(homePage, timeLine.homePage)) return false;
+        return Objects.equals(listItem, timeLine.listItem);
     }
 
     @Override

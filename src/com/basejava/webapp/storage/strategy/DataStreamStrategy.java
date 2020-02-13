@@ -19,15 +19,13 @@ public class DataStreamStrategy implements SerializableStream {
             dos.writeUTF(resume.getFullName());
 
             Map<Contact, String> contacts = resume.getContactSection();
-            dos.writeInt(contacts.size());
-            for (Map.Entry<Contact, String> entry : contacts.entrySet()) {
+            writePart(dos, contacts.entrySet(), entry -> {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
-            }
+            });
 
             Map<TypeSection, AbstractSection> resumeSection = resume.getResumeSection();
-            dos.writeInt(resumeSection.size());
-            for (Map.Entry<TypeSection, AbstractSection> entry : resumeSection.entrySet()) {
+            writePart(dos, resumeSection.entrySet(), entry -> {
                 dos.writeUTF(entry.getKey().name());
                 switch (entry.getKey()) {
                     case PERSONAL:
@@ -36,30 +34,33 @@ public class DataStreamStrategy implements SerializableStream {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        dos.writeInt(((ListSection) entry.getValue()).getTextList().size());
-                        for (String ts : ((ListSection) entry.getValue()).getTextList()) {
+                        List<String> ls = ((ListSection) entry.getValue()).getTextList();
+                        dos.writeInt(ls.size());
+                        for (String ts : ls) {
                             dos.writeUTF(ts);
                         }
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
-                        dos.writeInt(((TimeLineSection) entry.getValue()).getListTimeLine().size());
-                        for (TimeLine tl : ((TimeLineSection) entry.getValue()).getListTimeLine()) {
+                        List<TimeLine> ltl = ((TimeLineSection) entry.getValue()).getListTimeLine();
+                        dos.writeInt(ltl.size());
+                        for (TimeLine tl : ltl) {
                             dos.writeInt(tl.getListItem().size());
                             setLink(tl, dos);
                             for (TimeLine.Item tli : tl.getListItem()) {
                                 setDate(tli.getStartDate(), dos);
                                 setDate(tli.getLastDate(), dos);
                                 dos.writeUTF(tli.getActivity());
-                                if (tli.getDescription() != null) {
-                                    dos.writeUTF(tli.getDescription());
+                                String desc = tli.getDescription();
+                                if (desc != null) {
+                                    dos.writeUTF(desc);
                                 } else {
                                     dos.writeUTF("");
                                 }
                             }
                         }
                 }
-            }
+            });
         }
     }
 
@@ -69,23 +70,25 @@ public class DataStreamStrategy implements SerializableStream {
             String uuid = dis.readUTF();
             String fullName = dis.readUTF();
             Map<Contact, String> resumeContactSection = new EnumMap<>(Contact.class);
-            int size = dis.readInt();
-            for (int i = 0; i < size; i++) {
-                resumeContactSection.put(Contact.valueOf(dis.readUTF()), dis.readUTF());
-            }
+            readPart(dis,contact->{Contact.valueOf(dis.readUTF());},insert->{
+                    resumeContactSection.put(Contact.valueOf(dis.readUTF()), dis.readUTF());
+            });
+//            int size = dis.readInt();
+//            for (int i = 0; i < size; i++) {
+//                resumeContactSection.put(Contact.valueOf(dis.readUTF()), dis.readUTF());
+//            }
 
             Map<TypeSection, AbstractSection> resumeSection = new EnumMap<>(TypeSection.class);
-            size = dis.readInt();
+            int size = dis.readInt();
             for (int i = 0; i < size; i++) {
-                String typeSection = dis.readUTF();
-                TypeSection typeSectionValue = TypeSection.valueOf(typeSection);
-                switch (typeSection) {
-                    case "PERSONAL":
-                    case "OBJECTIVE":
+                TypeSection typeSectionValue = TypeSection.valueOf(dis.readUTF());
+                switch (typeSectionValue) {
+                    case PERSONAL:
+                    case OBJECTIVE:
                         resumeSection.put(typeSectionValue, new TextSection(dis.readUTF()));
                         break;
-                    case "ACHIEVEMENT":
-                    case "QUALIFICATIONS":
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
                         int listSize = dis.readInt();
                         List<String> ls = new ArrayList<>();
                         for (int j = 0; j < listSize; j++) {
@@ -93,8 +96,8 @@ public class DataStreamStrategy implements SerializableStream {
                         }
                         resumeSection.put(typeSectionValue, new ListSection(ls));
                         break;
-                    case "EXPERIENCE":
-                    case "EDUCATION":
+                    case EXPERIENCE:
+                    case EDUCATION:
                         int listSize1 = dis.readInt();
                         List<TimeLine> tl = new ArrayList<>();
                         for (int k = 0; k < listSize1; k++) {
@@ -103,6 +106,7 @@ public class DataStreamStrategy implements SerializableStream {
                             String url = dis.readUTF();
                             List<TimeLine.Item> tli = new ArrayList<>();
                             for (int n = 0; n < listTliSize; n++) {
+                                String s;
                                 tli.add(new TimeLine.Item(
                                         DateUtil.of(dis.readInt(), Month.of(dis.readInt()))
                                         , DateUtil.of(dis.readInt(), Month.of(dis.readInt()))
@@ -132,5 +136,32 @@ public class DataStreamStrategy implements SerializableStream {
         } else {
             dos.writeUTF("");
         }
+    }
+
+    private interface ElementForWrite<T> {
+        void write(T a) throws IOException;
+    }
+
+    private <T> void writePart(DataOutputStream dos, Collection<T> collection, ElementForWrite<T> element) throws IOException {
+        dos.writeInt(collection.size());
+        for (T item : collection) {
+            element.write(item);
+        }
+    }
+
+    private interface ElementForRead<T> {
+        void read(T a) throws IOException;
+    }
+
+    private <T> void readPart(DataInputStream dis, ElementForRead<T> element,InsertElement<T> inserter) throws IOException{
+        int size = dis.readInt();
+        for (int i=0;i<size;i++) {
+            inserter.insert((T)element);
+        }
+    }
+
+
+    private interface InsertElement<T> {
+        void insert(T a) throws IOException;
     }
 }
