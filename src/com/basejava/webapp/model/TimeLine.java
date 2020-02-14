@@ -26,6 +26,11 @@ public class TimeLine extends AbstractSection {
         this.homePage = new Link(name, url);
         this.listItem = listItem;
     }
+    public TimeLine(Link homePage, List<Item> listItem) {
+        this.homePage = homePage;
+        this.listItem = listItem;
+    }
+
 
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Item implements Serializable{
@@ -62,7 +67,10 @@ public class TimeLine extends AbstractSection {
             this.startDate = startDate;
             this.lastDate = lastDate;
             this.activity = activity;
-            this.description = description;
+            if (description != null){
+                this.description = description;
+            } else
+            this.description = "" ;
         }
 
         @Override
