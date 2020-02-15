@@ -33,30 +33,22 @@ public class DataStreamStrategy implements SerializableStream {
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
                         List<String> ls = ((ListSection) entry.getValue()).getTextList();
-                        dos.writeInt(ls.size());
-                        for (String ts : ls) {
-                            dos.writeUTF(ts);
-                        }
+                        writePart(dos, ls, dos::writeUTF);
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
                         List<TimeLine> ltl = ((TimeLineSection) entry.getValue()).getListTimeLine();
-                        dos.writeInt(ltl.size());
-                        for (TimeLine tl : ltl) {
-                            setLink(tl, dos);
-                            dos.writeInt(tl.getListItem().size());
-                            for (TimeLine.Item tli : tl.getListItem()) {
-                                setDate(tli.getStartDate(), dos);
-                                setDate(tli.getLastDate(), dos);
-                                dos.writeUTF(tli.getActivity());
-                                String desc = tli.getDescription();
-                                if (desc != null) {
-                                    dos.writeUTF(desc);
-                                } else {
-                                    dos.writeUTF(" ");
-                                }
-                            }
-                        }
+                        writePart(dos,ltl , tl-> {setLink(tl,dos);
+                        writePart(dos, tl.getListItem(), tli ->
+                        {   setDate(tli.getStartDate(), dos);
+                            setDate(tli.getLastDate(), dos);
+                            dos.writeUTF(tli.getActivity());
+                            String desc = tli.getDescription();
+                            if (desc != null) {
+                                dos.writeUTF(desc);
+                            } else {
+                                dos.writeUTF(" ");
+                            }} );});
                 }
             });
         }
@@ -128,14 +120,14 @@ public class DataStreamStrategy implements SerializableStream {
         T read() throws IOException;
     }
 
-    private <T> void readPart(DataInputStream dis, InsertElement<T> inserter) throws IOException {
+    private void readPart(DataInputStream dis, InsertElement inserter) throws IOException {
         int size = dis.readInt();
         for (int i = 0; i < size; i++) {
             inserter.insert();
         }
     }
 
-    private interface InsertElement<T> {
+    private interface InsertElement{
         void insert() throws IOException;
     }
 

@@ -67,10 +67,7 @@ public class TimeLine extends AbstractSection {
             this.startDate = startDate;
             this.lastDate = lastDate;
             this.activity = activity;
-            if (description != null){
-                this.description = description;
-            } else
-            this.description = "" ;
+            this.description = description;
         }
 
         @Override
