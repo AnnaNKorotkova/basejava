@@ -38,17 +38,21 @@ public class DataStreamStrategy implements SerializableStream {
                     case EXPERIENCE:
                     case EDUCATION:
                         List<TimeLine> ltl = ((TimeLineSection) entry.getValue()).getListTimeLine();
-                        writePart(dos,ltl , tl-> {setLink(tl,dos);
-                        writePart(dos, tl.getListItem(), tli ->
-                        {   setDate(tli.getStartDate(), dos);
-                            setDate(tli.getLastDate(), dos);
-                            dos.writeUTF(tli.getActivity());
-                            String desc = tli.getDescription();
-                            if (desc != null) {
-                                dos.writeUTF(desc);
-                            } else {
-                                dos.writeUTF(" ");
-                            }} );});
+                        writePart(dos, ltl, tl -> {
+                            setLink(tl, dos);
+                            writePart(dos, tl.getListItem(), tli ->
+                            {
+                                setDate(tli.getStartDate(), dos);
+                                setDate(tli.getLastDate(), dos);
+                                dos.writeUTF(tli.getActivity());
+                                String desc = tli.getDescription();
+                                if (desc != null) {
+                                    dos.writeUTF(desc);
+                                } else {
+                                    dos.writeUTF(" ");
+                                }
+                            });
+                        });
                 }
             });
         }
@@ -63,8 +67,10 @@ public class DataStreamStrategy implements SerializableStream {
             readPart(dis, () -> resumeContactSection.put(Contact.valueOf(dis.readUTF()), dis.readUTF()));
 
             Map<TypeSection, AbstractSection> resumeSection = new EnumMap<>(TypeSection.class);
-            readPart(dis, () -> {TypeSection typeSection = TypeSection.valueOf(dis.readUTF());
-                resumeSection.put(typeSection,readTypeOfSection(dis, typeSection));});
+            readPart(dis, () -> {
+                TypeSection typeSection = TypeSection.valueOf(dis.readUTF());
+                resumeSection.put(typeSection, readTypeOfSection(dis, typeSection));
+            });
 
             return new Resume(uuid, fullName, resumeContactSection, resumeSection);
         }
@@ -74,8 +80,9 @@ public class DataStreamStrategy implements SerializableStream {
         dos.writeInt(ld.getYear());
         dos.writeInt(ld.getMonthValue());
     }
+
     private LocalDate readDate(DataInputStream dis) throws IOException {
-        return   LocalDate.of(dis.readInt(), Month.of(dis.readInt()),1);
+        return LocalDate.of(dis.readInt(), Month.of(dis.readInt()), 1);
     }
 
     private void setLink(TimeLine tl, DataOutputStream dos) throws IOException {
@@ -98,7 +105,7 @@ public class DataStreamStrategy implements SerializableStream {
             case EXPERIENCE:
             case EDUCATION:
                 return new TimeLineSection(readList(dis, () -> new TimeLine(new Link(dis.readUTF(), dis.readUTF()),
-                        readList(dis, () -> new TimeLine.Item (readDate(dis), readDate(dis), dis.readUTF(),dis.readUTF())))));
+                        readList(dis, () -> new TimeLine.Item(readDate(dis), readDate(dis), dis.readUTF(), dis.readUTF())))));
 
             default:
                 throw new IllegalStateException("Unexpected value: " + type);
@@ -127,7 +134,7 @@ public class DataStreamStrategy implements SerializableStream {
         }
     }
 
-    private interface InsertElement{
+    private interface InsertElement {
         void insert() throws IOException;
     }
 
