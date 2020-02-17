@@ -22,6 +22,6 @@ public class KillEvenOrOdd {
 
         Map<Boolean, List<Integer>> map = integers.stream()
                 .collect(Collectors.partitioningBy((p) -> p % 2 == 0));
-        return map.get(false).size() % 2 == 0 ? map.get(false) : map.get(true);
+        return map.get(map.get(false).size() % 2 != 0);
     }
 }
