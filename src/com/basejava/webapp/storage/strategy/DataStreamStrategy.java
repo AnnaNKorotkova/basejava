@@ -5,7 +5,6 @@ import com.basejava.webapp.model.*;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.Month;
-
 import java.util.*;
 
 public class DataStreamStrategy implements SerializableStream {
@@ -49,7 +48,7 @@ public class DataStreamStrategy implements SerializableStream {
                                 if (desc != null) {
                                     dos.writeUTF(desc);
                                 } else {
-                                    dos.writeUTF(" ");
+                                    dos.writeUTF("");
                                 }
                             });
                         });
