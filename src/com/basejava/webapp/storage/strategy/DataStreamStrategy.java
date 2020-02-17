@@ -45,11 +45,7 @@ public class DataStreamStrategy implements SerializableStream {
                                 setDate(tli.getLastDate(), dos);
                                 dos.writeUTF(tli.getActivity());
                                 String desc = tli.getDescription();
-                                if (desc != null) {
-                                    dos.writeUTF(desc);
-                                } else {
-                                    dos.writeUTF("");
-                                }
+                                dos.writeUTF(Objects.requireNonNullElse(desc, ""));
                             });
                         });
                 }
@@ -105,7 +101,6 @@ public class DataStreamStrategy implements SerializableStream {
             case EDUCATION:
                 return new TimeLineSection(readList(dis, () -> new TimeLine(new Link(dis.readUTF(), dis.readUTF()),
                         readList(dis, () -> new TimeLine.Item(readDate(dis), readDate(dis), dis.readUTF(), dis.readUTF())))));
-
             default:
                 throw new IllegalStateException("Unexpected value: " + type);
         }
