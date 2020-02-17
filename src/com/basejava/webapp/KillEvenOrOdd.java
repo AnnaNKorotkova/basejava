@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class KillEvenOrOdd {
-
     private static List<Integer> integers = new ArrayList<>();
 
     public static void main(String[] args) {
@@ -19,7 +18,6 @@ public class KillEvenOrOdd {
     }
 
     public static List<Integer> oddOrEven(List<Integer> integers) {
-
         Map<Boolean, List<Integer>> map = integers.stream()
                 .collect(Collectors.partitioningBy((p) -> p % 2 == 0));
         return map.get(map.get(false).size() % 2 != 0);
