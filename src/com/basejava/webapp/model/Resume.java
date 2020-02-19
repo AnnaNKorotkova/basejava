@@ -62,11 +62,6 @@ public class Resume implements Comparable<Resume>, Serializable {
         return resumeSection;
     }
 
-//    public void addContact(Contact contact, String sectionText){
-//        contactSection.put(contact, sectionText);
-//    }
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
