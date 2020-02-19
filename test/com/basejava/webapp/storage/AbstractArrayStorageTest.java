@@ -18,8 +18,6 @@ abstract class AbstractArrayStorageTest extends AbstractStorageTest {
         for (int i = 0; i < 10000; i++) {
             storage.save(new Resume("Ивановы"));
         }
-        assertThrows(StorageException.class, () -> {
-            storage.save(new Resume("+1"));
-        });
+        assertThrows(StorageException.class, () -> storage.save(new Resume("+1")));
     }
 }
