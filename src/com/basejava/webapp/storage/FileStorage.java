@@ -99,7 +99,7 @@ public class FileStorage extends AbstractStorage<File> {
     private File[] isNullFiles() {
         File[] listFiles = directory.listFiles();
         if (listFiles == null) {
-            throw new StorageException("This directory is null", null);
+            throw new StorageException("This directory is null", "");
         }
         return listFiles;
     }

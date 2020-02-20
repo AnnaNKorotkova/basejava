@@ -10,7 +10,7 @@ public class ResumeTestData {
 
     public static Resume createResume(String uuid, String fullName) {
 
-        Map<Contact, String> contactSection = new EnumMap<>(Contact.class);
+/*        Map<Contact, String> contactSection = new EnumMap<>(Contact.class);
 
         for (Contact c : Contact.values()) {
             switch (c) {
@@ -92,7 +92,10 @@ public class ResumeTestData {
                     break;
             }
         }
-        Resume resume = new Resume(uuid, fullName, contactSection, resumeSection);
+
+ */
+//        Resume resume = new Resume(uuid, fullName, contactSection, resumeSection);
+        Resume resume = new Resume(uuid, fullName);
         return resume;
     }
 
