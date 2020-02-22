@@ -16,10 +16,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 abstract class AbstractStorageTest {
     protected final static File STORAGE_DIR = Config.get().getStorageDir();
-    protected final static String DB_URL = Config.get().getDbUrl();
-    protected final static String DB_USER = Config.get().getDbUser();
-    protected final static String DB_PASSWORD = Config.get().getDbPassword();
-
     protected Storage storage;
     protected Resume r1 = createResume("uuid1", "Иванов");
     protected Resume r2 = createResume("uuid2", "Сидоров");
