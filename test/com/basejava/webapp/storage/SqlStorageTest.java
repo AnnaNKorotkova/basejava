@@ -1,10 +1,8 @@
 package com.basejava.webapp.storage;
 
-import com.basejava.webapp.sql.SqlHelper;
-
 class SqlStorageTest extends AbstractStorageTest{
 
     protected SqlStorageTest() {
-        super(new SqlStorage());
+        super(new SqlStorage(DB_URL,DB_USER,DB_PASSWORD));
     }
 }

@@ -4,8 +4,8 @@ import com.basejava.webapp.Config;
 import com.basejava.webapp.exception.ExistStorageException;
 import com.basejava.webapp.exception.NotExistStorageException;
 import com.basejava.webapp.model.Resume;
-import com.basejava.webapp.sql.ConnectionFactory;
 import com.basejava.webapp.sql.SqlHelper;
+import org.postgresql.util.PSQLException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,15 +13,12 @@ import java.util.List;
 
 public class SqlStorage implements Storage {
 
-    private final static String DB_URL = Config.get().getDbUrl();
-    private final static String DB_USER = Config.get().getDbUser();
-    private final static String DB_PASSWORD = Config.get().getDbPassword();
-    public final SqlHelper sqlHelper = new SqlHelper(DB_URL, DB_USER, DB_PASSWORD);
-    public final ConnectionFactory connectionFactory;
+    public final SqlHelper sqlHelper;
 
-    public SqlStorage() {
-        connectionFactory = () -> DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+    public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
+        sqlHelper = new SqlHelper(() -> DriverManager.getConnection(dbUrl, dbUser, dbPassword));
     }
+
 
     @Override
     public void update(Resume resume) {
@@ -43,7 +40,9 @@ public class SqlStorage implements Storage {
             try {
                 ps.execute();
             } catch (SQLException e) {
-                throw new ExistStorageException(resume.getUuid());
+                if ("23505".equals(e.getSQLState())) {
+                    throw new ExistStorageException(resume.getUuid());
+                }
             }
             return null;
         });
@@ -74,8 +73,8 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        List<Resume> resumes = new ArrayList<>();
         return sqlHelper.execute("SELECT * FROM resume order by full_name, uuid", ps -> {
+            List<Resume> resumes = new ArrayList<>();
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 resumes.add(new Resume(rs.getString("uuid").substring(0, 5), rs.getString("full_name")));
