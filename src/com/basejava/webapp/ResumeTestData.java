@@ -9,26 +9,26 @@ import java.util.*;
 public class ResumeTestData {
 
     public static Resume createResume(String uuid, String fullName) {
-
-/*        Map<Contact, String> contactSection = new EnumMap<>(Contact.class);
+        Resume resume = new Resume(uuid, fullName);
+     //   Map<Contact, String> contactSection = new EnumMap<>(Contact.class);
 
         for (Contact c : Contact.values()) {
             switch (c) {
                 case PHONE:
-                    contactSection.put(c, " 7 911 111 11 11 ");
+                    resume.addContact(c, " 7 911 111 11 11 ");
                     break;
                 case SKYPE:
-                    contactSection.put(c, "wer");
+                    resume.addContact(c, "wer");
                     break;
                 case EMAIL:
-                    contactSection.put(c, "qqqq@mail.ru");
+                    resume.addContact(c, "qqqq@mail.ru");
                     break;
                 case SOCIAL_NETS:
-                    contactSection.put(c, "Vk/123");
+                    resume.addContact(c, "Vk/123");
                     break;
             }
         }
-
+/*
         Map<TypeSection, AbstractSection> resumeSection = new EnumMap<>(TypeSection.class);
 
         for (TypeSection tp : TypeSection.values()) {
@@ -95,7 +95,7 @@ public class ResumeTestData {
 
  */
 //        Resume resume = new Resume(uuid, fullName, contactSection, resumeSection);
-        Resume resume = new Resume(uuid, fullName);
+
         return resume;
     }
 
