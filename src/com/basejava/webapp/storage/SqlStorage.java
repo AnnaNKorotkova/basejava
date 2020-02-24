@@ -1,11 +1,8 @@
 package com.basejava.webapp.storage;
 
-import com.basejava.webapp.exception.ExistStorageException;
 import com.basejava.webapp.exception.NotExistStorageException;
-import com.basejava.webapp.exception.StorageException;
 import com.basejava.webapp.model.Contact;
 import com.basejava.webapp.model.Resume;
-import com.basejava.webapp.sql.ExceptionUtil;
 import com.basejava.webapp.sql.SqlHelper;
 
 import java.sql.*;
