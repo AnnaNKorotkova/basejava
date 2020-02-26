@@ -1,13 +1,10 @@
 package com.basejava.webapp.sql;
 
 import com.basejava.webapp.exception.StorageException;
-import com.basejava.webapp.model.Contact;
-import com.basejava.webapp.model.Resume;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Map;
 
 public class SqlHelper {
 
@@ -41,18 +38,4 @@ public class SqlHelper {
             throw new StorageException(e);
         }
     }
-
-//    public void modifyContact(PreparedStatement ps, Resume resume) {
-//        try (ps) {
-//            for (Map.Entry<Contact, String> e : resume.getContactSection().entrySet()) {
-//                ps.setString(1, e.getValue());
-//                ps.setString(2, e.getKey().name());
-//                ps.setString(3, resume.getUuid());
-//                ps.addBatch();
-//            }
-//        ps.executeBatch();
-//        } catch (SQLException e) {
-//            throw ExceptionUtil.convertException(e);
-//        }
-//    }
 }

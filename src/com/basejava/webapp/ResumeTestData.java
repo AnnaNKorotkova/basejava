@@ -10,22 +10,19 @@ public class ResumeTestData {
 
     public static Resume createResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
-     //   Map<Contact, String> contactSection = new EnumMap<>(Contact.class);
+        //   Map<Contact, String> contactSection = new EnumMap<>(Contact.class);
 
         for (Contact c : Contact.values()) {
             switch (c) {
                 case PHONE:
-                    resume.addContact(c, " 7 911 111 11 11 ");
+                    resume.addContact(c, "8901234567");
                     break;
                 case SKYPE:
-                    resume.addContact(c, "wer");
-                    break;
                 case EMAIL:
-                    resume.addContact(c, "qqqq@mail.ru");
+                    resume.addContact(c, "basejava@mail.net");
                     break;
                 case SOCIAL_NETS:
-                    resume.addContact(c, "Vk/123");
-                    break;
+//                    resume.addContact(c, null);
             }
         }
 /*

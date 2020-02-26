@@ -37,6 +37,11 @@ public class Resume implements Comparable<Resume>, Serializable {
         this.fullName = Objects.requireNonNull(fullName, "Name can't be null");
     }
 
+    public Resume(String uuid, String fullName, Map<Contact, String> contactSection) {
+        this(uuid, fullName);
+        this.contactSection = contactSection;
+    }
+
     public Resume(String uuid, String fullName, Map<Contact, String> contactSection, Map<TypeSection, AbstractSection> resumeSection) {
         this(uuid, fullName);
         this.contactSection = contactSection;
