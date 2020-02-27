@@ -19,7 +19,7 @@ public class ResumeTestData {
                     break;
                 case SKYPE:
                 case EMAIL:
-                    resume.addContact(c, "basejava@mail.net");
+   //                 resume.addContact(c, "basejava@mail.net");
                     break;
                 case SOCIAL_NETS:
 //                    resume.addContact(c, null);
