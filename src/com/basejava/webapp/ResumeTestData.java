@@ -18,24 +18,27 @@ public class ResumeTestData {
                     resume.addContact(c, "8901234567");
                     break;
                 case SKYPE:
+                    resume.addContact(c,"ertyuweeee");
+                    break;
                 case EMAIL:
-   //                 resume.addContact(c, "basejava@mail.net");
+                    resume.addContact(c, "basejava@mail.net");
                     break;
                 case SOCIAL_NETS:
-//                    resume.addContact(c, null);
+                    resume.addContact(c, "vk/ki");
             }
         }
-/*
+
         Map<TypeSection, AbstractSection> resumeSection = new EnumMap<>(TypeSection.class);
 
         for (TypeSection tp : TypeSection.values()) {
             switch (tp) {
                 case PERSONAL:
-                    resumeSection.put(tp, new TextSection("Аналитический склад ума, сильная логика, " +
+                    resume.addSection(tp,new TextSection("Аналитический склад ума, сильная логика, " +
                             "креативность, инициативность. Пурист кода и архитектуры."));
+
                     break;
                 case OBJECTIVE:
-                    resumeSection.put(tp, new TextSection("Ведущий стажировок и корпоративного " +
+                    resume.addSection(tp,new TextSection("Ведущий стажировок и корпоративного " +
                             "обучения по Java Web и Enterprise технологиям"));
                     break;
                 case ACHIEVEMENT:
@@ -46,7 +49,7 @@ public class ResumeTestData {
                     achievements.add("Реализация c нуля Rich Internet Application приложения на стеке технологий JPA, Spring, Spring-MVC, GWT, ExtGWT (GXT), Commet, HTML5, Highstock для алгоритмического трейдинга.");
                     achievements.add("Создание JavaEE фреймворка для отказоустойчивого взаимодействия слабо-связанных сервисов (SOA-base архитектура, JAX-WS, JMS, AS Glassfish). Сбор статистики сервисов и информации о состоянии через систему мониторинга Nagios. Реализация онлайн клиента для администрирования и мониторинга системы по JMX (Jython/ Django).");
                     achievements.add("Реализация протоколов по приему платежей всех основных платежных системы России (Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа.");
-                    resumeSection.put(tp, new ListSection(achievements));
+                    resume.addSection(tp,  new ListSection(achievements));
                     break;
                 case QUALIFICATIONS:
                     List<String> qualification = new ArrayList<>();
@@ -65,8 +68,9 @@ public class ResumeTestData {
                     qualification.add("администрирование Hudson/Jenkins, Ant + custom task, SoapUI, JPublisher, Flyway, Nagios, iReport, OpenCmis, Bonita, pgBouncer.)");
                     qualification.add("Отличное знание и опыт применения концепций ООП, SOA, шаблонов проектрирования, архитектурных шаблонов, UML, функционального программирования");
                     qualification.add("Родной русский, английский \"upper intermediate\"");
-                    resumeSection.put(tp, new ListSection(qualification));
+                    resume.addSection(tp, new ListSection(qualification));
                     break;
+/*
                 case EXPERIENCE:
                     List<TimeLine> listExp = new ArrayList<>();
 
@@ -87,10 +91,12 @@ public class ResumeTestData {
                                     new TimeLine.Item(DateUtil.of(1993, Month.SEPTEMBER), DateUtil.of(1996, Month.JULY), "Аспирантура (программист С, С++)", null)))));
                     resumeSection.put(tp, new TimeLineSection(listEdu));
                     break;
+
+ */
             }
         }
 
- */
+
 //        Resume resume = new Resume(uuid, fullName, contactSection, resumeSection);
 
         return resume;

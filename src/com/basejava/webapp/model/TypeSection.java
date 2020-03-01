@@ -15,5 +15,7 @@ public enum TypeSection {
 
     private final String title;
 
-
-}
+    public String getName() {
+        return title;
+    }
+ }

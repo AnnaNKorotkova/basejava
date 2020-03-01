@@ -17,3 +17,22 @@ create table contact
 alter table contact owner to postgres;
 
 create unique index contact_uuid_type_index on contact (resume_uuid, type);
+
+create table section
+(
+    id serial,
+    resume_uuid CHAR(36)
+        constraint section_resume_uuid_fk
+            references resume
+            on delete cascade,
+    type text not null,
+    text_section text not null
+);
+
+create unique index section_id_uindex
+    on section (id);
+
+alter table section
+    add constraint section_pk
+        primary key (id);
+

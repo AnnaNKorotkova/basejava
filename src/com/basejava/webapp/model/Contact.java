@@ -12,4 +12,8 @@ public enum Contact {
     }
 
     private final String title;
+
+    public String getName() {
+        return title;
+    }
 }
