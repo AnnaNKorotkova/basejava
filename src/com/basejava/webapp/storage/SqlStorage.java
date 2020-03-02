@@ -43,18 +43,22 @@ public class SqlStorage implements Storage {
             try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM section WHERE resume_uuid = ?")) {
                 ps.setString(1, uuid);
                 ResultSet rs = ps.executeQuery();
-                while (rs.next()){
+                while (rs.next()) {
                     TypeSection type = TypeSection.valueOf(rs.getString("type"));
                     String textSection = rs.getString("text_section");
-                    if (type == TypeSection.PERSONAL || type == TypeSection.OBJECTIVE) {
-                        TextSection ts = new TextSection(textSection);
-                        resume.addSection(type, ts);
-                    } else if (type == TypeSection.ACHIEVEMENT || type == TypeSection.QUALIFICATIONS) {
-                        ListSection ls = new ListSection(Arrays.asList(textSection.split("\\n")));
-                        resume.addSection(type, ls);
+                    switch (type) {
+                        case PERSONAL:
+                        case OBJECTIVE:
+                            TextSection ts = new TextSection(textSection);
+                            resume.addSection(type, ts);
+                            break;
+                        case QUALIFICATIONS:
+                        case ACHIEVEMENT:
+                            ListSection ls = new ListSection(Arrays.asList(textSection.split("\\n")));
+                            resume.addSection(type, ls);
+                            break;
                     }
                 }
-
             }
             return resume;
         });
@@ -81,18 +85,23 @@ public class SqlStorage implements Storage {
                 }
             }
 
-            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM section")){
+            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM section")) {
                 ResultSet rs = ps.executeQuery();
-                while (rs.next()){
+                while (rs.next()) {
                     String resumeUuid = rs.getString("resume_uuid");
                     TypeSection type = TypeSection.valueOf(rs.getString("type"));
                     String textSection = rs.getString("text_section");
-                    if (type == TypeSection.PERSONAL || type == TypeSection.OBJECTIVE) {
-                        TextSection ts = new TextSection(textSection);
-                        map.get(resumeUuid).addSection(type, ts);
-                    } else if (type == TypeSection.ACHIEVEMENT || type == TypeSection.QUALIFICATIONS) {
-                        ListSection ls = new ListSection(Arrays.asList(textSection.split("\\n")));
-                        map.get(resumeUuid).addSection(type, ls);
+                    switch (type) {
+                        case PERSONAL:
+                        case OBJECTIVE:
+                            TextSection ts = new TextSection(textSection);
+                            map.get(resumeUuid).addSection(type, ts);
+                            break;
+                        case ACHIEVEMENT:
+                        case QUALIFICATIONS:
+                            ListSection ls = new ListSection(Arrays.asList(textSection.split("\\n")));
+                            map.get(resumeUuid).addSection(type, ls);
+                            break;
                     }
                 }
             }
@@ -164,12 +173,7 @@ public class SqlStorage implements Storage {
         try (PreparedStatement ps = conn.prepareStatement("INSERT INTO contact (values, type, resume_uuid) VALUES (?, ?, ?)")) {
             for (Map.Entry<Contact, String> e : resume.getContactSection().entrySet()) {
                 String value = e.getValue();
-                if (value != null) {
-                    ps.setString(1, value);
-                    ps.setString(2, e.getKey().name());
-                    ps.setString(3, resume.getUuid());
-                    ps.addBatch();
-                }
+                dataForResume(ps, value, e.getKey().name(), resume);
             }
             ps.executeBatch();
         }
@@ -188,10 +192,7 @@ public class SqlStorage implements Storage {
                 if (e.getValue() instanceof TextSection) {
                     String textSection = ((TextSection) e.getValue()).getTextContainer();
                     if (textSection != null) {
-                        ps.setString(1, textSection);
-                        ps.setString(2, e.getKey().name());
-                        ps.setString(3, resume.getUuid());
-                        ps.addBatch();
+                        dataForResume(ps, textSection, e.getKey().name(), resume);
                     }
                 } else if (e.getValue() instanceof ListSection) {
                     List<String> list = ((ListSection) e.getValue()).getTextList();
@@ -218,5 +219,12 @@ public class SqlStorage implements Storage {
             ps.setString(1, resume.getUuid());
             ps.execute();
         }
+    }
+
+    private void dataForResume(PreparedStatement ps, String text, String name, Resume resume) throws SQLException {
+        ps.setString(1, text);
+        ps.setString(2, name);
+        ps.setString(3, resume.getUuid());
+        ps.addBatch();
     }
 }
