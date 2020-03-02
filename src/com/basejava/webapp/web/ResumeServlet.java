@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.Map;
 
 public class ResumeServlet extends HttpServlet {
+
+    SqlStorage sqlStorage = new SqlStorage(Config.get().getDbUrl(), Config.get().getDbUser(), Config.get().getDbPassword());
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
@@ -25,7 +28,6 @@ public class ResumeServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
         String uuid = request.getParameter("uuid");
-        SqlStorage sqlStorage = new SqlStorage(Config.get().getDbUrl(), Config.get().getDbUser(), Config.get().getDbPassword());
 
         List<Resume> listResume = new ArrayList<>();
         PrintWriter out = response.getWriter();
