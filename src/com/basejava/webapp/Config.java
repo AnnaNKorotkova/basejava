@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.Properties;
 
 public class Config {
-    protected static final File PROPS = new File("config/resumes.properties");
+    protected static final File PROPS = new File("/home/mc/basejava/config/resumes.properties");
     private static final Config INSTANCE = new Config();
     private Properties props = new Properties();
     private File storageDir;

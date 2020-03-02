@@ -1,5 +1,6 @@
 package com.basejava.webapp.web;
 
+import com.basejava.webapp.Config;
 import com.basejava.webapp.model.Contact;
 import com.basejava.webapp.model.Resume;
 import com.basejava.webapp.storage.SqlStorage;
@@ -24,7 +25,7 @@ public class ResumeServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
         String uuid = request.getParameter("uuid");
-        SqlStorage sqlStorage = new SqlStorage("jdbc:postgresql://localhost:5432/resumes", "postgres", "postgres");
+        SqlStorage sqlStorage = new SqlStorage(Config.get().getDbUrl(), Config.get().getDbUser(), Config.get().getDbPassword());
 
         List<Resume> listResume = new ArrayList<>();
         PrintWriter out = response.getWriter();
