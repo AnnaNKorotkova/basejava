@@ -4,6 +4,7 @@ import com.basejava.webapp.Config;
 import com.basejava.webapp.model.Contact;
 import com.basejava.webapp.model.Resume;
 import com.basejava.webapp.storage.SqlStorage;
+import com.basejava.webapp.storage.Storage;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +18,7 @@ import java.util.Map;
 
 public class ResumeServlet extends HttpServlet {
 
-    SqlStorage sqlStorage = new SqlStorage(Config.get().getDbUrl(), Config.get().getDbUser(), Config.get().getDbPassword());
+    Storage sqlStorage = Config.get().getStorage();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
