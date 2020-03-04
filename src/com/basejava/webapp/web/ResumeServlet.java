@@ -48,8 +48,8 @@ public class ResumeServlet extends HttpServlet {
         out.println("</head>");
         out.println("<body>");
         for (Resume r : list) {
-            out.println("<h2><strong>" + r.getFullName() + "</strong></h2>");
-            out.println(" <h4 id=\"h_99989867421582969268143\"><em>Контакты</em></h4>");
+            out.println("<h2><strong><a href=\"resume?uuid=" + r.getUuid()+ "\">" + r.getFullName() + "</a></strong></h2>");
+            out.println(" <h4><em>Контакты</em></h4>");
             out.println("<table border=\"0\" style=\"height: 18px; width: 100%; border-collapse: collapse;\">");
             for (Map.Entry<Contact, String> e : r.getContactSection().entrySet()) {
                 out.println("<tbody>");
