@@ -28,19 +28,19 @@ public class ResumeServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
-        String uuid = request.getParameter("uuid");
-
-        List<Resume> listResume = new ArrayList<>();
-        PrintWriter out = response.getWriter();
-        if (uuid == null) {
-            listResume = sqlStorage.getAllSorted();
-            print(out, listResume);
-        } else {
-            listResume.add(sqlStorage.get(uuid));
-            print(out, listResume);
-        }
+//        String uuid = request.getParameter("uuid");
+//
+        List<Resume> listResume = sqlStorage.getAllSorted();//new ArrayList<>();
+//        PrintWriter out = response.getWriter();
+//        if (uuid == null) {
+//            listResume = sqlStorage.getAllSorted();
+//            print(out, listResume);
+//        } else {
+//            listResume.add(sqlStorage.get(uuid));
+//            print(out, listResume);
+//        }
         request.setAttribute("listResume", listResume);
-//        getServletContext().getRequestDispatcher("/template.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher("/WEB-INF/jsp/template.jsp").forward(request, response);
     }
 
     private void print(PrintWriter out, List<Resume> list) {

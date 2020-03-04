@@ -3,6 +3,7 @@ package com.basejava.webapp.storage;
 import com.basejava.webapp.exception.NotExistStorageException;
 import com.basejava.webapp.model.*;
 import com.basejava.webapp.sql.SqlHelper;
+import com.basejava.webapp.util.JsonParser;
 
 import java.sql.*;
 import java.util.*;
@@ -158,8 +159,10 @@ public class SqlStorage implements Storage {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        List<String> list = ((ListSection) e.getValue()).getTextList();
-                        ps.setString(1, String.join("\n", list));
+//                        List<String> list = ((ListSection) e.getValue()).getTextList();
+//                        ps.setString(1, String.join("\n", list));
+                        ps.setString(1, JsonParser.write(e.getValue()));
+
                         break;
                 }
                 ps.setString(2, e.getKey().name());
@@ -208,8 +211,9 @@ public class SqlStorage implements Storage {
                 break;
             case ACHIEVEMENT:
             case QUALIFICATIONS:
-                ListSection ls = new ListSection(Arrays.asList(textSection.split("\\n")));
-                r.addSection(type, ls);
+//                ListSection ls = new ListSection(Arrays.asList(textSection.split("\\n")));
+//                r.addSection(type, ls);
+                r.addSection(type, JsonParser.read(textSection, ListSection.class));
                 break;
         }
     }
