@@ -151,20 +151,7 @@ public class SqlStorage implements Storage {
     private void addSection(Connection conn, Resume resume) throws SQLException {
         try (PreparedStatement ps = conn.prepareStatement("INSERT INTO section (text_section, type, resume_uuid) VALUES (?, ?, ?)")) {
             for (Map.Entry<TypeSection, AbstractSection> e : resume.getResumeSection().entrySet()) {
-                switch (e.getKey()) {
-                    case PERSONAL:
-                    case OBJECTIVE:
-                        String textSection = ((TextSection) e.getValue()).getTextContainer();
-                        ps.setString(1, textSection);
-                        break;
-                    case ACHIEVEMENT:
-                    case QUALIFICATIONS:
-//                        List<String> list = ((ListSection) e.getValue()).getTextList();
-//                        ps.setString(1, String.join("\n", list));
-                        ps.setString(1, JsonParser.write(e.getValue()));
-
-                        break;
-                }
+                ps.setString(1, JsonParser.write(e.getValue(), AbstractSection.class));
                 ps.setString(2, e.getKey().name());
                 ps.setString(3, resume.getUuid());
                 ps.addBatch();
@@ -203,19 +190,7 @@ public class SqlStorage implements Storage {
     private void forGetSection(ResultSet rs, Resume r) throws SQLException {
         TypeSection type = TypeSection.valueOf(rs.getString("type"));
         String textSection = rs.getString("text_section");
-        switch (type) {
-            case PERSONAL:
-            case OBJECTIVE:
-                TextSection ts = new TextSection(textSection);
-                r.addSection(type, ts);
-                break;
-            case ACHIEVEMENT:
-            case QUALIFICATIONS:
-//                ListSection ls = new ListSection(Arrays.asList(textSection.split("\\n")));
-//                r.addSection(type, ls);
-                r.addSection(type, JsonParser.read(textSection, ListSection.class));
-                break;
-        }
+        r.addSection(type, JsonParser.read(textSection, AbstractSection.class));
     }
 
     private void forDelete(Connection conn, String sql, Resume resume) throws SQLException {

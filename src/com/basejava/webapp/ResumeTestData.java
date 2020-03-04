@@ -69,7 +69,7 @@ public class ResumeTestData {
                     qualification.add("Родной русский, английский \"upper intermediate\"");
                     resume.addSection(tp, new ListSection(qualification));
                     break;
-/*
+
                 case EXPERIENCE:
                     List<TimeLine> listExp = new ArrayList<>();
 
@@ -79,7 +79,7 @@ public class ResumeTestData {
                             "Разработчик ПО", "Разработка информационной модели, проектирование интерфейсов, реализация и отладка ПО на мобильной IN платформе Siemens @vantage (Java, Unix).")))));
                     listExp.add(new TimeLine("Enkata", null, new ArrayList<>(Collections.singletonList(new TimeLine.Item(DateUtil.of(2007, Month.MARCH), DateUtil.of(2008, Month.JULY),
                             "Разработчик ПО", "Реализация клиентской (Eclipse RCP) и серверной (JBoss 4.2, Hibernate 3.0, Tomcat, JMS) частей кластерного J2EE приложения (OLAP, Data mining).")))));
-                    resumeSection.put(tp, new TimeLineSection(listExp));
+                    resume.addSection(tp, new TimeLineSection(listExp));
                     break;
                 case EDUCATION:
                     List<TimeLine> listEdu = new ArrayList<>();
@@ -88,10 +88,10 @@ public class ResumeTestData {
                     listEdu.add(new TimeLine("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", null,
                             new ArrayList<>(Arrays.asList(new TimeLine.Item(DateUtil.of(1987, Month.SEPTEMBER), DateUtil.of(1993, Month.JULY), "Инженер (программист Fortran, C)", null),
                                     new TimeLine.Item(DateUtil.of(1993, Month.SEPTEMBER), DateUtil.of(1996, Month.JULY), "Аспирантура (программист С, С++)", null)))));
-                    resumeSection.put(tp, new TimeLineSection(listEdu));
+                    resume.addSection(tp, new TimeLineSection(listEdu));
                     break;
 
- */
+
             }
         }
 
