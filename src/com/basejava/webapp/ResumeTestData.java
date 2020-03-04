@@ -34,9 +34,8 @@ public class ResumeTestData {
             switch (tp) {
                 case PERSONAL:
                     resume.addSection(tp,new TextSection("Аналитический склад ума, сильная логика, " +
-                            "креативность, инициативность. Пурист кода и архитектуры."));
-
-                    break;
+                        "креативность, инициативность. Пурист кода и архитектуры."));
+                break;
                 case OBJECTIVE:
                     resume.addSection(tp,new TextSection("Ведущий стажировок и корпоративного " +
                             "обучения по Java Web и Enterprise технологиям"));

@@ -154,24 +154,17 @@ public class SqlStorage implements Storage {
                     case PERSONAL:
                     case OBJECTIVE:
                         String textSection = ((TextSection) e.getValue()).getTextContainer();
-                        if (textSection != null) {
-                            ps.setString(1, textSection);
-                            ps.setString(2, e.getKey().name());
-                            ps.setString(3, resume.getUuid());
-                            ps.addBatch();
-                            break;
-                        }
+                        ps.setString(1, textSection);
+                        break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
                         List<String> list = ((ListSection) e.getValue()).getTextList();
-                        if (list.size() != 0) {
-                            ps.setString(1, String.join("\n", list));
-                            ps.setString(2, e.getKey().name());
-                            ps.setString(3, resume.getUuid());
-                            ps.addBatch();
-                        }
+                        ps.setString(1, String.join("\n", list));
                         break;
                 }
+                ps.setString(2, e.getKey().name());
+                ps.setString(3, resume.getUuid());
+                ps.addBatch();
             }
             ps.executeBatch();
         }
@@ -188,21 +181,19 @@ public class SqlStorage implements Storage {
         ps.addBatch();
     }
 
-    private interface ObjectToGet<T> {
-        T takeObj() throws SQLException;
+    private interface ObjectToGet {
+        Resume takeObj() throws SQLException;
     }
 
-    private <T> void getContact(ResultSet rs, ObjectToGet<T> obj) throws SQLException {
+    private void getContact(ResultSet rs, ObjectToGet obj) throws SQLException {
         while (rs.next()) {
-            T resume = obj.takeObj();
-            ((Resume) resume).addContact(Contact.valueOf(rs.getString("type")), rs.getString("values"));
+            obj.takeObj().addContact(Contact.valueOf(rs.getString("type")), rs.getString("values"));
         }
     }
 
-    private <T> void getSection(ResultSet rs, ObjectToGet<T> obj) throws SQLException {
+    private void getSection(ResultSet rs, ObjectToGet obj) throws SQLException {
         while (rs.next()) {
-            T resume = obj.takeObj();
-            forGetSection(rs, (Resume) resume);
+            forGetSection(rs, obj.takeObj());
         }
     }
 
@@ -222,7 +213,8 @@ public class SqlStorage implements Storage {
                 break;
         }
     }
-    private void forDelete(Connection conn, String sql, Resume resume) throws SQLException{
+
+    private void forDelete(Connection conn, String sql, Resume resume) throws SQLException {
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, resume.getUuid());
             ps.execute();
