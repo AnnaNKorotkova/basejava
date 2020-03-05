@@ -36,7 +36,6 @@ public class TimeLine extends AbstractSection {
     public static class Item implements Serializable{
 
         private final static long serialVersionUID = 1L;
-       // DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/YYYY");
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
         private LocalDate startDate;
         @XmlJavaTypeAdapter(LocalDateAdapter.class)

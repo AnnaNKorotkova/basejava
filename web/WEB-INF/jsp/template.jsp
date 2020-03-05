@@ -15,7 +15,7 @@
             <tbody>
             <tr style="height: 18px;">
                 <td style="width: 13%; height: 18px;">
-                        ${t.key.name}
+                        ${t.key.title}
                 </td>
                 <td style="width: 87%; height: 18px;">
                         ${t.value}
