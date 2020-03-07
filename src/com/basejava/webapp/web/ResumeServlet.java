@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 
 import static java.lang.Integer.parseInt;
@@ -136,7 +137,7 @@ public class ResumeServlet extends HttpServlet {
                 resume = storage.get(uuid);
                 break;
             case "save":
-                resume = new Resume();
+                resume = BlankResume.createBlankResume();
                 break;
             default:
                 throw new IllegalArgumentException("Action " + action + " is illegal");
