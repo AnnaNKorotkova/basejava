@@ -55,7 +55,6 @@
                         <tr>
                             <td colspan="2">
                                 <ul>
-                                        ${section.key}_${count}<!-- Удалить -->
                                     <input type="text" name="${section.key.name}_${count}" size="100" value="${text}">
                                     <c:set var="count" value="${count+1}"/>
                                 </ul>
@@ -75,9 +74,9 @@
                         <tr>
                             <td width="15%" style="vertical-align: top">
                                 <ul>
-                                    <input type="text" name="${countLink}_name" size="50" value="${link.name}"
+                                    <input type="text" name="${section.key.name}_${countLink}_name" size="50" value="${link.name}"
                                            placeholder="Назнание">
-                                    <input type="text" name="${countLink}_url" size="50" value="${link.url}"
+                                    <input type="text" name="${section.key.name}_${countLink}_url" size="50" value="${link.url}"
                                            placeholder="URL">
                                 </ul>
                             </td>
@@ -89,18 +88,18 @@
                             <tr>
                                 <td width="15%" style="vertical-align: top">
                                     <ul>
-                                        <input type="text" name="${countLink}_startDate_${countItem}" size="6"
+                                        <input type="text" name="${section.key.name}_${countLink}_startDate_${countItem}" size="6"
                                                value="${item.startDate.format(DateTimeFormatter.ofPattern("YYYY-MM"))}"
                                                placeholder="YYYY-MM">
-                                        <input type="text" name="${countLink}_lastDate_${countItem}" size="6"
+                                        <input type="text" name="${section.key.name}_${countLink}_lastDate_${countItem}" size="6"
                                                value="${item.lastDate.format(DateTimeFormatter.ofPattern("YYYY-MM"))}"
                                                placeholder="YYYY-MM">
                                     </ul>
                                 </td>
                                 <td>
-                                    <input type="text" name="${countLink}_activity_${countItem}" size="50"
+                                    <input type="text" name="${section.key.name}_${countLink}_activity_${countItem}" size="50"
                                            value="${item.activity}" placeholder="activity">
-                                    <input type="text" name="${countLink}_description_${countItem}" size="50"
+                                    <input type="text" name="${section.key.name}_${countLink}_description_${countItem}" size="50"
                                            value="${item.description}" placeholder="описание">
                                 </td>
                             </tr>

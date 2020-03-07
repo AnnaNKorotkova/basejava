@@ -82,30 +82,30 @@ public class ResumeServlet extends HttpServlet {
                 case EDUCATION:
                     count = 0;
                     List<TimeLine> listTimeLine = new ArrayList<>();
-                    String name = request.getParameter(count + "_name");
+                    String name = request.getParameter(type.getName() + '_' + count + "_name");
                     while (name != null) {
                         if (name.trim().length() != 0) {
-                            name = request.getParameter(count + "_name");
-                            String url = request.getParameter(count + "_url");
+                            name = request.getParameter(type.getName() + '_' + count + "_name");
+                            String url = request.getParameter(type.getName() + '_' + count + "_url");
                             int countItem = 0;
-                            String activity = request.getParameter(count + "_activity_" + countItem);
+                            String activity = request.getParameter(type.getName() + '_' + count + "_activity_" + countItem);
                             List<TimeLine.Item> listItems = new ArrayList<>();
                             while (activity != null) {
-                                int sdy = parseInt((request.getParameter(count + "_startDate_" + countItem)).substring(0, 4));
-                                int sdm = parseInt((request.getParameter(count + "_startDate_" + countItem)).substring(5));
-                                int ldy = parseInt((request.getParameter(count + "_lastDate_" + countItem)).substring(0, 4));
-                                int ldm = parseInt((request.getParameter(count + "_lastDate_" + countItem)).substring(5));
+                                int sdy = parseInt((request.getParameter(type.getName() + '_' + count + "_startDate_" + countItem)).substring(0, 4));
+                                int sdm = parseInt((request.getParameter(type.getName() + '_' + count + "_startDate_" + countItem)).substring(5));
+                                int ldy = parseInt((request.getParameter(type.getName() + '_' + count + "_lastDate_" + countItem)).substring(0, 4));
+                                int ldm = parseInt((request.getParameter(type.getName() + '_' + count + "_lastDate_" + countItem)).substring(5));
                                 LocalDate startDate = DateUtil.of(sdy, Month.of(sdm));
                                 LocalDate lastDate = DateUtil.of(ldy, Month.of(ldm));
-                                String description = request.getParameter(count + "_description_" + countItem);
+                                String description = request.getParameter(type.getName() + '_' + count + "_description_" + countItem);
                                 listItems.add(new TimeLine.Item(startDate, lastDate, activity, description));
                                 countItem++;
-                                activity = request.getParameter(count + "_activity_" + countItem);
+                                activity = request.getParameter(type.getName() + '_' + count + "_activity_" + countItem);
                             }
                             listTimeLine.add(new TimeLine(name, url, listItems));
                         }
                         count++;
-                        name = request.getParameter(count + "_name");
+                        name = request.getParameter(type.getName() + '_' + count + "_name");
                     }
                     resume.addSection(type, new TimeLineSection(listTimeLine));
                     break;
