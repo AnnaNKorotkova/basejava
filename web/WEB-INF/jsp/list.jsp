@@ -23,13 +23,18 @@
             <jsp:useBean id="resume" type="com.basejava.webapp.model.Resume"/>
             <tr>
                 <td><a href="resume?uuid=${resume.uuid}&action=view">${resume.fullName}</a></td>
-                <td><%=Contact.EMAIL.toHtml(resume.getContact(Contact.EMAIL))%></td>
+                <td><%=Contact.EMAIL.toHtml(resume.getContact(Contact.EMAIL))%>
+                </td>
                 <td><a href="resume?uuid=${resume.uuid}&action=delete"><img src="img/delete.png"></a></td>
                 <td><a href="resume?uuid=${resume.uuid}&action=edit"><img src="img/pencil.png"></a></td>
             </tr>
         </c:forEach>
     </table>
-    <a href="resume?uuid=${resume.uuid}&action=save"><button type="submit">Создать новое резюме</button></a>
+    <ul>
+        <a href="resume?uuid=${resume.uuid}&action=save">
+            <button type="submit">Создать новое резюме</button>
+        </a>
+    </ul>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
 </body>
