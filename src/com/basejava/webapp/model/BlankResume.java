@@ -12,7 +12,7 @@ public class BlankResume {
 
     public static Resume createBlankResume() {
 
-        Resume resume = new Resume("");
+        Resume resume = new Resume("", "");
 
         for (Contact c : Contact.values()) {
                     resume.addContact(c, "");
