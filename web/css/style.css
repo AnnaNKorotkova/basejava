@@ -45,6 +45,10 @@ li {
     margin: 15px 0;
 }
 
+ho {
+    display: inline;
+    margin-right: 5px
+}
 
 a[href^="skype:"] {
     padding-left: 20px !important;
