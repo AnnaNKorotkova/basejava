@@ -32,17 +32,17 @@
             <jsp:useBean id="section" type="java.util.Map.Entry<com.basejava.webapp.model.TypeSection
                     , com.basejava.webapp.model.AbstractSection>"/>
             <tr>
-                <td colspan="2"><h2><a name="type.name">${section.key.name}</a></h2></td>
+                <td><h2><a name="type.name">${section.key.name}</a></h2></td>
             </tr>
             <c:choose>
                 <c:when test="${section.key eq 'PERSONAL' || section.key eq 'OBJECTIVE'}">
                     <c:set var="textSection" value="${section.value}"/>
                     <jsp:useBean id="textSection" type="com.basejava.webapp.model.TextSection"/>
                     <tr>
-                        <td colspan="2">
-                            <input type="text" name="${section.key.name}" size="100"
-                                   value="${textSection.textContainer}">
+                        <td>
 
+                            <input type="text" name="${section.key.name}" size="120"
+                                   value="${textSection.textContainer}">
                         </td>
                     </tr>
                 </c:when>
@@ -53,11 +53,12 @@
                     <c:set var="count" value="0"/>
                     <c:forEach items="${listSection.textList}" var="text">
                         <tr>
-                            <td colspan="2">
-                                <ul>
-                                    <input type="text" name="${section.key.name}_${count}" size="100" value="${text}">
+                            <td>
+                                <dl>
+                                    <textarea name="${section.key.name}_${count}" cols="120" rows="3">${text}</textarea>
+                                    <!--<input type="text" name="${section.key.name}_${count}" size="100" value="${text}">-->
                                     <c:set var="count" value="${count+1}"/>
-                                </ul>
+                                </dl>
                             </td>
                         </tr>
                     </c:forEach>
@@ -72,13 +73,17 @@
                         <jsp:useBean id="link" type="com.basejava.webapp.model.Link"/>
 
                         <tr>
-                            <td width="15%" style="vertical-align: top">
-                                <ul>
-                                    <input type="text" name="${section.key.name}_${countLink}_name" size="50" value="${link.name}"
+                            <td>
+                                <dl>
+                                    <input type="text" name="${section.key.name}_${countLink}_name" size="120"
+                                           value="${link.name}"
                                            placeholder="Назнание">
-                                    <input type="text" name="${section.key.name}_${countLink}_url" size="50" value="${link.url}"
+                                </dl>
+                                <dl>
+                                    <input type="text" name="${section.key.name}_${countLink}_url" size="120"
+                                           value="${link.url}"
                                            placeholder="URL">
-                                </ul>
+                                </dl>
                             </td>
                         </tr>
                         <c:set var="countItem" value="0"/>
@@ -87,22 +92,35 @@
 
                             <tr>
                                 <td width="15%" style="vertical-align: top">
-                                    <ul>
-                                        <input type="text" name="${section.key.name}_${countLink}_startDate_${countItem}" size="6"
+                                    <dl>
+                                        <label for="start">Начало периода:</label>
+                                        <input type="text" id="start"
+                                               name="${section.key.name}_${countLink}_startDate_${countItem}" size="6"
                                                value="${item.startDate.format(DateTimeFormatter.ofPattern("YYYY-MM"))}"
                                                placeholder="YYYY-MM">
-                                        <input type="text" name="${section.key.name}_${countLink}_lastDate_${countItem}" size="6"
+                                        <label for="end">Конец периода:</label>
+                                        <input type="text" id="end"
+                                               name="${section.key.name}_${countLink}_lastDate_${countItem}" size="6"
                                                value="${item.lastDate.format(DateTimeFormatter.ofPattern("YYYY-MM"))}"
                                                placeholder="YYYY-MM">
-                                    </ul>
+                                    </dl>
                                 </td>
                                 <td>
-                                    <input type="text" name="${section.key.name}_${countLink}_activity_${countItem}" size="50"
-                                           value="${item.activity}" placeholder="activity">
-                                    <input type="text" name="${section.key.name}_${countLink}_description_${countItem}" size="50"
-                                           value="${item.description}" placeholder="описание">
+                                    <dl>
+                                        <input type="text" name="${section.key.name}_${countLink}_activity_${countItem}"
+                                               size="120"
+                                               value="${item.activity}" placeholder="Должность">
+                                    </dl>
+                                    <dl>
+                                        <textarea name="${section.key.name}_${countLink}_description_${countItem}"
+                                                  cols="120" rows="3" placeholder="Описание">${item.description}</textarea>
+
+                                        <!--<input type="text" name="${section.key.name}_${countLink}_description_${countItem}" size="50"
+                                           value="${item.description}" placeholder="описание">-->
+                                    </dl>
                                 </td>
                             </tr>
+                            <br>
                             <c:set var="countItem" value="${countItem+1}"/>
                         </c:forEach>
                         <c:set var="countLink" value="${countLink+1}"/>
@@ -110,6 +128,7 @@
                 </c:when>
             </c:choose>
         </c:forEach>
+        <br><br>
         <button type="submit">Сохранить</button>
         <button onclick="window.history.back()">Отменить</button>
     </form>
