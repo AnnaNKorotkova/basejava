@@ -44,7 +44,7 @@
                     <tr>
                         <td>
 
-                            <input type="text" name="${section.key.name}" size="120"
+                            <input type="text" name="${section.key}" size="120"
                                    value="${textSection.textContainer}">
                         </td>
                     </tr>
@@ -54,17 +54,21 @@
                     <jsp:useBean id="listSection" type="com.basejava.webapp.model.ListSection"/>
                     <c:set var="count" value="0"/>
                     <c:forEach items="${listSection.textList}" var="text">
-                        ${section.key}
                         <div id=${section.key}>
-                        <tr>
-                            <td>
-                                <dl>
-                                    <textarea name="${section.key.name}_${count}" cols="120" rows="3">${text}</textarea>
-                                    <c:set var="count" value="${count+1}"/>
-                                    <button type="button"><img src="img/add.png"></button>
-                                </dl>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>
+                                    <div>
+                                            <textarea name="${section.key}_${count}" cols="120"
+                                                      rows="3">${text}</textarea>
+                                        <c:set var="count" value="${count+1}"/>
+                                        <c:if test="${count == listSection.textList.size()}">
+                                            <button id="${count}" type="button" class="addButton"><img
+                                                    src="img/add.png"></button>
+                                        </c:if>
+                                        </dl>
+                                    </div>
+                                </td>
+                            </tr>
                         </div>
                     </c:forEach>
                 </c:when>
@@ -72,72 +76,80 @@
                     <c:set var="timeLineSection" value="${section.value}"/>
                     <jsp:useBean id="timeLineSection" type="com.basejava.webapp.model.TimeLineSection"/>
                     <c:set var="countLink" value="0"/>
-                    ${section.key}
+
                     <div id=${section.key}>
-                    <c:forEach items="${timeLineSection.listTimeLine}" var="list">
-                        <c:set var="link" value="${list.homePage}"/>
-                        <jsp:useBean id="link" type="com.basejava.webapp.model.Link"/>
+                        <c:forEach items="${timeLineSection.listTimeLine}" var="list">
+                            <c:set var="link" value="${list.homePage}"/>
+                            <jsp:useBean id="link" type="com.basejava.webapp.model.Link"/>
 
-                        <tr>
-                            <td>
-                                <dl>
-                                    <input type="text" name="${section.key.name}_${countLink}_name" size="120"
-                                           value="${link.name}"
-                                           placeholder="Назнание">
-                                    <button type="button"><img src="img/add.png"></button>
-
-                                </dl>
-                                <dl>
-                                    <input type="text" name="${section.key.name}_${countLink}_url" size="120"
-                                           value="${link.url}"
-                                           placeholder="URL">
-                                </dl>
-                            </td>
-                        </tr>
-                        <c:set var="countItem" value="0"/>
-                        <c:forEach items="${list.listItem}" var="item">
-                            <jsp:useBean id="item" type="com.basejava.webapp.model.TimeLine.Item"/>
                             <tr>
-                                <td width="15%" style="vertical-align: top">
-                                    <dl>
-                                        <label for="start">Начало периода:</label>
-                                        <input type="text" id="start"
-                                               name="${section.key.name}_${countLink}_startDate_${countItem}" size="6"
-                                               value="${item.startDate.format(DateTimeFormatter.ofPattern("YYYY-MM"))}"
-                                               placeholder="YYYY-MM">
-                                        <label for="end">Конец периода:</label>
-                                        <input type="text" id="end"
-                                               name="${section.key.name}_${countLink}_lastDate_${countItem}" size="6"
-                                               value="${item.lastDate.format(DateTimeFormatter.ofPattern("YYYY-MM"))}"
-                                               placeholder="YYYY-MM">
-                                    </dl>
-                                </td>
                                 <td>
                                     <dl>
-                                        <input type="text" name="${section.key.name}_${countLink}_activity_${countItem}"
-                                               size="120"
-                                               value="${item.activity}" placeholder="Должность">
+                                        <input type="text" name="${section.key}_${countLink}_name" size="120"
+                                               value="${link.name}"
+                                               placeholder="Назнание">
+                                        <button type="button" class="addButton"><img src="img/add.png"></button>
+
                                     </dl>
                                     <dl>
-                                        <textarea name="${section.key.name}_${countLink}_description_${countItem}"
-                                                  cols="120" rows="3"
-                                                  placeholder="Описание">${item.description}</textarea>
+                                        <input type="text" name="${section.key}_${countLink}_url" size="120"
+                                               value="${link.url}"
+                                               placeholder="URL">
                                     </dl>
                                 </td>
                             </tr>
-                            <br>
-                            <c:set var="countItem" value="${countItem+1}"/>
+                            <c:set var="countItem" value="0"/>
+                            <c:forEach items="${list.listItem}" var="item">
+                                <jsp:useBean id="item" type="com.basejava.webapp.model.TimeLine.Item"/>
+                                <div>
+                                    <tr>
+                                        <td width="15%" style="vertical-align: top">
+                                            <dl>
+                                                <label for="start">Начало периода:</label>
+                                                <input type="text" id="start"
+                                                       name="${section.key}_${countLink}_startDate_${countItem}"
+                                                       size="6"
+                                                       value="${item.startDate.format(DateTimeFormatter.ofPattern("YYYY-MM"))}"
+                                                       placeholder="YYYY-MM">
+                                                <label for="end">Конец периода:</label>
+                                                <input type="text" id="end"
+                                                       name="${section.key}_${countLink}_lastDate_${countItem}"
+                                                       size="6"
+                                                       value="${item.lastDate.format(DateTimeFormatter.ofPattern("YYYY-MM"))}"
+                                                       placeholder="YYYY-MM">
+                                                <lable for="period">Добавить еще один период:</lable>
+                                                <button id="period" type="button" class="addButton"><img
+                                                        src="img/add.png"></button>
+                                            </dl>
+                                        </td>
+                                        <td>
+                                            <dl>
+                                                <input type="text"
+                                                       name="${section.key}_${countLink}_activity_${countItem}"
+                                                       size="120"
+                                                       value="${item.activity}" placeholder="Должность">
+                                            </dl>
+                                            <dl>
+                                        <textarea name="${section.key}_${countLink}_description_${countItem}"
+                                                  cols="120" rows="3"
+                                                  placeholder="Описание">${item.description}</textarea>
+                                            </dl>
+                                        </td>
+                                    </tr>
+                                </div>
+                                <br>
+                                <c:set var="countItem" value="${countItem+1}"/>
+                            </c:forEach>
+                            <c:set var="countLink" value="${countLink+1}"/>
                         </c:forEach>
-                        <c:set var="countLink" value="${countLink+1}"/>
-                    </c:forEach>
                     </div>
                 </c:when>
             </c:choose>
         </c:forEach>
         <br><br>
+        <button type="submit" class="confirmButton">Сохранить</button>
+        <button onclick="window.history.back()">Отменить</button>
     </form>
-    <button form="form" id="789" type="submit">Сохранить</button>
-    <button form="form" id="123" onclick="window.history.back()">Отменить</button>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
 </body>

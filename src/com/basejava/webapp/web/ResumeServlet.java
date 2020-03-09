@@ -49,13 +49,12 @@ public class ResumeServlet extends HttpServlet {
                 resume.getContactSection().remove(type);
             }
         }
-        String value;
-        int count;
+
         for (TypeSection type : TypeSection.values()) {
             switch (type) {
                 case PERSONAL:
                 case OBJECTIVE:
-                    value = request.getParameter(type.getName());
+                    String value = request.getParameter(type.name());
                     if (value != null && value.trim().length() != 0) {
                         resume.addSection(type, new TextSection(value));
                     } else {
@@ -64,14 +63,14 @@ public class ResumeServlet extends HttpServlet {
                     break;
                 case ACHIEVEMENT:
                 case QUALIFICATIONS:
-                    count = 0;
+                    int countTS = 0;
                     List<String> list = new ArrayList<>();
-                    value = request.getParameter(type.getName() + '_' + count);
-                    while (value != null) {
-                        if (value.trim().length() != 0) {
-                            list.add(value);
+                    String valueTs = request.getParameter(type.name() + '_' + countTS);
+                    while (valueTs != null) {
+                        if (valueTs.trim().length() != 0) {
+                            list.add(valueTs);
                         }
-                        value = request.getParameter(type.getName() + '_' + ++count);
+                        valueTs = request.getParameter(type.name() + '_' + ++countTS);
                     }
                     if (list.size() != 0) {
                         resume.addSection(type, new ListSection(list));
@@ -81,32 +80,32 @@ public class ResumeServlet extends HttpServlet {
                     break;
                 case EXPERIENCE:
                 case EDUCATION:
-                    count = 0;
+                    int countLs = 0;
                     List<TimeLine> listTimeLine = new ArrayList<>();
-                    String name = request.getParameter(type.getName() + '_' + count + "_name");
+                    String name = request.getParameter(type.name() + '_' + countLs + "_name");
                     while (name != null) {
                         if (name.trim().length() != 0) {
-                            name = request.getParameter(type.getName() + '_' + count + "_name");
-                            String url = request.getParameter(type.getName() + '_' + count + "_url");
+                            name = request.getParameter(type.name() + '_' + countLs + "_name");
+                            String url = request.getParameter(type.name() + '_' + countLs + "_url");
                             int countItem = 0;
-                            String activity = request.getParameter(type.getName() + '_' + count + "_activity_" + countItem);
+                            String activity = request.getParameter(type.name() + '_' + countLs + "_activity_" + countItem);
                             List<TimeLine.Item> listItems = new ArrayList<>();
                             while (activity != null) {
-                                int sdy = parseInt((request.getParameter(type.getName() + '_' + count + "_startDate_" + countItem)).substring(0, 4));
-                                int sdm = parseInt((request.getParameter(type.getName() + '_' + count + "_startDate_" + countItem)).substring(5));
-                                int ldy = parseInt((request.getParameter(type.getName() + '_' + count + "_lastDate_" + countItem)).substring(0, 4));
-                                int ldm = parseInt((request.getParameter(type.getName() + '_' + count + "_lastDate_" + countItem)).substring(5));
+                                int sdy = parseInt((request.getParameter(type.name() + '_' + countLs + "_startDate_" + countItem)).substring(0, 4));
+                                int sdm = parseInt((request.getParameter(type.name() + '_' + countLs + "_startDate_" + countItem)).substring(5));
+                                int ldy = parseInt((request.getParameter(type.name() + '_' + countLs + "_lastDate_" + countItem)).substring(0, 4));
+                                int ldm = parseInt((request.getParameter(type.name() + '_' + countLs + "_lastDate_" + countItem)).substring(5));
                                 LocalDate startDate = DateUtil.of(sdy, Month.of(sdm));
                                 LocalDate lastDate = DateUtil.of(ldy, Month.of(ldm));
-                                String description = request.getParameter(type.getName() + '_' + count + "_description_" + countItem);
+                                String description = request.getParameter(type.name() + '_' + countLs + "_description_" + countItem);
                                 listItems.add(new TimeLine.Item(startDate, lastDate, activity, description));
                                 countItem++;
-                                activity = request.getParameter(type.getName() + '_' + count + "_activity_" + countItem);
+                                activity = request.getParameter(type.name() + '_' + countLs + "_activity_" + countItem);
                             }
                             listTimeLine.add(new TimeLine(name, url, listItems));
                         }
-                        count++;
-                        name = request.getParameter(type.getName() + '_' + count + "_name");
+                        countLs++;
+                        name = request.getParameter(type.name() + '_' + countLs + "_name");
                     }
                     resume.addSection(type, new TimeLineSection(listTimeLine));
                     break;
