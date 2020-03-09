@@ -3,6 +3,7 @@ package com.basejava.webapp.web;
 import com.basejava.webapp.Config;
 import com.basejava.webapp.model.*;
 import com.basejava.webapp.storage.Storage;
+import com.basejava.webapp.util.BlankResume;
 import com.basejava.webapp.util.DateUtil;
 
 import javax.servlet.ServletException;

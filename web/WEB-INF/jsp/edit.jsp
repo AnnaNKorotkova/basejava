@@ -6,13 +6,18 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="css/style.css">
+    <script
+            src="https://code.jquery.com/jquery-3.4.1.slim.js"
+            integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
+            crossorigin="anonymous"></script>
+    <script src="js/addForm.js" type="text/javascript"></script>
     <jsp:useBean id="resume" type="com.basejava.webapp.model.Resume" scope="request"/>
     <title>Резюме ${resume.fullName}</title>
 </head>
 <body>
 <jsp:include page="fragments/header.jsp"/>
 <section>
-    <form method="post" action="resume" enctype="application/x-www-form-urlencoded">
+    <form id="form" method="post" action="resume" enctype="application/x-www-form-urlencoded">
         <input type="hidden" name="uuid" value="${resume.uuid}">
         <dl>
             <dt>Имя:</dt>
@@ -26,8 +31,6 @@
             </dl>
         </c:forEach>
         <hr>
-
-
         <c:forEach items="${resume.resumeSection}" var="section">
             <jsp:useBean id="section" type="java.util.Map.Entry<com.basejava.webapp.model.TypeSection
                     , com.basejava.webapp.model.AbstractSection>"/>
@@ -46,28 +49,31 @@
                         </td>
                     </tr>
                 </c:when>
-
                 <c:when test="${section.key eq 'ACHIEVEMENT' || section.key eq 'QUALIFICATIONS'}">
                     <c:set var="listSection" value="${section.value}"/>
                     <jsp:useBean id="listSection" type="com.basejava.webapp.model.ListSection"/>
                     <c:set var="count" value="0"/>
                     <c:forEach items="${listSection.textList}" var="text">
+                        ${section.key}
+                        <div id=${section.key}>
                         <tr>
                             <td>
                                 <dl>
                                     <textarea name="${section.key.name}_${count}" cols="120" rows="3">${text}</textarea>
-                                    <!--<input type="text" name="${section.key.name}_${count}" size="100" value="${text}">-->
                                     <c:set var="count" value="${count+1}"/>
+                                    <button type="button"><img src="img/add.png"></button>
                                 </dl>
                             </td>
                         </tr>
+                        </div>
                     </c:forEach>
                 </c:when>
-
                 <c:when test="${section.key eq 'EXPERIENCE' || section.key eq 'EDUCATION'}">
                     <c:set var="timeLineSection" value="${section.value}"/>
                     <jsp:useBean id="timeLineSection" type="com.basejava.webapp.model.TimeLineSection"/>
                     <c:set var="countLink" value="0"/>
+                    ${section.key}
+                    <div id=${section.key}>
                     <c:forEach items="${timeLineSection.listTimeLine}" var="list">
                         <c:set var="link" value="${list.homePage}"/>
                         <jsp:useBean id="link" type="com.basejava.webapp.model.Link"/>
@@ -78,6 +84,8 @@
                                     <input type="text" name="${section.key.name}_${countLink}_name" size="120"
                                            value="${link.name}"
                                            placeholder="Назнание">
+                                    <button type="button"><img src="img/add.png"></button>
+
                                 </dl>
                                 <dl>
                                     <input type="text" name="${section.key.name}_${countLink}_url" size="120"
@@ -89,7 +97,6 @@
                         <c:set var="countItem" value="0"/>
                         <c:forEach items="${list.listItem}" var="item">
                             <jsp:useBean id="item" type="com.basejava.webapp.model.TimeLine.Item"/>
-
                             <tr>
                                 <td width="15%" style="vertical-align: top">
                                     <dl>
@@ -113,10 +120,8 @@
                                     </dl>
                                     <dl>
                                         <textarea name="${section.key.name}_${countLink}_description_${countItem}"
-                                                  cols="120" rows="3" placeholder="Описание">${item.description}</textarea>
-
-                                        <!--<input type="text" name="${section.key.name}_${countLink}_description_${countItem}" size="50"
-                                           value="${item.description}" placeholder="описание">-->
+                                                  cols="120" rows="3"
+                                                  placeholder="Описание">${item.description}</textarea>
                                     </dl>
                                 </td>
                             </tr>
@@ -125,14 +130,14 @@
                         </c:forEach>
                         <c:set var="countLink" value="${countLink+1}"/>
                     </c:forEach>
+                    </div>
                 </c:when>
             </c:choose>
         </c:forEach>
         <br><br>
-        <button type="submit">Сохранить</button>
-        <button onclick="window.history.back()">Отменить</button>
     </form>
-
+    <button form="form" id="789" type="submit">Сохранить</button>
+    <button form="form" id="123" onclick="window.history.back()">Отменить</button>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
 </body>
