@@ -10,6 +10,7 @@ public class ListSection extends AbstractSection {
 
     private final static long serialVersionUID = 1L;
     private List<String> textList;
+    public static final ListSection EMPTY = new ListSection();
 
     public ListSection() {
     }
@@ -20,6 +21,10 @@ public class ListSection extends AbstractSection {
 
     public List<String> getTextList() {
         return textList;
+    }
+
+    public void addToList(String str) {
+       textList.add(str);
     }
 
     @Override

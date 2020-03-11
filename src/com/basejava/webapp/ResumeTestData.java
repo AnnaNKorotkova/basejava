@@ -73,21 +73,21 @@ public class ResumeTestData {
                 case EXPERIENCE:
                     List<TimeLine> listExp = new ArrayList<>();
 
-                    listExp.add(new TimeLine("Alcatel", null, new ArrayList<>(Collections.singletonList(new TimeLine.Item(DateUtil.of(2005, Month.JANUARY), DateUtil.of(2007, Month.FEBRUARY),
-                            "Разработчик ПО", "1_Разработка информационной модели, проектирование интерфейсов, реализация и отладка ПО на мобильной IN платформе Siemens @vantage (Java, Unix).")))));
-                    listExp.add(new TimeLine("Siemens AG", null, new ArrayList<>(Collections.singletonList(new TimeLine.Item(DateUtil.of(2005, Month.JANUARY), DateUtil.of(2007, Month.FEBRUARY),
-                            "Разработчик ПО", "2_Разработка информационной модели, проектирование интерфейсов, реализация и отладка ПО на мобильной IN платформе Siemens @vantage (Java, Unix).")))));
-                    listExp.add(new TimeLine("Enkata", null, new ArrayList<>(Collections.singletonList(new TimeLine.Item(DateUtil.of(2007, Month.MARCH), DateUtil.of(2008, Month.JULY),
-                            "Разработчик ПО", "Реализация клиентской (Eclipse RCP) и серверной (JBoss 4.2, Hibernate 3.0, Tomcat, JMS) частей кластерного J2EE приложения (OLAP, Data mining).")))));
+                    listExp.add(new TimeLine("Alcatel", null, (new TimeLine.Item(DateUtil.of(2005, Month.JANUARY), DateUtil.of(2007, Month.FEBRUARY),
+                            "Разработчик ПО", "1_Разработка информационной модели, проектирование интерфейсов, реализация и отладка ПО на мобильной IN платформе Siemens @vantage (Java, Unix)."))));
+                    listExp.add(new TimeLine("Siemens AG", null, (new TimeLine.Item(DateUtil.of(2005, Month.JANUARY), DateUtil.of(2007, Month.FEBRUARY),
+                            "Разработчик ПО", "2_Разработка информационной модели, проектирование интерфейсов, реализация и отладка ПО на мобильной IN платформе Siemens @vantage (Java, Unix)."))));
+                    listExp.add(new TimeLine("Enkata", null, (new TimeLine.Item(DateUtil.of(2007, Month.MARCH), DateUtil.of(2008, Month.JULY),
+                            "Разработчик ПО", "Реализация клиентской (Eclipse RCP) и серверной (JBoss 4.2, Hibernate 3.0, Tomcat, JMS) частей кластерного J2EE приложения (OLAP, Data mining)."))));
                     resume.addSection(tp, new TimeLineSection(listExp));
                     break;
                 case EDUCATION:
                     List<TimeLine> listEdu = new ArrayList<>();
 
-                    listEdu.add(new TimeLine("Заочная физико-техническая школа при МФТИ", null, new ArrayList<>(Collections.singletonList(new TimeLine.Item(DateUtil.of(1984, Month.SEPTEMBER), DateUtil.of(1987, Month.JUNE), "Закончил с отличием", null)))));
+                    listEdu.add(new TimeLine("Заочная физико-техническая школа при МФТИ", null, (new TimeLine.Item(DateUtil.of(1984, Month.SEPTEMBER), DateUtil.of(1987, Month.JUNE), "Закончил с отличием", null))));
                     listEdu.add(new TimeLine("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", null,
-                            new ArrayList<>(Arrays.asList(new TimeLine.Item(DateUtil.of(1987, Month.SEPTEMBER), DateUtil.of(1993, Month.JULY), "Инженер (программист Fortran, C)", null),
-                                    new TimeLine.Item(DateUtil.of(1993, Month.SEPTEMBER), DateUtil.of(1996, Month.JULY), "Аспирантура (программист С, С++)", null)))));
+                            (new TimeLine.Item(DateUtil.of(1987, Month.SEPTEMBER), DateUtil.of(1993, Month.JULY), "Инженер (программист Fortran, C)", null)),
+                                    new TimeLine.Item(DateUtil.of(1993, Month.SEPTEMBER), DateUtil.of(1996, Month.JULY), "Аспирантура (программист С, С++)", null)));
                     resume.addSection(tp, new TimeLineSection(listEdu));
                     break;
 

@@ -54,18 +54,20 @@
                     <jsp:useBean id="listSection" type="com.basejava.webapp.model.ListSection"/>
                     <c:set var="count" value="0"/>
                     <c:forEach items="${listSection.textList}" var="text">
+
                         <div id=${section.key}>
                             <tr>
                                 <td>
                                     <div>
+
                                             <textarea name="${section.key}_${count}" cols="120"
                                                       rows="3">${text}</textarea>
-                                        <c:set var="count" value="${count+1}"/>
-                                        <c:if test="${count == listSection.textList.size()}">
+                                                <c:set var="count" value="${count+1}"/>
+                                            <c:if test="${count == listSection.textList.size()}">
                                             <button id="${count}" type="button" class="addButton"><img
                                                     src="img/add.png"></button>
-                                        </c:if>
-                                        </dl>
+                                            </c:if>
+                                            </dl>
                                     </div>
                                 </td>
                             </tr>

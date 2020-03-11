@@ -35,8 +35,7 @@ public class BlankResume {
                 case EXPERIENCE:
                 case EDUCATION:
                     List<TimeLine> listEdu = new ArrayList<>();
-                    listEdu.add(new TimeLine("", "", new ArrayList<>(Collections.singletonList(new TimeLine.Item(DateUtil.of(1111, Month.NOVEMBER), DateUtil.of(1111, Month.NOVEMBER), "", "")))));
-                    resume.addSection(tp, new TimeLineSection(listEdu));
+                    resume.addSection(tp, new TimeLineSection(TimeLine.EMPTY));
                     break;
             }
         }

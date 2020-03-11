@@ -134,6 +134,49 @@ public class ResumeServlet extends HttpServlet {
             case "view":
             case "edit":
                 resume = storage.get(uuid);
+                for (TypeSection type : TypeSection.values()) {
+
+                    switch (type) {
+                        case PERSONAL:
+                        case OBJECTIVE:
+                            if (resume.getResumeSection().get(type) == null) {
+                                resume.addSection(type, TextSection.EMPTY);
+                            }
+                            break;
+                        case ACHIEVEMENT:
+                        case QUALIFICATIONS:
+                            if (resume.getResumeSection().get(type) == null) {
+                                List<String> list = new ArrayList();
+                                list.add("");
+                                resume.addSection(type, new ListSection(list));
+                            } else {
+                                ListSection section = (ListSection) resume.getResumeSection().get(type);
+                                section.addToList("");
+                                resume.addSection(type, section);
+                            }
+                            break;
+                        case EXPERIENCE:
+                        case EDUCATION:
+                            TimeLineSection tls = (TimeLineSection) resume.getResumeSection().get(type);
+                            List<TimeLine.Item> list = new ArrayList<>();
+                            TimeLine.Item tliEmpty = new TimeLine.Item(DateUtil.of(1111, Month.NOVEMBER), DateUtil.of(1111, Month.NOVEMBER), "", "");
+                            if (tls.getListTimeLine().size() == 0) {
+                                list.add(tliEmpty);
+                                resume.addSection(type, new TimeLineSection(new TimeLine("", "", list)));
+                            } else {
+                                Link link = new Link();
+                                for (TimeLine timeLine : tls.getListTimeLine()) {
+                                    link = timeLine.getHomePage();
+                                    list.addAll(timeLine.getListItem());
+                                    list.add(tliEmpty);
+                                }
+                                tls.getListTimeLine().add(new TimeLine(link, list));
+                                tls.getListTimeLine().add(new TimeLine("", "", tliEmpty));
+                                resume.addSection(type, tls);
+                            }
+                            break;
+                    }
+                }
                 break;
             case "save":
                 resume = BlankResume.createBlankResume();
