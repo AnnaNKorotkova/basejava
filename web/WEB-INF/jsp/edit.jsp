@@ -54,20 +54,18 @@
                     <jsp:useBean id="listSection" type="com.basejava.webapp.model.ListSection"/>
                     <c:set var="count" value="0"/>
                     <c:forEach items="${listSection.textList}" var="text">
-
                         <div id=${section.key}>
                             <tr>
                                 <td>
                                     <div>
-
                                             <textarea name="${section.key}_${count}" cols="120"
                                                       rows="3">${text}</textarea>
-                                                <c:set var="count" value="${count+1}"/>
-                                            <c:if test="${count == listSection.textList.size()}">
+                                        <c:set var="count" value="${count+1}"/>
+                                        <c:if test="${count == listSection.textList.size()}">
                                             <button id="${count}" type="button" class="addButton"><img
                                                     src="img/add.png"></button>
-                                            </c:if>
-                                            </dl>
+                                        </c:if>
+                                        </dl>
                                     </div>
                                 </td>
                             </tr>
@@ -78,12 +76,10 @@
                     <c:set var="timeLineSection" value="${section.value}"/>
                     <jsp:useBean id="timeLineSection" type="com.basejava.webapp.model.TimeLineSection"/>
                     <c:set var="countLink" value="0"/>
-
                     <div id=${section.key}>
                         <c:forEach items="${timeLineSection.listTimeLine}" var="list">
                             <c:set var="link" value="${list.homePage}"/>
                             <jsp:useBean id="link" type="com.basejava.webapp.model.Link"/>
-
                             <tr>
                                 <td>
                                     <dl>
@@ -91,7 +87,6 @@
                                                value="${link.name}"
                                                placeholder="Назнание">
                                         <button type="button" class="addButton"><img src="img/add.png"></button>
-
                                     </dl>
                                     <dl>
                                         <input type="text" name="${section.key}_${countLink}_url" size="120"
@@ -108,15 +103,15 @@
                                         <td width="15%" style="vertical-align: top">
                                             <dl>
                                                 <label for="start">Начало периода:</label>
-                                                <input type="text" id="start"
+                                                <input type="text" style="text-align: center" id="start"
                                                        name="${section.key}_${countLink}_startDate_${countItem}"
-                                                       size="6"
+                                                       size="7"
                                                        value="${item.startDate.format(DateTimeFormatter.ofPattern("YYYY-MM"))}"
                                                        placeholder="YYYY-MM">
                                                 <label for="end">Конец периода:</label>
-                                                <input type="text" id="end"
+                                                <input type="text" style="text-align: center" id="end"
                                                        name="${section.key}_${countLink}_lastDate_${countItem}"
-                                                       size="6"
+                                                       size="7"
                                                        value="${item.lastDate.format(DateTimeFormatter.ofPattern("YYYY-MM"))}"
                                                        placeholder="YYYY-MM">
                                                 <lable for="period">Добавить еще один период:</lable>

@@ -91,14 +91,23 @@ public class ResumeServlet extends HttpServlet {
                             String activity = request.getParameter(type.name() + '_' + countLs + "_activity_" + countItem);
                             List<TimeLine.Item> listItems = new ArrayList<>();
                             while (activity != null) {
-                                int sdy = parseInt((request.getParameter(type.name() + '_' + countLs + "_startDate_" + countItem)).substring(0, 4));
-                                int sdm = parseInt((request.getParameter(type.name() + '_' + countLs + "_startDate_" + countItem)).substring(5));
-                                int ldy = parseInt((request.getParameter(type.name() + '_' + countLs + "_lastDate_" + countItem)).substring(0, 4));
-                                int ldm = parseInt((request.getParameter(type.name() + '_' + countLs + "_lastDate_" + countItem)).substring(5));
-                                LocalDate startDate = DateUtil.of(sdy, Month.of(sdm));
-                                LocalDate lastDate = DateUtil.of(ldy, Month.of(ldm));
-                                String description = request.getParameter(type.name() + '_' + countLs + "_description_" + countItem);
-                                listItems.add(new TimeLine.Item(startDate, lastDate, activity, description));
+                                String sd = request.getParameter(type.name() + '_' + countLs + "_startDate_" + countItem);
+                                String ld = request.getParameter(type.name() + '_' + countLs + "_lastDate_" + countItem);
+                                if (sd.length() != 0) {
+                                    int sdy = parseInt(sd.substring(0, 4));
+                                    int sdm = parseInt(sd.substring(5));
+                                    LocalDate startDate = DateUtil.of(sdy, Month.of(sdm));
+                                    LocalDate lastDate;
+                                    if (ld.length() == 0) {
+                                        lastDate = LocalDate.now();
+                                    } else {
+                                        int ldy = parseInt(ld.substring(0, 4));
+                                        int ldm = parseInt(ld.substring(5));
+                                        lastDate = DateUtil.of(ldy, Month.of(ldm));
+                                    }
+                                    String description = request.getParameter(type.name() + '_' + countLs + "_description_" + countItem);
+                                    listItems.add(new TimeLine.Item(startDate, lastDate, activity, description));
+                                }
                                 countItem++;
                                 activity = request.getParameter(type.name() + '_' + countLs + "_activity_" + countItem);
                             }
@@ -146,9 +155,9 @@ public class ResumeServlet extends HttpServlet {
                         case ACHIEVEMENT:
                         case QUALIFICATIONS:
                             if (resume.getResumeSection().get(type) == null) {
-                                List<String> list = new ArrayList();
-                                list.add("");
-                                resume.addSection(type, new ListSection(list));
+//                                List<String> list = new ArrayList();
+//                                list.add("");
+                                resume.addSection(type, ListSection.EMPTY);
                             } else {
                                 ListSection section = (ListSection) resume.getResumeSection().get(type);
                                 section.addToList("");
@@ -158,20 +167,13 @@ public class ResumeServlet extends HttpServlet {
                         case EXPERIENCE:
                         case EDUCATION:
                             TimeLineSection tls = (TimeLineSection) resume.getResumeSection().get(type);
-                            List<TimeLine.Item> list = new ArrayList<>();
-                            TimeLine.Item tliEmpty = new TimeLine.Item(DateUtil.of(1111, Month.NOVEMBER), DateUtil.of(1111, Month.NOVEMBER), "", "");
                             if (tls.getListTimeLine().size() == 0) {
-                                list.add(tliEmpty);
-                                resume.addSection(type, new TimeLineSection(new TimeLine("", "", list)));
+                                resume.addSection(type, new TimeLineSection(TimeLine.EMPTY));
                             } else {
-                                Link link = new Link();
                                 for (TimeLine timeLine : tls.getListTimeLine()) {
-                                    link = timeLine.getHomePage();
-                                    list.addAll(timeLine.getListItem());
-                                    list.add(tliEmpty);
+                                    timeLine.getListItem().add(TimeLine.Item.EMPTY);
                                 }
-                                tls.getListTimeLine().add(new TimeLine(link, list));
-                                tls.getListTimeLine().add(new TimeLine("", "", tliEmpty));
+                                tls.getListTimeLine().add(TimeLine.EMPTY);
                                 resume.addSection(type, tls);
                             }
                             break;

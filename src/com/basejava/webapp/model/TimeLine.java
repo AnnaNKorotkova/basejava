@@ -7,8 +7,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -19,18 +17,19 @@ public class TimeLine extends AbstractSection {
     private final static long serialVersionUID = 1L;
     private Link homePage;
     private List<Item> listItem;
-    public static final TimeLine EMPTY =new TimeLine("","",Item.EMPTY);
+    public static final TimeLine EMPTY = new TimeLine("", "", Item.EMPTY);
 
     public TimeLine() {
     }
 
-    public TimeLine(String name, String url, Item...items) {
+    public TimeLine(String name, String url, Item... items) {
         this.homePage = new Link(name, url);
-        this.listItem =  Arrays.asList(items);
+        this.listItem = Arrays.asList(items);
     }
+
     public TimeLine(String name, String url, List<Item> listItem) {
         this.homePage = new Link(name, url);
-        this.listItem =  listItem;
+        this.listItem = listItem;
     }
 
     public TimeLine(Link homePage, List<Item> listItem) {

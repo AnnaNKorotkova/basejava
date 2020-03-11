@@ -4,10 +4,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -72,13 +69,46 @@ public class Resume implements Comparable<Resume>, Serializable {
         return resumeSection;
     }
 
-    public void addContact(Contact type, String value){
+    public void addContact(Contact type, String value) {
         contactSection.put(type, value);
     }
 
-    public void addSection(TypeSection type, AbstractSection section){
+    public void addSection(TypeSection type, AbstractSection section) {
         resumeSection.put(type, section);
     }
+//
+//    public <T> void addSectionValue(TypeSection type, T object) {
+//        switch (type) {
+//            case PERSONAL:
+//            case OBJECTIVE:
+//                resumeSection.putIfAbsent(type, new TextSection((String) object));
+//                break;
+//            case ACHIEVEMENT:
+//            case QUALIFICATIONS:
+//                if (resumeSection.get(type) == null) {
+//                    resumeSection.put(type, new ListSection(Collections.singletonList((String) object)));
+//                } else {
+//                    ListSection section = (ListSection) resumeSection.get(type);
+//                    section.addToList((String) object);
+//                    resumeSection.put(type, section);
+//                }
+//                break;
+//            case EXPERIENCE:
+//            case EDUCATION:
+//                TimeLineSection tls = (TimeLineSection) resumeSection.get(type);
+//                if (tls.getListTimeLine().size() == 0) {
+//                    resumeSection.put(type, (TimeLine) object);
+//                } else {
+//                    for (TimeLine timeLine : tls.getListTimeLine()) {
+//                        timeLine.getListItem().add(TimeLine.Item.EMPTY); //здесь недороботочка
+//                    }
+//                    tls.getListTimeLine().add((TimeLine) object);
+//                    resumeSection.put(type, tls);
+//                }
+//                break;
+//        }
+//    }
+
 
     @Override
     public boolean equals(Object o) {
