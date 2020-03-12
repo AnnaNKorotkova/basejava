@@ -2,6 +2,7 @@ package com.basejava.webapp.model;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,7 +11,7 @@ public class ListSection extends AbstractSection {
 
     private final static long serialVersionUID = 1L;
     private List<String> textList;
-    public static final ListSection EMPTY = new ListSection();
+    public static final ListSection EMPTY = new ListSection(Collections.singletonList(""));
 
     public ListSection() {
     }
